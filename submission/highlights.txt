@@ -1,0 +1,5 @@
+- Contextual valuations separate strategic form from benefit-loss class.
+- Exact radii separate class-map robustness from pure-Nash-set robustness.
+- Malicious equilibria are fragile when paired profiles share an action.
+- Robust coexistence requires equilibria that share neither player's action.
+- Exhaustive and perturbation audits distinguish class and Nash robustness.
