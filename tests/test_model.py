@@ -18,6 +18,22 @@ from context_games.model import (
 )
 
 
+RECTANGULAR_GAME = ContextGame(
+    "rectangular",
+    "Rectangular test game",
+    ("A", "B"),
+    ("L", "C", "R"),
+    {
+        ("A", "L"): (3.0, 3.0),
+        ("A", "C"): (-1.0, 1.0),
+        ("A", "R"): (2.0, -1.0),
+        ("B", "L"): (1.0, -1.0),
+        ("B", "C"): (2.0, 2.0),
+        ("B", "R"): (-1.0, 1.0),
+    },
+)
+
+
 class ClassificationTests(unittest.TestCase):
     def test_boundary_convention(self) -> None:
         self.assertEqual(classify(1, 1), "I")
@@ -30,6 +46,37 @@ class ClassificationTests(unittest.TestCase):
     def test_feature_weights_reproduce_payoffs(self) -> None:
         for key, expected in EXPECTED_PAYOFFS.items():
             self.assertEqual(BENCHMARKS[key].payoffs, expected)
+
+
+class FiniteGameTests(unittest.TestCase):
+    def test_rectangular_equilibria_and_exact_radii(self) -> None:
+        self.assertEqual(RECTANGULAR_GAME.pure_nash(), (("A", "L"), ("B", "C")))
+        self.assertEqual(
+            RECTANGULAR_GAME.pure_nash(strict=True), (("A", "L"), ("B", "C"))
+        )
+        self.assertEqual(class_map_robustness_radius(RECTANGULAR_GAME), 1.0)
+        self.assertEqual(equilibrium_set_robustness_radius(RECTANGULAR_GAME), 0.5)
+
+        vertices = itertools.product((-1.0, 1.0), repeat=12)
+        self.assertTrue(
+            all(
+                perturbed_game(RECTANGULAR_GAME, 0.49 * np.asarray(vertex)).pure_nash()
+                == RECTANGULAR_GAME.pure_nash()
+                for vertex in vertices
+            )
+        )
+        vertices = itertools.product((-1.0, 1.0), repeat=12)
+        self.assertTrue(
+            any(
+                perturbed_game(RECTANGULAR_GAME, 0.51 * np.asarray(vertex)).pure_nash()
+                != RECTANGULAR_GAME.pure_nash()
+                for vertex in vertices
+            )
+        )
+
+    def test_population_dynamics_reject_rectangular_game(self) -> None:
+        with self.assertRaisesRegex(ValueError, "requires a 2x2 game"):
+            simulate(RECTANGULAR_GAME)
 
 
 class BenchmarkTests(unittest.TestCase):

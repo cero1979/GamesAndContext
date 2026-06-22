@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 import itertools
+from collections.abc import Iterable
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -180,26 +184,21 @@ def robustness_radii() -> pd.DataFrame:
     )
 
 
-def exhaustive_dichotomy_audit(values: tuple[int, ...] = (-2, -1, 0, 1, 2)) -> pd.DataFrame:
-    """Exhaustively check the 2x2 theorem on a 390,625-game integer grid."""
+def _configuration_counts(games: Iterable[ContextGame]) -> dict[str, int]:
     counts = {
         "games": 0,
         "I_M_equilibrium_pairs": 0,
-        "shared_row_pairs": 0,
-        "shared_column_pairs": 0,
-        "shared_column_dominance_failures": 0,
-        "diagonal_pairs": 0,
-        "strict_diagonal_welfare_dominated_pairs": 0,
+        "shared_actor_action_pairs": 0,
+        "shared_affected_action_pairs": 0,
+        "shared_affected_action_dominance_failures": 0,
+        "disjoint_action_pairs": 0,
+        "strict_disjoint_welfare_dominated_pairs": 0,
     }
-    for coordinates in itertools.product(values, repeat=8):
-        payoffs = {
-            profile: (float(coordinates[2 * i]), float(coordinates[2 * i + 1]))
-            for i, profile in enumerate(PROFILES)
-        }
-        game = ContextGame("grid", "grid", ("G", "P"), ("U", "R"), payoffs)
+    for game in games:
         counts["games"] += 1
         equilibria = game.pure_nash()
         classes = game.classes()
+        strict_equilibria: set[tuple[str, str]] | None = None
         for first, second in itertools.combinations(equilibria, 2):
             if {classes[first], classes[second]} != {"I", "M"}:
                 continue
@@ -207,23 +206,96 @@ def exhaustive_dichotomy_audit(values: tuple[int, ...] = (-2, -1, 0, 1, 2)) -> p
             intelligent = first if classes[first] == "I" else second
             malicious = second if intelligent == first else first
             if intelligent[0] == malicious[0]:
-                counts["shared_row_pairs"] += 1
+                counts["shared_actor_action_pairs"] += 1
             elif intelligent[1] == malicious[1]:
-                counts["shared_column_pairs"] += 1
+                counts["shared_affected_action_pairs"] += 1
                 if not (
                     game.pareto_dominates(intelligent, malicious)
                     and game.welfare(intelligent) > game.welfare(malicious)
                 ):
-                    counts["shared_column_dominance_failures"] += 1
+                    counts["shared_affected_action_dominance_failures"] += 1
             else:
-                counts["diagonal_pairs"] += 1
+                counts["disjoint_action_pairs"] += 1
+                if strict_equilibria is None:
+                    strict_equilibria = set(game.pure_nash(strict=True))
                 if (
-                    intelligent in game.pure_nash(strict=True)
-                    and malicious in game.pure_nash(strict=True)
+                    intelligent in strict_equilibria
+                    and malicious in strict_equilibria
                     and game.welfare(intelligent) > game.welfare(malicious)
                 ):
-                    counts["strict_diagonal_welfare_dominated_pairs"] += 1
-    return pd.DataFrame([{"payoff_values": "[" + ";".join(map(str, values)) + "]", **counts}])
+                    counts["strict_disjoint_welfare_dominated_pairs"] += 1
+    return counts
+
+
+def exhaustive_configuration_audit(values: tuple[int, ...] = (-2, -1, 0, 1, 2)) -> pd.DataFrame:
+    """Exhaustively check the 2x2 theorem on a 390,625-game integer grid."""
+    def games() -> Iterable[ContextGame]:
+        for coordinates in itertools.product(values, repeat=8):
+            payoffs = {
+                profile: (float(coordinates[2 * i]), float(coordinates[2 * i + 1]))
+                for i, profile in enumerate(PROFILES)
+            }
+            yield ContextGame("grid", "grid", ("G", "P"), ("U", "R"), payoffs)
+
+    generic = _configuration_counts(games())
+    return pd.DataFrame(
+        [
+            {
+                "payoff_values": "[" + ";".join(map(str, values)) + "]",
+                "games": generic["games"],
+                "I_M_equilibrium_pairs": generic["I_M_equilibrium_pairs"],
+                "shared_row_pairs": generic["shared_actor_action_pairs"],
+                "shared_column_pairs": generic["shared_affected_action_pairs"],
+                "shared_column_dominance_failures": generic[
+                    "shared_affected_action_dominance_failures"
+                ],
+                "diagonal_pairs": generic["disjoint_action_pairs"],
+                "strict_diagonal_welfare_dominated_pairs": generic[
+                    "strict_disjoint_welfare_dominated_pairs"
+                ],
+            }
+        ]
+    )
+
+
+def exhaustive_dichotomy_audit(values: tuple[int, ...] = (-2, -1, 0, 1, 2)) -> pd.DataFrame:
+    """Compatibility wrapper for the legacy audit name."""
+    return exhaustive_configuration_audit(values)
+
+
+def rectangular_configuration_audit(
+    values: tuple[int, ...] = (-2, -1, 1),
+    shapes: tuple[tuple[int, int], ...] = ((2, 3), (3, 2)),
+) -> pd.DataFrame:
+    """Check the finite-game configuration theorem beyond the 2x2 benchmark."""
+    rows = []
+    for row_count, column_count in shapes:
+        row_actions = tuple(f"r{i}" for i in range(row_count))
+        column_actions = tuple(f"c{j}" for j in range(column_count))
+        profiles = tuple(itertools.product(row_actions, column_actions))
+
+        def games() -> Iterable[ContextGame]:
+            for coordinates in itertools.product(values, repeat=2 * len(profiles)):
+                payoffs = {
+                    profile: (float(coordinates[2 * i]), float(coordinates[2 * i + 1]))
+                    for i, profile in enumerate(profiles)
+                }
+                yield ContextGame(
+                    "rectangular-grid",
+                    "rectangular grid",
+                    row_actions,
+                    column_actions,
+                    payoffs,
+                )
+
+        rows.append(
+            {
+                "shape": f"{row_count}x{column_count}",
+                "payoff_values": "[" + ";".join(map(str, values)) + "]",
+                **_configuration_counts(games()),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def make_figures(output_dir: Path) -> None:
@@ -292,5 +364,10 @@ def run_all(output_dir: Path) -> None:
     convergence_diagnostics().to_csv(output_dir / "convergence_diagnostics.csv", index=False)
     perturbation_audit().to_csv(output_dir / "payoff_perturbation_audit.csv", index=False)
     robustness_radii().to_csv(output_dir / "robustness_radii.csv", index=False)
-    exhaustive_dichotomy_audit().to_csv(output_dir / "exhaustive_dichotomy_audit.csv", index=False)
+    exhaustive_configuration_audit().to_csv(
+        output_dir / "exhaustive_configuration_audit.csv", index=False
+    )
+    rectangular_configuration_audit().to_csv(
+        output_dir / "rectangular_configuration_audit.csv", index=False
+    )
     make_figures(output_dir)

@@ -30,7 +30,7 @@ def main() -> int:
             "import pandas as pd\n"
             "from context_games.benchmarks import BENCHMARKS\n"
             "from context_games.experiments import (baseline_tables, convergence_diagnostics, "
-            "exhaustive_dichotomy_audit, perturbation_audit, robustness_radii, run_all, "
+            "exhaustive_configuration_audit, perturbation_audit, robustness_radii, "
             "sensitivity_grid, sensitivity_grid_summary)\n\n"
             "RESULTS = Path('results')\n"
             "print({'python': platform.python_version(), 'numpy': np.__version__, "
@@ -70,14 +70,18 @@ def main() -> int:
             "set is not: continuous perturbations break the exact actor indifference with probability one."
         ),
         nbf.v4.new_markdown_cell("## 5. Exhaustive finite audit of the configuration theorem"),
-        nbf.v4.new_code_cell("display(exhaustive_dichotomy_audit())"),
+        nbf.v4.new_code_cell(
+            "display(exhaustive_configuration_audit())\n"
+            "display(pd.read_csv(RESULTS / 'rectangular_configuration_audit.csv'))"
+        ),
         nbf.v4.new_markdown_cell(
             "All $5^8=390{,}625$ games with payoff coordinates in $\\{-2,-1,0,1,2\\}$ are checked. "
-            "This is a finite computational audit, not a replacement for the proof."
+            "The finite-game extension is also checked on all $2\\cdot3^{12}=1{,}062{,}882$ "
+            "rectangular $2\\times3$ and $3\\times2$ games over $\\{-2,-1,1\\}$. "
+            "These are finite computational audits, not replacements for the proofs."
         ),
-        nbf.v4.new_markdown_cell("## 6. Rebuild archived tables and figures"),
+        nbf.v4.new_markdown_cell("## 6. Archived tables and figures"),
         nbf.v4.new_code_cell(
-            "run_all(RESULTS)\n"
             "sorted(path.name for path in RESULTS.iterdir() if path.is_file())"
         ),
     ]

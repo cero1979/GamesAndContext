@@ -5,7 +5,10 @@ import unittest
 
 import numpy as np
 
-from context_games.experiments import exhaustive_dichotomy_audit
+from context_games.experiments import (
+    exhaustive_configuration_audit,
+    rectangular_configuration_audit,
+)
 from context_games.model import ContextGame, perturbed_game, simulate
 
 
@@ -18,7 +21,7 @@ GAMMA_DIAMOND = ContextGame(
 )
 
 
-class DichotomyTests(unittest.TestCase):
+class ConfigurationTests(unittest.TestCase):
     def test_gamma_diamond(self) -> None:
         self.assertEqual(set(GAMMA_DIAMOND.pure_nash(strict=True)), {("G", "U"), ("P", "R")})
         self.assertEqual(GAMMA_DIAMOND.classes()[("G", "U")], "I")
@@ -49,12 +52,22 @@ class DichotomyTests(unittest.TestCase):
             self.assertLess(q, 1e-3)
 
     def test_exhaustive_grid_has_no_counterexample(self) -> None:
-        audit = exhaustive_dichotomy_audit().iloc[0]
+        audit = exhaustive_configuration_audit().iloc[0]
         self.assertEqual(audit.games, 390625)
         self.assertEqual(audit.shared_row_pairs, 0)
         self.assertEqual(audit.shared_column_dominance_failures, 0)
         self.assertGreater(audit.diagonal_pairs, 0)
         self.assertGreater(audit.strict_diagonal_welfare_dominated_pairs, 0)
+
+    def test_rectangular_grids_have_no_counterexample(self) -> None:
+        audit = rectangular_configuration_audit(values=(-1, 1)).set_index("shape")
+        self.assertEqual(audit.loc["2x3", "games"], 4096)
+        self.assertEqual(audit.loc["3x2", "games"], 4096)
+        self.assertEqual(audit.loc["2x3", "I_M_equilibrium_pairs"], 1152)
+        self.assertEqual(audit.loc["3x2", "I_M_equilibrium_pairs"], 3072)
+        self.assertTrue((audit.shared_actor_action_pairs == 0).all())
+        self.assertTrue((audit.shared_affected_action_dominance_failures == 0).all())
+        self.assertTrue((audit.disjoint_action_pairs > 0).all())
 
 
 if __name__ == "__main__":

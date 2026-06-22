@@ -21,7 +21,8 @@ python3.12 -m venv .venv
 
 The final command runs the test suite, regenerates all result tables and figures,
 and executes the notebook into `results/executed_notebook.ipynb` without changing
-the source notebook.
+the source notebook. Figures are rendered once with Matplotlib's non-interactive
+`Agg` backend; notebook execution does not overwrite generated artifacts.
 
 For a faster code-only check:
 
@@ -46,7 +47,9 @@ For a faster code-only check:
 - Feature weights reproduce every benchmark payoff exactly.
 - Class maps, margins, pure equilibria, and trajectory distances are regression-tested.
 - The configuration theorem is exhaustively checked on all `5^8 = 390,625`
-  two-player games with coordinates in `{-2, -1, 0, 1, 2}`.
+  `2x2` games with coordinates in `{-2, -1, 0, 1, 2}`.
+- Its finite-game extension is checked on all `2 * 3^12 = 1,062,882`
+  rectangular `2x3` and `3x2` games with coordinates in `{-2, -1, 1}`.
 - Exact open-ball radii distinguish class-map and complete pure-NE-set robustness.
 - The open robustness ball for `Gamma-diamond` is checked at all 256 vertices;
   a separate test confirms that radius `3/4` itself is not included.
@@ -56,6 +59,7 @@ For a faster code-only check:
 ## Reproducibility status
 
 `requirements-lock.txt` pins the complete numerical and notebook environment used
-for the archived results. CI installs that lock before installing the local package.
-The computations are deterministic except for the explicitly seeded payoff audit
-(`20260622`); no external or confidential data are used.
+for the archived results. CI installs that lock, regenerates the package under Linux,
+and fails if any committed result differs. The computations are deterministic except
+for the explicitly seeded payoff audit (`20260622`); no external or confidential data
+are used.

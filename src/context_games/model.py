@@ -36,18 +36,25 @@ def axis_margin(payoff: Payoff) -> float:
 
 @dataclass(frozen=True)
 class ContextGame:
-    """A finite 2x2 contextual game with actor and affected-side payoffs."""
+    """A finite contextual game with actor and affected-side payoffs."""
 
     key: str
     label: str
-    rows: tuple[str, str]
-    columns: tuple[str, str]
+    rows: tuple[str, ...]
+    columns: tuple[str, ...]
     payoffs: Mapping[Profile, Payoff]
 
     def __post_init__(self) -> None:
+        if len(self.rows) < 2 or len(self.columns) < 2:
+            raise ValueError(f"{self.key}: each player must have at least two actions")
+        if len(set(self.rows)) != len(self.rows) or len(set(self.columns)) != len(self.columns):
+            raise ValueError(f"{self.key}: action labels must be unique for each player")
         expected = {(a, b) for a in self.rows for b in self.columns}
         if set(self.payoffs) != expected:
-            raise ValueError(f"{self.key}: payoff keys do not match the 2x2 profile set")
+            raise ValueError(f"{self.key}: payoff keys do not match the finite profile set")
+        for profile, payoff in self.payoffs.items():
+            if len(payoff) != 2 or not all(np.isfinite(value) for value in payoff):
+                raise ValueError(f"{self.key}: payoff at {profile} must contain two finite values")
 
     @property
     def profiles(self) -> tuple[Profile, ...]:
@@ -70,17 +77,24 @@ class ContextGame:
         equilibria: list[Profile] = []
         for i, a in enumerate(self.rows):
             for j, b in enumerate(self.columns):
-                actor_deviation = actor[1 - i, j]
-                affected_deviation = affected[i, 1 - j]
-                actor_ok = actor[i, j] > actor_deviation if strict else actor[i, j] >= actor_deviation
+                actor_advantages = [
+                    actor[i, j] - actor[k, j] for k in range(len(self.rows)) if k != i
+                ]
+                affected_advantages = [
+                    affected[i, j] - affected[i, k] for k in range(len(self.columns)) if k != j
+                ]
+                actor_ok = min(actor_advantages) > 0 if strict else min(actor_advantages) >= 0
                 affected_ok = (
-                    affected[i, j] > affected_deviation
-                    if strict
-                    else affected[i, j] >= affected_deviation
+                    min(affected_advantages) > 0 if strict else min(affected_advantages) >= 0
                 )
                 if actor_ok and affected_ok:
                     equilibria.append((a, b))
         return tuple(equilibria)
+
+    def _require_2x2(self) -> None:
+        """Reject calls to the benchmark dynamics outside their stated domain."""
+        if len(self.rows) != 2 or len(self.columns) != 2:
+            raise ValueError(f"{self.key}: this population-dynamics operation requires a 2x2 game")
 
     def welfare(self, profile: Profile) -> float:
         return float(sum(self.payoffs[profile]))
@@ -91,6 +105,7 @@ class ContextGame:
         return x1 >= x2 and y1 >= y2 and (x1 > x2 or y1 > y2)
 
     def profile_distribution(self, p: float, q: float) -> dict[Profile, float]:
+        self._require_2x2()
         a0, a1 = self.rows
         b0, b1 = self.columns
         return {
@@ -112,6 +127,7 @@ class ContextGame:
         return float(sum(prob * self.welfare(profile) for profile, prob in distribution.items()))
 
     def payoff_gaps(self, p: float, q: float) -> tuple[float, float]:
+        self._require_2x2()
         actor = self.payoff_matrix(0)
         affected = self.payoff_matrix(1)
         actor_gap = q * (actor[0, 0] - actor[1, 0]) + (1.0 - q) * (
@@ -127,6 +143,7 @@ def multiplicative_weights_step(
     game: ContextGame, p: float, q: float, eta: float = 0.45
 ) -> tuple[float, float]:
     """One discrete exponential-replicator (multiplicative-weights) update."""
+    game._require_2x2()
     if eta <= 0:
         raise ValueError("eta must be positive")
     if not (0.0 <= p <= 1.0 and 0.0 <= q <= 1.0):
@@ -161,6 +178,7 @@ def simulate(
     eta: float = 0.45,
     horizon: int = 50,
 ) -> pd.DataFrame:
+    game._require_2x2()
     if horizon < 0:
         raise ValueError("horizon must be non-negative")
     rows: list[dict[str, float | int]] = []
@@ -187,12 +205,12 @@ def class_map_robustness_radius(game: ContextGame) -> float:
 
 
 def equilibrium_set_robustness_radius(game: ContextGame) -> float:
-    """Exact open sup-norm radius preserving the full pure-Nash set in a 2x2 game.
+    """Exact open sup-norm radius preserving the full pure-Nash set.
 
     A unilateral payoff difference changes by at most twice the coordinate-wise
-    perturbation radius.  An equilibrium survives while both of its advantages
-    stay non-negative.  A non-equilibrium stays out while at least one of its
-    negative advantages remains negative.
+    perturbation radius.  An equilibrium survives while all of its advantages
+    stay non-negative.  A non-equilibrium stays out while at least one negative
+    advantage remains negative.
     """
     actor = game.payoff_matrix(0)
     affected = game.payoff_matrix(1)
@@ -201,13 +219,21 @@ def equilibrium_set_robustness_radius(game: ContextGame) -> float:
     for i, a in enumerate(game.rows):
         for j, b in enumerate(game.columns):
             profile = (a, b)
-            advantages = (actor[i, j] - actor[1 - i, j], affected[i, j] - affected[i, 1 - j])
+            advantages = [
+                actor[i, j] - actor[k, j] for k in range(len(game.rows)) if k != i
+            ] + [
+                affected[i, j] - affected[i, k]
+                for k in range(len(game.columns))
+                if k != j
+            ]
             if profile in equilibria:
                 profile_radii.append(min(advantages) / 2.0)
             else:
                 negative_slacks = [-advantage for advantage in advantages if advantage < 0]
                 if not negative_slacks:
-                    raise AssertionError("non-equilibrium profile has no negative deviation advantage")
+                    raise AssertionError(
+                        "non-equilibrium profile has no negative deviation advantage"
+                    )
                 profile_radii.append(max(negative_slacks) / 2.0)
     return float(min(profile_radii))
 
@@ -237,8 +263,9 @@ def trajectory_distance(
 
 def perturbed_game(game: ContextGame, perturbation: Iterable[float]) -> ContextGame:
     values = np.asarray(tuple(perturbation), dtype=float)
-    if values.shape != (8,):
-        raise ValueError("a 2x2 payoff perturbation must have eight coordinates")
+    expected_coordinates = 2 * len(game.profiles)
+    if values.shape != (expected_coordinates,):
+        raise ValueError(f"payoff perturbation must have {expected_coordinates} coordinates")
     payoffs: dict[Profile, Payoff] = {}
     for index, profile in enumerate(game.profiles):
         x, y = game.payoffs[profile]

@@ -51,7 +51,7 @@
 \maketitle
 
 \begin{abstract}
-We study finite two-player games in which a common strategic form is evaluated by context-specific actor/affected-side payoff maps. The signs of these payoffs induce four relational classes---intelligent, hapless, malicious, and destructive---that apply to profiles rather than persons. We characterize class-preserving translations, define normalized Hamming sensitivity between contextual class maps, and derive exact robustness radii for class and pure-equilibrium sets. The main strategic result concerns an intelligent and a malicious pure Nash equilibrium in a $2\times2$ game. They cannot share the actor's action. If they share the affected side's action, actor indifference is forced, the intelligent equilibrium Pareto- and welfare-dominates the malicious equilibrium, and coexistence is a knife-edge. Robust coexistence is possible only in the diagonal configuration under strict equilibrium and welfare inequalities; an explicit game has certified open-ball radius $3/4$. Three synthetic benchmarks illustrate how class robustness differs from Nash and dynamic robustness under an exponential-replicator update. Reproducible audits enumerate all $5^8=390{,}625$ games on a five-value payoff grid and apply seeded continuous perturbations. The exhaustive audit finds no counterexample, while the perturbations preserve the business class map locally but destroy its original two-equilibrium set almost surely. The examples are formal benchmarks, not empirical estimates.
+We study finite two-player games in which a common strategic form is evaluated by context-specific actor/affected-side payoff maps. The signs of these payoffs induce four relational classes---intelligent, hapless, malicious, and destructive---that apply to profiles rather than persons. We characterize class-preserving translations, define normalized Hamming sensitivity between contextual class maps, and derive exact robustness radii for class maps and complete pure-equilibrium sets in arbitrary finite two-player games. An intelligent and a malicious pure Nash equilibrium cannot share the actor's action. If they share the affected side's action, actor indifference is forced, the intelligent equilibrium Pareto- and welfare-dominates the malicious equilibrium, and coexistence is a knife-edge. Robust coexistence requires profiles that share neither action; in $2\times2$ games this is the diagonal configuration, and an explicit example has certified open-ball radius $3/4$. Three synthetic benchmarks illustrate how class robustness differs from equilibrium and dynamic robustness under an exponential-replicator update. Reproducible audits enumerate 390,625 square and 1,062,882 rectangular payoff-grid games and apply seeded continuous perturbations. The exhaustive audits find no counterexample, while perturbations preserve the business class map locally but destroy its original two-equilibrium set almost surely. The examples are formal benchmarks, not empirical estimates.
 \end{abstract}
 
 \noindent\textbf{Keywords:} contextual valuation; game theory; Nash equilibrium; robustness; welfare; population dynamics; social modeling.
@@ -73,7 +73,7 @@ The paper is organized around a single mathematical object, the contextual valua
 
 The paper makes three principal contributions.
 \begin{enumerate}[label=(\roman*)]
-    \item \textbf{Strategic contribution.} A general $2\times2$ theorem characterizes coexistence of intelligent and malicious pure equilibria. A shared-row configuration is impossible; a shared-column configuration forces indifference and is a knife-edge; and robust welfare-dominated coexistence is possible in a diagonal configuration under strict inequalities. An explicit game realizes the robust case with a certified open-ball radius.
+    \item \textbf{Strategic contribution.} Two finite-game theorems give the exact radius preserving the complete pure-Nash set and characterize coexistence of intelligent and malicious equilibria. Sharing the actor's action is impossible; sharing the affected side's action forces an indifference knife-edge; robust welfare-dominated coexistence requires profiles sharing neither action. A $2\times2$ example realizes the robust case with a certified open-ball radius.
     \item \textbf{Structural contribution.} The benefit--loss plane induces a partition of each finite profile space. We characterize class-preserving translations, define a Hamming pseudometric for contextual sensitivity, and give payoff- and weight-space criteria for robustness and boundary crossing. These results distinguish robustness of a profile's class from robustness of its equilibrium status.
     \item \textbf{Computational contribution.} We give a reproducible exponential-replicator illustration and two audits: exhaustive enumeration of a finite grid of $2\times2$ games and seeded continuous payoff perturbations. The audits test the theorem implementation, finite-horizon convergence, and the separation between class and equilibrium robustness; they are not empirical validation.
 \end{enumerate}
@@ -100,7 +100,7 @@ The present paper is closest in spirit to the mathematical social sciences: it u
 
 \paragraph{Payoff signs and strategic incentives.} The benefit--loss class of a profile depends only on the signs of its two payoff coordinates, whereas pure best responses depend on within-player payoff orderings \cite{vonNeumann1944,OsborneRubinstein1994}. Mixed equilibria and the population update used below also depend on payoff differences, so they are not invariant under arbitrary ordinal transformations. The framework therefore keeps three objects separate: payoff signs for class, unilateral comparisons for pure Nash equilibrium, and cardinal payoff gaps for mixed and dynamic analysis. The benchmarks belong to the long tradition of $2\times2$ interaction games \cite{Rapoport1965}; unlike games with vector payoffs, $(x,y)$ here is the ordinary pair of scalar payoffs to two players, not a multi-criterion payoff for one player.
 
-\paragraph{Equilibrium robustness.} Stability and regularity of equilibrium components under game perturbations have an established technical meaning \cite{Jansen1981,KohlbergMertens1986}. We do not propose an equilibrium refinement or a notion of strategic stability in that sense. Proposition~\ref{prop:ne-radius} instead asks a narrower finite-game question: how large can a coordinate-wise payoff perturbation be while preserving the \emph{complete set of pure Nash profiles exactly}? For $2\times2$ games the answer is an explicit radius in unilateral payoff slacks, which we compare with the independent radius preserving the benefit--loss class map.
+\paragraph{Equilibrium robustness.} Stability and regularity of equilibrium components under game perturbations have an established technical meaning \cite{Jansen1981,KohlbergMertens1986}. We do not propose an equilibrium refinement or a notion of strategic stability in that sense. Theorem~\ref{thm:ne-radius} instead asks a narrower finite-game question: how large can a coordinate-wise payoff perturbation be while preserving the \emph{complete set of pure Nash profiles exactly}? For arbitrary finite two-player games the answer is an explicit radius in unilateral payoff slacks, which we compare with the independent radius preserving the benefit--loss class map.
 
 \paragraph{Population and learning dynamics.} The dynamic layer places the same valuations inside a discrete exponential-replicator, or multiplicative-weights, process, connecting the framework to evolutionary learning and adaptive game play \cite{Weibull1995,HofbauerSigmund1998,FreundSchapire1999,Sandholm2010}. We use this layer only as a minimal aggregate illustration, not as an evolutionary or behavioral identification result.
 
@@ -1129,19 +1129,22 @@ In $C_S$, the acting side always prefers $G$, since $3>2$ against $U$ and $-1>-2
 
 This result is one of the main conceptual payoffs of the game-theoretic layer. Benefit--loss desirability and equilibrium membership are different dimensions. The business benchmark contains a malicious equilibrium: the profile admits no profitable unilateral deviation but is relationally harmful to the affected side. Conversely, the sport benchmark contains an intelligent non-equilibrium: the profile benefits both sides but is dominated for the acting side by constructive guidance. The equilibrium membership of $(P,U)$ in $C_B$ rests on the exact actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)$; Proposition~\ref{prop:knife-edge} shows that this equilibrium is a knife-edge in payoff magnitude, in contrast to the open-region robustness of its malicious \emph{class}.
 
-The distinction can be quantified exactly. For a profile $(i,j)$ in a $2\times2$ game, let $i'$ and $j'$ denote the alternative actions and define the unilateral advantages
+The distinction can be quantified exactly in any finite two-player game. For a profile $(i,j)\in A\times B$, collect all unilateral payoff advantages in
 \[
-a_{ij}=X(i,j)-X(i',j),\qquad b_{ij}=Y(i,j)-Y(i,j').
+\Delta_{ij}=
+\{X(i,j)-X(i',j):i'\in A\setminus\{i\}\}
+\cup
+\{Y(i,j)-Y(i,j'):j'\in B\setminus\{j\}\}.
 \]
-Thus $(i,j)$ is a pure Nash equilibrium exactly when $a_{ij},b_{ij}\ge0$.
+Thus $(i,j)$ is a pure Nash equilibrium exactly when every element of $\Delta_{ij}$ is nonnegative.
 
-\begin{proposition}[Exact robustness radius of the pure-equilibrium set]
-\label{prop:ne-radius}
-For each profile $(i,j)$ define
+\begin{theorem}[Exact pure-equilibrium-set robustness in finite games]
+\label{thm:ne-radius}
+Let $G$ be a finite two-player game in which each player has at least two actions. For each profile $(i,j)$ define
 \[
 r_{ij}=\begin{cases}
-\tfrac12\min\{a_{ij},b_{ij}\}, & (i,j)\in\NE(G),\\[2mm]
-\tfrac12\max\bigl(\{-a_{ij}:a_{ij}<0\}\cup\{-b_{ij}:b_{ij}<0\}\bigr), & (i,j)\notin\NE(G).
+\tfrac12\min\Delta_{ij}, & (i,j)\in\NE(G),\\[2mm]
+\tfrac12\max\{-d:d\in\Delta_{ij},\ d<0\}, & (i,j)\notin\NE(G).
 \end{cases}
 \]
 Then
@@ -1149,12 +1152,12 @@ Then
 \rho_{\NE}(G)=\min_{i,j}r_{ij}
 \]
 is the supremal open sup-norm radius that preserves the complete set of pure Nash equilibria: every payoff perturbation of norm less than $\rho_{\NE}(G)$ leaves $\NE(G)$ unchanged, while for every $\varepsilon>\rho_{\NE}(G)$ some perturbation of norm less than $\varepsilon$ changes it.
-\end{proposition}
+\end{theorem}
 
 \begin{proof}
-Each unilateral advantage is a difference of two payoff coordinates, so a sup-norm perturbation of radius $\delta$ changes it by less than $2\delta$. For an equilibrium profile, both advantages therefore remain nonnegative whenever $\delta<\tfrac12\min\{a_{ij},b_{ij}\}$. For a non-equilibrium profile, at least one advantage is negative; it remains non-equilibrium whenever one negative advantage remains negative, which is guaranteed for $\delta$ below half the largest negative slack. Taking the minimum over all four profiles preserves the entire equilibrium set.
+Each unilateral advantage is a difference of two payoff coordinates, so a sup-norm perturbation of radius $\delta$ changes it by less than $2\delta$. For an equilibrium profile, all advantages therefore remain nonnegative whenever $\delta<\tfrac12\min\Delta_{ij}$. For a non-equilibrium profile, at least one advantage is negative. If $d_*$ is a negative advantage with largest absolute value, then $d_*$ remains negative whenever $\delta<-d_*/2$; hence the profile remains outside the equilibrium set below $r_{ij}$. Taking the minimum over the finite profile set preserves the entire pure-equilibrium set.
 
-For sharpness, choose a profile attaining the minimum. If it is an equilibrium, perturb the payoff coordinate associated with a smallest advantage downward and its deviation payoff upward; any radius strictly above $r_{ij}$ makes that advantage negative. If it is not an equilibrium, raise the current payoff and lower the deviation payoff for every negative advantage; because the two players' payoff coordinates are distinct, a perturbation of radius $r_{ij}$ makes all such advantages nonnegative. In either case arbitrarily small enlargement beyond $\rho_{\NE}(G)$ changes equilibrium membership.
+For sharpness, choose a profile attaining the minimum. If it is an equilibrium, choose an advantage attaining $\min\Delta_{ij}$, lower its current payoff coordinate and raise the corresponding deviation payoff by any common amount strictly between $r_{ij}$ and $\varepsilon$; that advantage becomes negative. If it is not an equilibrium, increase the current payoff of each player by $r_{ij}$ and decrease that player's payoff at every profitable unilateral deviation by $r_{ij}$. These are distinct payoff coordinates across players, and every initially negative advantage $d$ becomes $d+2r_{ij}\ge0$. The profile therefore becomes a Nash equilibrium under a perturbation of norm $r_{ij}<\varepsilon$. In either case every enlargement beyond $\rho_{\NE}(G)$ permits a change in equilibrium membership.
 \end{proof}
 
 Let $\rho_Q(G)=\min_{\sigma}m(V(\sigma))$ be the uniform class-map radius from Corollary~\ref{cor:uniform-robustness}. Direct substitution gives Table~\ref{tab:robustness-radii}. The business benchmark has $\rho_Q=1$ but $\rho_{\NE}=0$: its class map is locally constant on a full neighborhood, whereas its equilibrium set is not constant on any neighborhood. The other two benchmarks have positive, but smaller, equilibrium-set radii.
@@ -1230,51 +1233,47 @@ This proposition is the main welfare lesson of the benchmark. Nash equilibrium m
 \subsection{A general characterization of welfare-dominated malicious equilibria}
 \label{sec:general-theorem}
 
-Proposition~\ref{prop:malicious-welfare-dominated} is a statement about one benchmark. We now show that it is an instance of a general structural dichotomy for $2\times2$ contextual benefit--loss games. The dichotomy explains why the business malicious equilibrium is fragile and predicts a second, robust regime that the benchmarks do not exhibit. Throughout this subsection a \emph{game} is identified with its four payoff vectors
-\[
-v=\bigl(V(G,U),V(G,R),V(P,U),V(P,R)\bigr)\in\R^8,
-\]
-and a property is called \emph{robust} if it holds on an open neighborhood of $v$ in $\R^8$.
+Proposition~\ref{prop:malicious-welfare-dominated} is a statement about one benchmark. We now show that it is an instance of a structural trichotomy for every finite two-player contextual benefit--loss game. The result explains why the business malicious equilibrium is fragile and identifies the only possible robust relative position. If $|A|=m$ and $|B|=n$, a game is identified with its payoff vector $v\in\R^{2mn}$, and a property is called \emph{robust} if it holds on an open neighborhood of $v$.
 
 \begin{lemma}[Indifference forced by coexisting equilibria]
 \label{lem:coexist}
-Let a $2\times2$ contextual benefit--loss game have two distinct pure Nash equilibria. If they share the same actor-side row, the affected-side player is indifferent between $U$ and $R$ in that row. If they share the same affected-side column, the actor-side player is indifferent between $G$ and $P$ in that column.
+Let a finite two-player contextual benefit--loss game have two distinct pure Nash equilibria. If they share the actor's action, the affected-side player is indifferent between the two affected-side actions at those profiles. If they share the affected side's action, the actor is indifferent between the two actor actions at those profiles.
 \end{lemma}
 
 \begin{proof}
-Suppose $(a,U)$ and $(a,R)$ are both equilibria for a fixed row $a$. Affected-side optimality at $(a,U)$ gives $Y_C(a,U)\ge Y_C(a,R)$, and at $(a,R)$ gives $Y_C(a,R)\ge Y_C(a,U)$; hence $Y_C(a,U)=Y_C(a,R)$. The column case is symmetric, using actor-side optimality to obtain $X_C(G,b)=X_C(P,b)$ for the shared column $b$.
+Suppose $(a,b)$ and $(a,b')$ are equilibria with $b\ne b'$. Affected-side optimality at $(a,b)$ gives $Y_C(a,b)\ge Y_C(a,b')$, and optimality at $(a,b')$ gives the reverse inequality; hence equality holds. The shared-affected-action case is symmetric: actor optimality at $(a,b)$ and $(a',b)$ gives $X_C(a,b)=X_C(a',b)$.
 \end{proof}
 
-\begin{theorem}[Configuration theorem for intelligent and malicious equilibria]
-\label{thm:dichotomy}
-Let $G_C$ be a $2\times2$ contextual benefit--loss game, let $\sigma_I$ be an intelligent pure Nash equilibrium, and let $\sigma_M\ne\sigma_I$ be a malicious pure Nash equilibrium. Then exactly one of the following relative positions occurs, and it determines robustness as indicated.
+\begin{theorem}[Finite-game configuration theorem for intelligent and malicious equilibria]
+\label{thm:configuration}
+Let $G_C$ be a finite two-player contextual benefit--loss game, let $\sigma_I$ be an intelligent pure Nash equilibrium, and let $\sigma_M\ne\sigma_I$ be a malicious pure Nash equilibrium. Then exactly one of the following relative positions occurs.
 \begin{enumerate}[label=(\alph*)]
-\item \textbf{(Shared row: impossible.)} $\sigma_I$ and $\sigma_M$ cannot share an actor-side row.
-\item \textbf{(Shared column: forced knife-edge.)} If $\sigma_I$ and $\sigma_M$ share an affected-side column, then the actor is indifferent in that column, $X_C(\sigma_I)=X_C(\sigma_M)>0$, and $\sigma_I$ both Pareto-dominates and welfare-dominates $\sigma_M$. Every game in this configuration lies in the hyperplane $\{X_C(\sigma_I)=X_C(\sigma_M)\}\subset\R^8$, so the configuration has empty interior and is never robust.
-\item \textbf{(Diagonal: the only possible robust regime.)} Otherwise $\sigma_I$ and $\sigma_M$ are diagonal. Diagonal position alone does not imply robustness. If both profiles are strict equilibria and $W(\sigma_I)>W(\sigma_M)$, their class, equilibrium, and welfare-dominance conditions are strict linear inequalities in $v$ and therefore persist on an open neighborhood. Such strict diagonal instances exist.
+\item \textbf{(Shared actor action: impossible.)} $\sigma_I$ and $\sigma_M$ cannot share the actor's action.
+\item \textbf{(Shared affected-side action: forced knife-edge.)} If they share the affected side's action, then the actor is indifferent between the two actor actions, $X_C(\sigma_I)=X_C(\sigma_M)>0$, and $\sigma_I$ both Pareto-dominates and welfare-dominates $\sigma_M$. Every game supporting this fixed pair lies in the hyperplane $\{X_C(\sigma_I)=X_C(\sigma_M)\}\subset\R^{2mn}$. The existence of any such shared-action pair is therefore contained in a finite union of hyperplanes, has empty interior, and is never robust.
+\item \textbf{(No shared action: the only possible robust regime.)} Otherwise the profiles differ in both players' actions. This relative position alone does not imply robustness. If both profiles are strict equilibria and $W(\sigma_I)>W(\sigma_M)$, their class, equilibrium, and welfare-dominance conditions are strict linear inequalities in $v$ and therefore persist on an open neighborhood. Such strict instances exist already in $2\times2$ games.
 \end{enumerate}
-In particular, diagonal position is necessary but not sufficient for robust coexistence of an intelligent equilibrium and a welfare-dominated malicious equilibrium. A shared-column instance is necessarily a knife-edge.
+Consequently, sharing no action is necessary but not sufficient for robust coexistence of an intelligent equilibrium and a welfare-dominated malicious equilibrium. In a $2\times2$ game this is exactly the diagonal configuration; sharing the affected-side action is necessarily a knife-edge.
 \end{theorem}
 
 \begin{proof}
-(a) If $\sigma_I$ and $\sigma_M$ shared a row, Lemma~\ref{lem:coexist} would give $Y_C(\sigma_I)=Y_C(\sigma_M)$. But $\sigma_I\in\Iclass$ forces $Y_C(\sigma_I)>0$ and $\sigma_M\in\Mclass$ forces $Y_C(\sigma_M)<0$, a contradiction.
+(a) If $\sigma_I$ and $\sigma_M$ shared the actor's action, Lemma~\ref{lem:coexist} would give $Y_C(\sigma_I)=Y_C(\sigma_M)$. But $\sigma_I\in\Iclass$ forces $Y_C(\sigma_I)>0$ and $\sigma_M\in\Mclass$ forces $Y_C(\sigma_M)<0$, a contradiction.
 
-(b) If they share a column, Lemma~\ref{lem:coexist} gives $X_C(\sigma_I)=X_C(\sigma_M)$. Both classes require a positive actor payoff, so this common value is positive. Since $Y_C(\sigma_I)>0>Y_C(\sigma_M)$ while the actor payoffs are equal, $\sigma_I$ Pareto-dominates $\sigma_M$, and
+(b) If they share the affected side's action, Lemma~\ref{lem:coexist} gives $X_C(\sigma_I)=X_C(\sigma_M)$. Both classes require a positive actor payoff, so this common value is positive. Since $Y_C(\sigma_I)>0>Y_C(\sigma_M)$ while the actor payoffs are equal, $\sigma_I$ Pareto-dominates $\sigma_M$, and
 \[
 W(\sigma_I)=X_C(\sigma_I)+Y_C(\sigma_I)>X_C(\sigma_M)+Y_C(\sigma_M)=W(\sigma_M).
 \]
-The defining equality $X_C(\sigma_I)=X_C(\sigma_M)$ confines the configuration to a hyperplane of $\R^8$, which has empty interior; any perturbation breaking the equality removes one of the two equilibria, so the configuration is not robust.
+The defining equality confines the fixed pair to a hyperplane of $\R^{2mn}$. There are only finitely many profile pairs, so the set of games admitting any pair of this type is contained in a finite union of proper hyperplanes and has empty interior. Equivalently, arbitrarily small generic perturbations break all of the relevant actor ties. Thus shared-affected-action coexistence is not robust.
 
-(c) By (a) and (b) the only remaining relative position is diagonal. Weak diagonal equilibria can still rely on payoff ties, so diagonal position alone is not sufficient. When both equilibria are strict, however, their best-response conditions are strict linear inequalities. The sign conditions defining $\sigma_I\in\Iclass$ and $\sigma_M\in\Mclass$, together with welfare dominance $W(\sigma_I)-W(\sigma_M)>0$, are also strict linear inequalities in the coordinates of $v$. A finite intersection of strict half-spaces is open. Proposition~\ref{prop:diagonal-robust} supplies a nonempty instance, proving that a robust diagonal regime exists.
+(c) By (a) and (b), the remaining relative position shares neither action. Weak equilibria can still rely on payoff ties, so this position alone is not sufficient. When both equilibria are strict, however, their finitely many best-response conditions are strict linear inequalities. The sign conditions defining $\sigma_I\in\Iclass$ and $\sigma_M\in\Mclass$, together with welfare dominance $W(\sigma_I)-W(\sigma_M)>0$, are also strict linear inequalities in $v$. A finite intersection of strict half-spaces is open. Proposition~\ref{prop:diagonal-robust} supplies a nonempty $2\times2$ instance, proving that the robust regime exists.
 \end{proof}
 
 \begin{corollary}[The business benchmark is a knife-edge instance]
 \label{cor:business-knife-edge}
-In the business context, $\sigma_I=(G,U)$ and $\sigma_M=(P,U)$ share the affected-side action $U$, so Theorem~\ref{thm:dichotomy}(b) applies: the actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)=2$ is forced, $(G,U)$ Pareto- and welfare-dominates $(P,U)$, and the malicious equilibrium is non-robust. This recovers Propositions~\ref{prop:malicious-welfare-dominated} and~\ref{prop:knife-edge} as the shared-action case of the dichotomy.
+In the business context, $\sigma_I=(G,U)$ and $\sigma_M=(P,U)$ share the affected-side action $U$, so Theorem~\ref{thm:configuration}(b) applies: the actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)=2$ is forced, $(G,U)$ Pareto- and welfare-dominates $(P,U)$, and the malicious equilibrium is non-robust. This recovers Propositions~\ref{prop:malicious-welfare-dominated} and~\ref{prop:knife-edge} as the shared-affected-action case of the trichotomy.
 \end{corollary}
 
 \begin{proof}
-Both profiles use the column $U$, so the configuration is the shared-column case of Theorem~\ref{thm:dichotomy}(b). The forced indifference and the dominance are exactly Proposition~\ref{prop:malicious-welfare-dominated}, and the resulting non-robustness is Proposition~\ref{prop:knife-edge}.
+Both profiles use the affected-side action $U$, so this is case (b) of Theorem~\ref{thm:configuration}. The forced indifference and the dominance are exactly Proposition~\ref{prop:malicious-welfare-dominated}, and the resulting non-robustness is Proposition~\ref{prop:knife-edge}.
 \end{proof}
 
 \begin{proposition}[Robust welfare-dominated malicious equilibria exist]
@@ -1283,7 +1282,7 @@ Let $\Gamma^\diamond$ be the $2\times2$ contextual benefit--loss game with payof
 \[
 V(G,U)=(1,4),\quad V(G,R)=(-2,2),\quad V(P,U)=(-1,-3),\quad V(P,R)=(3,-1).
 \]
-Then $(G,U)$ is an intelligent strict Nash equilibrium and $(P,R)$ is a malicious strict Nash equilibrium; $(G,U)$ welfare-dominates $(P,R)$ but does \emph{not} Pareto-dominate it; and all of these properties hold simultaneously for every payoff matrix at sup-norm distance strictly less than $3/4$ from $\Gamma^\diamond$. The bound is sharp for this certificate: at distance $3/4$ the welfare inequality can become an equality. Hence robust welfare-dominated malicious equilibria exist, realizing case (c) of Theorem~\ref{thm:dichotomy}.
+Then $(G,U)$ is an intelligent strict Nash equilibrium and $(P,R)$ is a malicious strict Nash equilibrium; $(G,U)$ welfare-dominates $(P,R)$ but does \emph{not} Pareto-dominate it; and all of these properties hold simultaneously for every payoff matrix at sup-norm distance strictly less than $3/4$ from $\Gamma^\diamond$. The bound is sharp for this certificate: at distance $3/4$ the welfare inequality can become an equality. Hence robust welfare-dominated malicious equilibria exist, realizing case (c) of Theorem~\ref{thm:configuration}.
 \end{proposition}
 
 \begin{proof}
@@ -1455,7 +1454,9 @@ The zero malicious mass in the classroom and sport rows follows from their class
 
 \subsection{Computational robustness audits}
 
-Two additional audits challenge the claims rather than merely regenerate the chosen example. First, we enumerate all $5^8=390{,}625$ $2\times2$ games whose eight payoff coordinates lie in $\{-2,-1,0,1,2\}$. Including zero admits boundary payoffs and additional weak best-response ties. Among these games there are 14,148 unordered pairs consisting of an intelligent and a malicious pure equilibrium. None shares an actor row, 5,400 share a column with zero failures of the dominance conclusion in Theorem~\ref{thm:dichotomy}(b), and 8,748 are diagonal. Of the diagonal pairs, 1,372 consist of strict equilibria with the intelligent profile welfare-dominating the malicious profile. This finite audit is not a proof, but it checks the implementation against every game in a nontrivial grid and searches explicitly for counterexamples.
+Two additional audits challenge the claims rather than merely regenerate the chosen example. First, we enumerate all $5^8=390{,}625$ $2\times2$ games whose eight payoff coordinates lie in $\{-2,-1,0,1,2\}$. Including zero admits boundary payoffs and additional weak best-response ties. Among these games there are 14,148 unordered pairs consisting of an intelligent and a malicious pure equilibrium. None shares the actor's action, 5,400 share the affected side's action with zero failures of the dominance conclusion in Theorem~\ref{thm:configuration}(b), and 8,748 share neither action. Of the last group, 1,372 consist of strict equilibria with the intelligent profile welfare-dominating the malicious profile.
+
+To test that the finite-game extension is not an artifact of square matrices, we also enumerate every $2\times3$ and $3\times2$ game with payoff coordinates in $\{-2,-1,1\}$, or $2\cdot3^{12}=1{,}062{,}882$ rectangular games. The two negative levels allow a malicious profile to be a strict best response, while the larger $2\times2$ grid separately covers zero-payoff boundaries. The rectangular games contain 223,074 intelligent/malicious equilibrium pairs: zero share the actor's action, 100,602 share the affected side's action with zero dominance failures, and 122,472 share neither action. Among the last group, 5,184 pairs are strict and welfare ordered in the stated direction. These finite audits are not proofs, but they independently exercise rectangular best-response sets, search explicitly for counterexamples, and reproduce the theorem's three relative-position cases.
 
 Second, for each benchmark and each radius $\delta\in\{.25,.50,.75,.99,1.01,1.50\}$, we draw 2,000 independent perturbation vectors uniformly from $[-\delta,\delta]^8$ using the fixed seed 20260622. For every $\delta<1$, all 6,000 perturbed games preserve their benchmark class maps, as predicted by the minimum axis margin. In the business game, however, none preserves the original two-equilibrium set: a continuous perturbation breaks the actor tie with probability one. Approximately half retain a malicious equilibrium alone, depending on the sign of the broken tie. Figure~\ref{fig:payoff-perturbation} contrasts class-map retention with equilibrium-set retention. The rates describe the stated synthetic perturbation distribution; they are not inferential estimates about real contexts.
 
@@ -1565,7 +1566,7 @@ These limitations delimit the scope of the framework. Empirical calibration, pro
 
 This paper proposed context-dependent benefit--loss games as a formal framework for studying benefit--loss interactions across domains. The main idea is simple but consequential: the benefit--loss class of a strategic profile is not an intrinsic property of the profile alone. It is induced by a context-dependent valuation map. By distinguishing strategic form from contextual valuation, the framework explains how the same abstract action may remain invariant across contexts or be reclassified when moved from one domain to another.
 
-The formal contributions include induced partitions of profile spaces, a characterization of class-preserving translations, a Hamming pseudometric for contextual sensitivity, and exact robustness radii for class and pure-equilibrium sets. The strategic contribution shows that class invariance and Nash equilibrium membership are distinct, and the $2\times2$ configuration theorem separates a forced knife-edge regime from a possible robust diagonal regime. The computational audits challenge these claims through exhaustive finite enumeration, seeded perturbations, and convergence diagnostics.
+The formal contributions include induced partitions of profile spaces, a characterization of class-preserving translations, a Hamming pseudometric for contextual sensitivity, and exact robustness radii for class maps and complete pure-equilibrium sets. The finite-game configuration theorem separates an impossible shared-actor-action case, a forced shared-affected-action knife-edge, and a potentially robust no-shared-action regime; in $2\times2$ games the last case is diagonal. Exhaustive square and rectangular enumeration, seeded perturbations, and convergence diagnostics challenge these claims computationally.
 
 The benchmark examples show how these notions operate in three domains: business organization, classroom, and sport team. The central transition $(P,U):\Mclass\to\Dclass\to\Iclass$ demonstrates that contextual valuation can move a profile from malicious, to destructive, to intelligent while leaving the abstract strategic form unchanged. The second transition $(G,R):\Dclass\to\Hclass\to\Dclass$ shows that recontextualization is not always a movement toward improvement. This paper provides the structural and computational layer of that program: empirical calibration is not required for the validity of the formal results, but is the natural next step for domain-specific applications. Future work should estimate contextual valuations empirically, extend the framework to larger games and networks, and connect class transitions with dynamical models of trust, cohesion, performance, and accumulated harm.
 

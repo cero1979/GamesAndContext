@@ -12,7 +12,7 @@ copy edit.
 | The notebook duplicated the model and was the only source of truth. | Hidden state and untestable theorem checks. | Addressed: logic moved to `src/context_games`; notebook imports it. |
 | `run_all.py` rewrote the source notebook in place. | Reproduction creates unexplained diffs. | Addressed: executed notebook is written to an ignored result artifact. |
 | The business malicious equilibrium depends on an exact payoff tie. | Central dynamic result can be mistaken for robust. | Addressed: exact pure-NE radius is zero, the perturbation audit reports failure almost surely, and the dynamic claim is explicitly non-robust. |
-| The diagonal theorem conflates diagonal position with robust strict inequalities. | Overstated theorem. | Addressed: diagonal position is stated as necessary, while strict inequalities certify robust coexistence. |
+| The diagonal theorem conflates diagonal position with robust strict inequalities. | Overstated theorem. | Addressed: sharing neither action is necessary; in `2x2` this means diagonal, while strict inequalities separately certify robust coexistence. |
 | The claimed radius `3/4` was described without making the open ball explicit. | Boundary counterexample. | Addressed in theorem text and by tests below, at, and above the open-ball boundary. |
 | The dynamic update was called logit-replicator and linked to quantal response. | Terminological and citation mismatch. | Addressed: renamed exponential replicator / multiplicative weights and tied to primary learning literature. |
 | A perturbation satisfying only `X(G,U)>X(P,U)` was used to claim global convergence. | False without restrictions on the other payoff entries. | Addressed: the claim is restricted to the stated one-coordinate perturbation family. |
@@ -24,6 +24,8 @@ copy edit.
 | “Strategic stability” was used descriptively despite its technical refinement meaning. | Terminological confusion with Kohlberg--Mertens stability. | Addressed: title and claims use class robustness and equilibrium persistence; the distinction is explicit and primary sources are cited. |
 | The exhaustive grid omitted zero payoffs and weak best-response ties. | Audit avoided class boundaries and an important source of degeneracy. | Addressed: all `5^8 = 390,625` games on `{-2,-1,0,1,2}` are enumerated. |
 | Monte Carlo rates were the main evidence for payoff robustness. | A finite random sample cannot certify a neighborhood. | Addressed: exact class-map and pure-NE-set radii are derived and tested; simulation is retained only as a distribution-specific illustration. |
+| The principal equilibrium results were stated only for `2x2` games. | Apparent dependence on the benchmark dimension weakens novelty and external mathematical scope. | Addressed: the exact pure-NE-set radius and configuration theorem now cover arbitrary finite two-player games; exhaustive `2x3` and `3x2` audits exercise the extension. |
+| The executed notebook regenerated figures under `matplotlib_inline`. | The notebook silently overwrote CLI figures with backend-dependent binaries. | Addressed: figure generation occurs once in the tested CLI with the `Agg` backend; the notebook reads the archived rectangular audit and no longer overwrites artifacts. |
 
 ## Residual scientific risks
 
