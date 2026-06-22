@@ -15,6 +15,7 @@ from context_games.model import (
     class_map_robustness_radius,
     classify,
     equilibrium_set_robustness_radius,
+    opponent_contingent_affine_game,
     perturbed_game,
     simulate,
     structural_sensitivity,
@@ -95,6 +96,50 @@ class FiniteGameTests(unittest.TestCase):
     def test_population_dynamics_reject_rectangular_game(self) -> None:
         with self.assertRaisesRegex(ValueError, "requires a 2x2 game"):
             simulate(RECTANGULAR_GAME)
+
+    def test_positive_rescaling_preserves_classes_and_pure_incentives(self) -> None:
+        transformed = opponent_contingent_affine_game(
+            RECTANGULAR_GAME,
+            actor_scales={"L": 2.0, "C": 0.5, "R": 3.0},
+            affected_scales={"A": 4.0, "B": 0.25},
+        )
+        self.assertEqual(transformed.classes(), RECTANGULAR_GAME.classes())
+        for column in RECTANGULAR_GAME.columns:
+            self.assertEqual(
+                transformed.pure_best_responses(0, column),
+                RECTANGULAR_GAME.pure_best_responses(0, column),
+            )
+        for row in RECTANGULAR_GAME.rows:
+            self.assertEqual(
+                transformed.pure_best_responses(1, row),
+                RECTANGULAR_GAME.pure_best_responses(1, row),
+            )
+        self.assertEqual(transformed.pure_nash(), RECTANGULAR_GAME.pure_nash())
+        self.assertEqual(
+            transformed.pure_nash(strict=True), RECTANGULAR_GAME.pure_nash(strict=True)
+        )
+
+    def test_strategically_harmless_offsets_can_change_every_class(self) -> None:
+        transformed = opponent_contingent_affine_game(
+            RECTANGULAR_GAME,
+            actor_scales={column: 1.0 for column in RECTANGULAR_GAME.columns},
+            affected_scales={row: 1.0 for row in RECTANGULAR_GAME.rows},
+            actor_offsets={column: 10.0 for column in RECTANGULAR_GAME.columns},
+            affected_offsets={row: 10.0 for row in RECTANGULAR_GAME.rows},
+        )
+        for column in RECTANGULAR_GAME.columns:
+            self.assertEqual(
+                transformed.pure_best_responses(0, column),
+                RECTANGULAR_GAME.pure_best_responses(0, column),
+            )
+        for row in RECTANGULAR_GAME.rows:
+            self.assertEqual(
+                transformed.pure_best_responses(1, row),
+                RECTANGULAR_GAME.pure_best_responses(1, row),
+            )
+        self.assertEqual(transformed.pure_nash(), RECTANGULAR_GAME.pure_nash())
+        self.assertEqual(set(transformed.classes().values()), {"I"})
+        self.assertNotEqual(transformed.classes(), RECTANGULAR_GAME.classes())
 
 
 class BenchmarkTests(unittest.TestCase):

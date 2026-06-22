@@ -8,7 +8,7 @@ state or plotting code.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, Mapping, TypeAlias
+from typing import Callable, Iterable, Mapping, TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -70,6 +70,21 @@ class ContextGame:
             [[self.payoffs[(a, b)][player] for b in self.columns] for a in self.rows],
             dtype=float,
         )
+
+    def pure_best_responses(self, player: int, opponent_action: str) -> tuple[str, ...]:
+        """Return all pure best responses to one pure opponent action."""
+        if player == 0:
+            if opponent_action not in self.columns:
+                raise ValueError(f"unknown affected-side action: {opponent_action}")
+            payoffs = {a: self.payoffs[(a, opponent_action)][0] for a in self.rows}
+        elif player == 1:
+            if opponent_action not in self.rows:
+                raise ValueError(f"unknown actor action: {opponent_action}")
+            payoffs = {b: self.payoffs[(opponent_action, b)][1] for b in self.columns}
+        else:
+            raise ValueError("player must be 0 (actor) or 1 (affected side)")
+        maximum = max(payoffs.values())
+        return tuple(action for action, payoff in payoffs.items() if payoff == maximum)
 
     def pure_nash(self, *, strict: bool = False) -> tuple[Profile, ...]:
         actor = self.payoff_matrix(0)
@@ -192,7 +207,7 @@ def simulate(
 
 def structural_sensitivity(first: ContextGame, second: ContextGame) -> float:
     if first.rows != second.rows or first.columns != second.columns:
-        raise ValueError("games must share a strategic form")
+        raise ValueError("games must share the same row and column action sets")
     first_classes = first.classes()
     second_classes = second.classes()
     changed = sum(first_classes[p] != second_classes[p] for p in first.profiles)
@@ -236,6 +251,81 @@ def equilibrium_set_robustness_radius(game: ContextGame) -> float:
                     )
                 profile_radii.append(max(negative_slacks) / 2.0)
     return float(min(profile_radii))
+
+
+def opponent_contingent_payoff_transform(
+    game: ContextGame,
+    *,
+    actor_transforms: Mapping[str, Callable[[float], float]],
+    affected_transforms: Mapping[str, Callable[[float], float]],
+) -> ContextGame:
+    """Transform each payoff using a function indexed by the opponent's action."""
+    if set(actor_transforms) != set(game.columns):
+        raise ValueError(f"actor_transforms keys must match {game.columns}")
+    if set(affected_transforms) != set(game.rows):
+        raise ValueError(f"affected_transforms keys must match {game.rows}")
+
+    payoffs: dict[Profile, Payoff] = {}
+    for a, b in game.profiles:
+        x, y = game.payoffs[(a, b)]
+        transformed = (
+            float(actor_transforms[b](x)),
+            float(affected_transforms[a](y)),
+        )
+        if not all(np.isfinite(value) for value in transformed):
+            raise ValueError("payoff transforms must return finite values")
+        payoffs[(a, b)] = transformed
+    return ContextGame(
+        f"{game.key}-transformed",
+        f"{game.label} (opponent-contingent transform)",
+        game.rows,
+        game.columns,
+        payoffs,
+    )
+
+
+def opponent_contingent_affine_game(
+    game: ContextGame,
+    *,
+    actor_scales: Mapping[str, float],
+    affected_scales: Mapping[str, float],
+    actor_offsets: Mapping[str, float] | None = None,
+    affected_offsets: Mapping[str, float] | None = None,
+) -> ContextGame:
+    """Apply affine payoff changes conditional on the opponent's pure action."""
+
+    def validated(
+        values: Mapping[str, float] | None,
+        labels: tuple[str, ...],
+        default: float,
+        name: str,
+    ) -> dict[str, float]:
+        result = {label: default for label in labels} if values is None else dict(values)
+        if set(result) != set(labels):
+            raise ValueError(f"{name} keys must match {labels}")
+        if not all(np.isfinite(value) for value in result.values()):
+            raise ValueError(f"{name} values must be finite")
+        return result
+
+    actor_scale = validated(actor_scales, game.columns, 1.0, "actor_scales")
+    affected_scale = validated(affected_scales, game.rows, 1.0, "affected_scales")
+    actor_offset = validated(actor_offsets, game.columns, 0.0, "actor_offsets")
+    affected_offset = validated(affected_offsets, game.rows, 0.0, "affected_offsets")
+
+    payoffs = {
+        (a, b): (
+            actor_scale[b] * game.payoffs[(a, b)][0] + actor_offset[b],
+            affected_scale[a] * game.payoffs[(a, b)][1] + affected_offset[a],
+        )
+        for a, b in game.profiles
+    }
+    return ContextGame(
+        f"{game.key}-affine",
+        f"{game.label} (opponent-contingent affine transform)",
+        game.rows,
+        game.columns,
+        payoffs,
+    )
 
 
 def trajectory_distance(

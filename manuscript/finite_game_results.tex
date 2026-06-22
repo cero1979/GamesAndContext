@@ -1,7 +1,7 @@
 \section{Main finite-game results}
 \label{sec:finite-results}
 
-The class partition and the equilibrium correspondence read different information from the same valuation map. Classes depend on payoff signs at a profile; pure best responses depend on unilateral payoff comparisons. This section states the two main results before introducing the benchmark parameterization.
+The class partition and the equilibrium correspondence read different information from the same valuation map. Classes depend on payoff signs at a profile; pure best responses depend on unilateral payoff comparisons. This section states the joint-preservation, exact-radius, and equilibrium-configuration results before introducing the benchmark parameterization.
 
 For a contextual game $G_C=(C,A,B,V_C)$, write $V_C(a,b)=(X_C(a,b),Y_C(a,b))$. The best-response correspondences are
 \[
@@ -14,6 +14,99 @@ A profile $(a,b)$ is a pure Nash equilibrium if $a\in\BR^A_C(b)$ and $b\in\BR^B_
 \begin{definition}[Pareto and welfare dominance]
 For two profiles $\sigma,\tau$ in a fixed context $C$, write $V_C(\sigma)=(x_\sigma,y_\sigma)$ and $V_C(\tau)=(x_\tau,y_\tau)$. Profile $\sigma$ Pareto-dominates $\tau$ if $x_\sigma\ge x_\tau$ and $y_\sigma\ge y_\tau$, with at least one strict inequality. It welfare-dominates $\tau$ if $W(V_C(\sigma))>W(V_C(\tau))$.
 \end{definition}
+
+\subsection{Joint preservation of class and pure incentives}
+
+The first result identifies the transformations that preserve both readings of a
+valuation map. Fix finite action sets $A$ and $B$, each with at least two
+actions. An \emph{opponent-contingent separable scheme} fixes functions
+$f_b,g_a:\R\to\R$ independently of the valuation $V=(X,Y)$ and sets
+\begin{equation}
+\label{eq:separable-scheme}
+X^T(a,b)=f_b(X(a,b)),
+\qquad
+Y^T(a,b)=g_a(Y(a,b)).
+\end{equation}
+The same $f_b$ is applied to all actor payoffs against $b$, and the same $g_a$
+to all affected-side payoffs against $a$.
+
+\begin{theorem}[Joint-preservation characterization]
+\label{thm:joint-preservation}
+An opponent-contingent separable scheme preserves, for every valuation $V$,
+\begin{enumerate}[label=(\roman*)]
+\item the complete benefit--loss class map, $Q^T=Q$; and
+\item both pure best-response correspondences,
+$\BR^{A,T}(b)=\BR^A(b)$ and $\BR^{B,T}(a)=\BR^B(a)$,
+\end{enumerate}
+if and only if every $f_b$ and $g_a$ is strictly increasing and fixes zero.
+\end{theorem}
+
+\begin{proof}
+Suppose both structures are preserved for every valuation. Fix $b$ and any
+$x_1<x_2$. Assign $x_2$ to one actor action and $x_1$ to every other actor
+action against $b$. The first action is the unique best response before
+transformation, so it must remain unique afterward; hence
+$f_b(x_1)<f_b(x_2)$. Thus $f_b$ is strictly increasing. The symmetric argument
+shows that every $g_a$ is strictly increasing.
+
+Class preservation supplies the location of zero. For positive $x,y$, the
+source profile is intelligent, so $f_b(x)>0$ and $g_a(y)>0$. Using negative
+$x$ with positive $y$ gives $f_b(x)<0$, and using positive $x$ with negative
+$y$ gives $g_a(y)<0$. Finally, source vectors $(0,y)$ with $y>0$ and $(x,0)$
+with $x>0$ are boundary profiles. Their images can remain on the boundary only
+if $f_b(0)=0$ and $g_a(0)=0$.
+
+Conversely, a strictly increasing function that fixes zero preserves negative,
+zero, and positive signs, so \eqref{eq:separable-scheme} preserves the complete
+class map. Strict monotonicity also preserves every weak and strict unilateral
+payoff comparison and therefore both pure best-response correspondences.
+\end{proof}
+
+\begin{corollary}[Affine intersection]
+\label{cor:affine-intersection}
+For the opponent-contingent affine family
+\[
+f_b(x)=\alpha_bx+c_b,
+\qquad
+g_a(y)=\beta_ay+d_a,
+\]
+joint universal preservation holds if and only if
+\[
+\alpha_b>0,\quad \beta_a>0,\quad c_b=0,\quad d_a=0
+\qquad\text{for every }a\in A,\ b\in B.
+\]
+\end{corollary}
+
+\begin{proof}
+An affine function is strictly increasing exactly when its slope is positive,
+and it fixes zero exactly when its intercept vanishes. Apply
+Theorem~\ref{thm:joint-preservation}.
+\end{proof}
+
+\begin{corollary}[Semantic information is not strategically redundant]
+\label{cor:offset-separation}
+Opponent-contingent shifts $c_b,d_a$ preserve both players' pure
+best-response correspondences, and therefore the complete pure-Nash set, but
+nonzero shifts do not preserve benefit--loss classes universally.  In
+particular, pure strategic equivalence does not imply class equivalence.
+\end{corollary}
+
+\begin{proof}
+The shifts cancel from every unilateral payoff difference. Their failure to
+preserve classes follows from Corollary~\ref{cor:affine-intersection}; directly,
+a nonzero shift moves some payoff sufficiently close to an axis across that
+axis.
+\end{proof}
+
+The theorem concerns pure-action incentive order. Opponent-contingent nonlinear
+maps or scales can alter expected-payoff order under a mixed opponent strategy,
+so mixed best responses need not be preserved without stronger restrictions. The broader
+literature on strategically equivalent transformations characterizes
+universal preservation of Nash and best-response sets without imposing the
+benefit--loss sign semantics \cite{TewoldeConitzer2024}.  Theorem
+\ref{thm:joint-preservation} instead characterizes the intersection relevant
+here: transformations that retain both pure incentives and Cipolla's profile
+classification.
 
 \subsection{Exact preservation radius of the pure-equilibrium set}
 

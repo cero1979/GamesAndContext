@@ -1,5 +1,5 @@
-- Contextual valuations separate strategic form from benefit-loss class.
-- Exact radii separate class-map robustness from pure-Nash-set robustness.
-- Malicious equilibria are fragile when paired profiles share an action.
-- Robust coexistence requires equilibria that share neither player's action.
-- Exhaustive and perturbation audits distinguish class and Nash robustness.
+- Cipolla classes label profiles and can change when context changes.
+- Joint preservation requires increasing payoff maps that fix zero.
+- Pure strategic equivalence does not determine benefit-loss meaning.
+- Exact radii separate class-map robustness from pure-Nash robustness.
+- Exhaustive audits cover 1,453,507 square and rectangular games.

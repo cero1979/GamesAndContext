@@ -6,7 +6,7 @@ Verified against the *Mathematical Social Sciences* Guide for Authors on
 ## Complete
 
 - Manuscript is editable LaTeX and compiles without undefined references.
-- Abstract is 197 words (maximum: 250).
+- Abstract is 198 words (maximum: 250).
 - Seven English keywords are supplied (allowed: 1-7).
 - Five highlights are supplied; every line is at most 85 characters.
 - Tables are editable and all figures are supplied as publication-quality vector PDF.
@@ -35,7 +35,8 @@ Verified against the *Mathematical Social Sciences* Guide for Authors on
 
 - The benchmarks remain synthetic; no claim of external validity should be added.
 - The editor may still judge the formal contribution too elementary. The revision
-  therefore leads with the equilibrium-configuration theorem and removes the
-  former multi-page categorical construction.
+  therefore leads with a joint semantic/strategic preservation characterization,
+  exact robustness radii, and the equilibrium-configuration theorem, while
+  compressing definitional material and expressly delimiting prior art.
 - A domain expert should independently check the proof and the literature review
   before submission; computational audits reduce but do not eliminate proof risk.

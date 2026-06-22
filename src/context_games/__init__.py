@@ -1,7 +1,14 @@
 """Context-dependent benefit-loss games."""
 
 from .benchmarks import BENCHMARKS, CONTEXTS, FEATURES, PROFILES, WEIGHTS
-from .model import ContextGame, classify, multiplicative_weights_step, simulate
+from .model import (
+    ContextGame,
+    classify,
+    multiplicative_weights_step,
+    opponent_contingent_affine_game,
+    opponent_contingent_payoff_transform,
+    simulate,
+)
 
 __all__ = [
     "BENCHMARKS",
@@ -12,6 +19,8 @@ __all__ = [
     "ContextGame",
     "classify",
     "multiplicative_weights_step",
+    "opponent_contingent_affine_game",
+    "opponent_contingent_payoff_transform",
     "simulate",
 ]
 

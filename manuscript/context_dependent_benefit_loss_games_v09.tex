@@ -19,7 +19,7 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 
-\title{Context-Dependent Benefit--Loss Games: Class Robustness and Equilibrium Persistence}
+\title{Transporting Benefit--Loss Classes Across Contexts: Invariance and Equilibrium in Finite Games}
 \author{Author names omitted for review}
 \date{}
 
@@ -51,10 +51,10 @@
 \maketitle
 
 \begin{abstract}
-We study finite two-player games in which a common strategic form is evaluated by context-specific actor/affected-side payoff maps. The signs of these payoffs induce four relational classes---intelligent, hapless, malicious, and destructive---that apply to profiles rather than persons. We characterize class-preserving translations, define normalized Hamming sensitivity between contextual class maps, and derive exact robustness radii for class maps and complete pure-equilibrium sets in arbitrary finite two-player games. An intelligent and a malicious pure Nash equilibrium cannot share the actor's action. If they share the affected side's action, actor indifference is forced, the intelligent equilibrium Pareto- and welfare-dominates the malicious equilibrium, and coexistence is a knife-edge. Robust coexistence requires profiles that share neither action; in $2\times2$ games this is the diagonal configuration, and an explicit example has certified open-ball radius $3/4$. Three synthetic benchmarks illustrate how class robustness differs from equilibrium and dynamic robustness under an exponential-replicator update. Reproducible audits enumerate 390,625 square and 1,062,882 rectangular payoff-grid games and apply seeded continuous perturbations. The exhaustive audits find no counterexample, while perturbations preserve the business class map locally but destroy its original two-equilibrium set almost surely. The examples are formal benchmarks, not empirical estimates.
+Existing game-theoretic formalizations of Cipolla's benefit--loss plane mainly encode its four classes as population strategies, while social-context models allow context to transform utilities. We ask a different comparative question: when a common finite action structure is transported between contexts, which profile classifications and pure incentives survive? Context-specific actor/affected-side payoff maps label profiles as intelligent, hapless, malicious, or destructive. Within the opponent-contingent separable family, we prove that preserving both the complete class map and all pure best responses for every valuation is equivalent to applying strictly increasing transformations that fix zero. Thus affine payoff offsets that are harmless to pure incentives can change social classification. We also derive exact open-ball radii for class maps and complete pure-equilibrium sets. A finite-game configuration theorem shows that intelligent and malicious equilibria cannot share the actor's action; sharing the affected-side action forces indifference and a knife-edge, whereas robust coexistence requires profiles sharing neither action. Three synthetic benchmarks separate class, equilibrium, and dynamic robustness. Reproducible audits enumerate 390,625 square and 1,062,882 rectangular payoff-grid games and apply seeded continuous perturbations. The contribution is a comparative theory of Cipolla-style profile classification, not a claim that context-dependent utility is new or that the benchmarks are empirical estimates.
 \end{abstract}
 
-\noindent\textbf{Keywords:} contextual valuation; game theory; Nash equilibrium; robustness; welfare; population dynamics; social modeling.
+\noindent\textbf{Keywords:} benefit--loss classification; contextual games; strategic equivalence; Nash equilibrium; robustness; welfare; social modeling.
 
 \section{Introduction}
 
@@ -62,27 +62,27 @@ Social actions are rarely evaluated in a vacuum. A public correction, a discipli
 
 Cipolla's benefit--loss plane provides a compact representation of this idea \cite{Cipolla2011}. An action performed by an agent can be represented by a point $(x,y)\in\R^2$, where $x$ is the gain or loss for the acting agent and $y$ is the gain or loss for the affected agent or group. The four main sign regions are interpreted as intelligent $(+,+)$, hapless $(-,+)$, malicious $(+,-)$, and stupid or destructive $(-,-)$ interactions. In the formal model developed here we use the term \emph{destructive}, not as a psychological diagnosis, but as a relational class of interactions producing non-compensating harm. The object of study is not a person; it is a strategic profile under a contextual valuation.
 
-Existing formalizations inspired by Cipolla have explored evolutionary games, imitation dynamics, spatial interaction, agent-based modeling, and biophysical interpretations \cite{Kuperman2020, Barcenas2020, Tettamanzi2014, PerissiBardi2021}. These works show that the benefit--loss plane can generate nontrivial dynamics once embedded into population games. However, a complementary structural question remains underdeveloped:
+Existing formalizations inspired by Cipolla have explored evolutionary games, imitation dynamics, spatial interaction, agent-based modeling, and biophysical interpretations \cite{Kuperman2020, Barcenas2020, Tettamanzi2014, PerissiBardi2021}. These works establish that Cipolla's plane can support nontrivial games and population dynamics. Separately, social context games keep the players and strategies of an underlying game while using a network and aggregation rule to transform utilities \cite{AshlagiKrystaTennenholtz2008}. We do not claim priority for either embedding payoffs in games or allowing context to modify utility. Our question concerns the comparative semantics that remains between the two:
 \begin{quote}
-What does it mean to transport the same strategic form from one social context to another while preserving, or failing to preserve, the benefit--loss class, pure-equilibrium membership, and population-level consequences of its interactions?
+What does it mean to transport the same action structure from one social context to another while preserving, or failing to preserve, the benefit--loss class, pure-equilibrium membership, and population-level consequences of its interactions?
 \end{quote}
 
-This paper addresses that question by introducing \emph{context-dependent benefit--loss games}. A contextual benefit--loss game consists of a finite strategic form, a context, and a valuation map assigning to each strategic profile a point in the benefit--loss plane. Different contexts may share the same strategic form while assigning different payoff vectors to the same profiles. Thus, context is represented not by changing the abstract strategies themselves, but by changing the valuation map that interprets those strategies.
+We address this question with a family of \emph{contextual benefit--loss games}. Each member consists of finite action sets, a context, and a valuation map assigning every profile a point in the benefit--loss plane. Different contexts may share the action structure while assigning different payoff vectors to corresponding profiles. The primitive is deliberately simple; the contribution is the comparative structure placed on the family: translations, class invariance, pure strategic invariance, and exact distances to their failure.
 
-The paper is organized around a single mathematical object, the contextual valuation map $V_C:A\times B\to\R^2$. The contribution lies in showing that this map simultaneously induces three connected structures: a benefit--loss class partition, a normal-form game, and population-level observables under a specified adaptation rule. This integrated perspective is intended for mathematical social sciences: it separates strategic form from contextual valuation while preserving enough structure to compare invariance, equilibrium, welfare, and population behavior across domains.
+The paper is organized around the valuation map $V_C:A\times B\to\R^2$, which induces three connected structures: a benefit--loss class partition, a normal-form game, and population-level observables under a specified adaptation rule. The key issue is that these readings retain different information. Payoff offsets conditional on an opponent's action can be invisible to pure incentives while moving profiles across Cipolla's axes. Conversely, two contexts can share every class while differing strategically. A transport theory must therefore say explicitly which structure it preserves.
 
 The paper makes three principal contributions.
 \begin{enumerate}[label=(\roman*)]
-    \item \textbf{Strategic contribution.} Two finite-game theorems give the exact radius preserving the complete pure-Nash set and characterize coexistence of intelligent and malicious equilibria. Sharing the actor's action is impossible; sharing the affected side's action forces an indifference knife-edge; robust welfare-dominated coexistence requires profiles sharing neither action. A $2\times2$ example realizes the robust case with a certified open-ball radius.
-    \item \textbf{Structural contribution.} The benefit--loss plane induces a partition of each finite profile space. We characterize class-preserving translations, define a Hamming pseudometric for contextual sensitivity, and give payoff- and weight-space criteria for robustness and boundary crossing. These results distinguish robustness of a profile's class from robustness of its equilibrium status.
-    \item \textbf{Computational contribution.} We give a reproducible exponential-replicator illustration, exhaustive square and rectangular game enumerations, and seeded continuous payoff perturbations. The audits test the finite-game theorem implementation, finite-horizon convergence, and the separation between class and equilibrium robustness; they are not empirical validation.
+    \item \textbf{Comparative contribution.} Cipolla's labels are attached to profiles rather than persons or population strategies. Context translations compare corresponding profiles, and the induced partition provides the object whose preservation or reclassification is studied.
+    \item \textbf{Joint-invariance contribution.} We characterize exactly which opponent-contingent separable transformations preserve both Cipolla classes and pure best responses universally: strictly increasing maps that fix zero. The affine intersection permits positive rescaling but no offsets. We then derive exact radii preserving class maps and complete pure-Nash sets, and characterize the possible relative positions of intelligent and malicious equilibria.
+    \item \textbf{Computational contribution.} Exhaustive square and rectangular enumeration, seeded payoff perturbations, and an exponential-replicator illustration challenge the formal claims and separate class, equilibrium, and dynamic robustness. They are computational audits of synthetic games, not empirical validation.
 \end{enumerate}
 
-After defining the contextual game, the paper states the two main finite-game theorems before developing translations, class sensitivity, and class robustness. The benchmark and dynamic sections then apply those results. The saturated feature matrices and their weight-space calculations are reported separately in Appendix~\ref{sec:features} so that the main argument does not depend on an unidentified parameterization.
+After defining the contextual game, the paper states the joint-preservation, exact-radius, and equilibrium-configuration results before developing general translations, class sensitivity, and robustness. The benchmark and dynamic sections apply those results. Saturated feature matrices and weight-space calculations are reported separately in Appendix~\ref{sec:features} so that the main argument does not depend on an unidentified parameterization.
 
 The benchmark examples use three domains: a business organization with boss--employee players, a classroom with teacher--student players, and a sport team with coach--team members. The examples are not empirical measurements. They are normalized benchmark valuations generated from interpretable action features and context-specific weights. They show both stable profiles and context-sensitive profiles. In particular, the same abstract strategic profile---public pressure received with engaged uptake---may be malicious in a business organization, destructive in a classroom, and intelligent in a sport team. A second profile---constructive guidance met with resistance---shows a different transition pattern, from destructive to hapless to destructive.
 
-The paper is a framework paper with a closed formal-computational contribution: it does not claim empirical validation of the numerical payoffs in the benchmark examples. However, it does not stop at definitions. The mathematical layer is complemented by equilibrium analysis and a reproducible minimal simulation. These layers show how contextual valuations can be used in strategic and population-based models without assuming an empirical calibration layer.
+The paper is a framework paper with a closed formal-computational contribution. It neither claims empirical validation of the benchmark payoffs nor proposes a new general theory of context-dependent preference. Its narrower claim is that Cipolla's sign semantics and strategic incentives define distinct invariance problems, and that studying them jointly yields restrictions and robustness conclusions that neither layer supplies alone.
 
 \section{Related work and positioning}
 
@@ -92,7 +92,37 @@ Cipolla's essay introduced a two-dimensional benefit--loss representation of soc
 
 Several formal extensions have already appeared. Kuperman, B\'{a}rcenas and Kuperman proposed an evolutionary game inspired by Cipolla, extending classical cooperator--defector schemes by introducing additional strategies, including one associated with destructive behavior \cite{Kuperman2020}. B\'{a}rcenas, Kuperman and Kuperman later studied a related evolutionary model in which destructive behavior can be adopted with a probability that affects the stationary distribution of strategies \cite{Barcenas2020}. Mella proposed the Social Wheel as a didactic extension of Cipolla's test by adding a third dimension related to the agent's willingness to generate advantages for others \cite{Mella2017}. Perissi and Bardi proposed a biophysical interpretation, connecting Cipolla's ideas with predator--prey and resource-exploitation models \cite{PerissiBardi2021}. Agent-based modeling has also been used to test Cipolla-like laws in artificial populations \cite{Tettamanzi2014}.
 
-The present paper differs from these lines in three respects. First, it does not primarily study population dynamics or evolutionary equilibria, although it includes a minimal dynamic illustration. Second, it does not attempt to refine the psychological taxonomy of persons. Third, it treats context as a formal component of the model. The same strategic form may be interpreted by different valuation maps, and the mathematical problem is to determine which class properties are invariant under contextual translation.
+The present paper differs from these lines in three respects. First, Cipolla's
+classes label realized profiles rather than inherited player types or population
+strategies. Second, a profile can change class when the same action structure is
+valued in another context. Third, the formal target is comparative invariance:
+which labels and incentives survive a translation. Population dynamics are
+included only as a downstream illustration.
+
+\subsection{Social context games and strategic equivalence}
+
+Ashlagi, Krysta and Tennenholtz introduced social context games by combining an
+underlying strategic-form game with a neighborhood graph and aggregation
+functions; players and strategies remain fixed while perceived utilities are
+computed from the base payoffs \cite{AshlagiKrystaTennenholtz2008}. Subsequent
+work studies equilibrium and inefficiency for particular graph and aggregation
+families. This provides a direct precedent for context-sensitive utility in a
+fixed strategic environment. Our context is not a graph-aggregation mechanism,
+and no context is treated as the context-free base game. Instead, the family
+$\{V_C\}$ is the primitive and the object transported is the Cipolla class map
+induced on profiles.
+
+A second adjacent literature studies when payoff transformations produce
+strategically equivalent games. Tewolde and Conitzer characterize universal
+preservation of Nash equilibria and best-response sets within broad separable
+transformation families, highlighting positive affine transformations
+\cite{TewoldeConitzer2024}. Strategic equivalence, however, is insensitive to
+some payoff offsets, whereas benefit--loss classes depend on the location of
+zero. Theorem~\ref{thm:joint-preservation} intersects the two requirements in
+the opponent-contingent separable family. It shows precisely why the zero point
+is substantive here: joint preservation requires strictly increasing maps that
+fix zero, so shifts that preserve pure incentive order are excluded once
+Cipolla's sign semantics must also be preserved.
 
 \subsection{Mathematical social sciences, welfare, and formal social modeling}
 
@@ -122,7 +152,15 @@ Institutional analysis emphasizes that rules, roles, and collective goals shape 
 
 \subsection{Positioning}
 
-The paper therefore occupies a middle position within formal mathematical social modeling. It is not a psychological theory of stupidity and not an empirical study. It is a framework for context-dependent benefit--loss interactions in which (i) classes are induced by contextual valuation maps, (ii) translations can preserve or fail to preserve those classes, (iii) the same valuations generate normal-form games, and (iv) simple population dynamics can be built from them.
+The paper therefore makes a deliberately narrower priority claim. It does not
+introduce context-dependent utility, social-context games, or payoff
+transformations. It develops a comparative theory for transporting
+Cipolla-style benefit--loss labels across a family of finite games and for
+separating preservation of those labels from preservation of incentives. The
+framework links (i) profile-level class maps, (ii) context translations, (iii)
+pure-equilibrium and welfare structure, and (iv) optional population dynamics.
+This combination, rather than any one elementary definition, is the proposed
+contribution.
 
 \section{The benefit--loss plane as a partition}
 \label{sec:plane}
@@ -189,43 +227,12 @@ W(v)=x+y.
 We use $W=x+y$ only as a minimal diagnostic aggregate, not as a full welfare theory. It assumes interpersonal comparability and linear aggregation of actor-side and affected-side payoffs. We adopt it solely to separate, in the benchmarks, whether a profile is a Nash equilibrium from whether it is socially desirable once both sides are counted; richer or non-linear social welfare functionals could replace it without affecting the class-level results.
 \end{remark}
 
-\begin{proposition}[Destructive profiles have negative local welfare]
-If $Q(x,y)=\Dclass$, then $W(x,y)<0$.
-\end{proposition}
-
-\begin{proof}
-If $Q(x,y)=\Dclass$, then either $(x,y)\in\mathcal D^-$ or $(x,y)\in\mathcal D^0$. In the first case, $x<0$ and $y<0$, hence $x+y<0$. In the second case, $x=0$ and $y<0$, hence again $x+y=y<0$.
-\end{proof}
-
-\begin{remark}[Maliciousness and welfare transfer]
-Malicious profiles need not have negative local welfare. If $(x,y)=(5,-1)$, then the actor gains more than the affected player loses and $W>0$. If $(x,y)=(1,-5)$, then the profile is still malicious, but $W<0$. Thus aggregate welfare alone may hide relational harm. This mirrors the distinction in Cipolla's macro-level discussion between mere transfers of welfare and actions that destroy welfare.
-\end{remark}
-
-
-\begin{proposition}[Non-robustness of the actor-neutral destructive axis]
-\label{prop:d0-nonrobust}
-Every point $v=(0,y)\in\mathcal D^0$ with $y<0$ is classifiable as destructive but is not locally class-robust. More precisely, for every $\varepsilon>0$ there are points $v_M\in\mathcal M$ and $v_D\in\mathcal D^-$ with $\|v_M-v\|_\infty<\varepsilon$ and $\|v_D-v\|_\infty<\varepsilon$.
-\end{proposition}
-
-\begin{proof}
-Let $v=(0,y)$ with $y<0$, and fix an arbitrary radius $\varepsilon>0$. Since $y<0$, the positive number $|y|/2$ is well defined. Choose
-\[
-0<\delta<\min\{\varepsilon,|y|/2\}.
-\]
-Define
-\[
-v_M=(\delta,y),\qquad v_D=(-\delta,y).
-\]
-The point $v_M$ satisfies $\delta>0$ and $y<0$, hence $v_M\in\mathcal M$. The point $v_D$ satisfies $-\delta<0$ and $y<0$, hence $v_D\in\mathcal D^-$. Moreover,
-\[
-\|v_M-v\|_\infty=\max\{|\delta-0|,|y-y|\}=\delta<\varepsilon,
-\]
-and similarly
-\[
-\|v_D-v\|_\infty=\max\{|-\delta-0|,|y-y|\}=\delta<\varepsilon.
-\]
-Thus every sup-norm neighborhood of $v$ contains both malicious points and strictly destructive points. Although $v$ is classified as destructive by convention, its class is not stable under arbitrarily small actor-side perturbations.
-\end{proof}
+Under the stated convention every destructive profile has $W<0$.
+Malicious profiles need not: $(5,-1)$ and $(1,-5)$ are both malicious,
+but their local welfare has opposite signs.  Aggregate welfare can therefore
+hide relational harm.  Points $(0,y)\in\mathcal D^0$ are classifiable but not
+locally class-robust, since $(\delta,y)$ is malicious and $(-\delta,y)$ is
+strictly destructive for every sufficiently small $\delta>0$.
 
 \begin{figure}[t]
 \begin{center}
@@ -281,7 +288,7 @@ Thus every sup-norm neighborhood of $v$ contains both malicious points and stric
 \section{Contextual benefit--loss games and induced partitions}
 \label{sec:contextual-games}
 
-A strategic form alone does not determine a benefit--loss class. The class depends on how a context evaluates the consequences of the strategies. We therefore attach a valuation map to each context.
+An action structure alone does not determine a benefit--loss class. The class depends on how a context evaluates the consequences of the strategies. We therefore attach a valuation map to each context.
 
 \begin{definition}[Contextual benefit--loss game]
 A contextual benefit--loss game is a tuple
@@ -304,20 +311,15 @@ Q_C(\sigma)=Q(V_C(\sigma)).
 
 A context may represent an organization, a classroom, a sport team, a family, a public institution, or any domain in which actions generate gains and losses for multiple agents. The context is not merely a label: it determines which consequences count as gains or losses and how they are normalized.
 
-\begin{proposition}[One valuation, three induced layers]
-\label{prop:three-layers}
-Let $G_C=(C,A,B,V_C)$ be a contextual benefit--loss game and write $V_C(a,b)=(X_C(a,b),Y_C(a,b))$. Then the single valuation map $V_C:A\times B\to\R^2$ induces the following three structures.
+Write $V_C(a,b)=(X_C(a,b),Y_C(a,b))$.  The single valuation map
+induces three structures:
 \begin{enumerate}[label=(\roman*)]
 \item A class map $Q_C=Q\circ V_C:A\times B\to \Class$ and hence a partition $\Pi_C$ of the profile set.
 \item A two-player normal-form game with payoff functions $X_C:A\times B\to\R$ and $Y_C:A\times B\to\R$.
 \item Once an adaptation rule $\mathcal L$ is fixed, a population update map on mixed strategy states; in the exponential-replicator case of Section~\ref{sec:simulation}, this is a map $(p_t,q_t)\mapsto(p_{t+1},q_{t+1})$.
 \end{enumerate}
-Thus the classification, strategic, and population-dynamic layers are not separate inputs: they are different readings of the same contextual valuation.
-\end{proposition}
-
-\begin{proof}
-For (i), the class map is obtained by composing the valuation $V_C$ with the fixed benefit--loss class map $Q:\R^2\to\Class$. The fibers of this composite map are exactly the cells of the induced partition $\Pi_C$. For (ii), the two coordinate projections $\pi_1,\pi_2:\R^2\to\R$ give the payoff functions $X_C=\pi_1\circ V_C$ and $Y_C=\pi_2\circ V_C$, so the same profile set with these two payoff functions is a normal-form game. For (iii), any specified population update rule that uses these payoff functions as inputs determines a map on the chosen state space. In Section~\ref{sec:simulation}, the state is $(p_t,q_t)\in[0,1]^2$ and the update is defined explicitly from the expected payoffs determined by $X_C$ and $Y_C$. Hence all three layers are induced from $V_C$ plus, for the dynamic layer, the chosen update rule.
-\end{proof}
+The first two are coordinate-wise readings of $V_C$; the third additionally
+depends on the selected update rule.  They are not separate payoff inputs.
 
 \begin{definition}[Induced benefit--loss partition]
 Let $G_C=(C,A,B,V_C)$ be a contextual benefit--loss game. For each class $c\in\Class$, define
@@ -331,24 +333,17 @@ The induced benefit--loss partition of $\Prof_C$ is
 Empty cells are allowed.
 \end{definition}
 
-\begin{proposition}[Classification is equivalent to partition membership]
-For any profiles $\sigma,\tau\in\Prof_C$,
-\[
-Q_C(\sigma)=Q_C(\tau)
-\]
-if and only if $\sigma$ and $\tau$ belong to the same cell of $\Pi_C$.
-\end{proposition}
+Two profiles belong to the same cell of $\Pi_C$ exactly when they have the
+same class.  This inverse-image observation is used below to state
+class-preserving translations without treating it as a separate substantive
+result.
 
-\begin{proof}
-By definition, the cells of $\Pi_C$ are exactly the inverse images $Q_C^{-1}(c)$ for $c\in\Class$. Therefore two profiles have the same class precisely when they belong to the same inverse-image cell.
-\end{proof}
-
-\begin{definition}[Common strategic form]
-Two contextual benefit--loss games $G_C=(C,A,B,V_C)$ and $G_D=(D,A,B,V_D)$ have a common strategic form if they share the same profile set $A\times B$ but may have different valuation maps.
+\begin{definition}[Common action structure]
+Two contextual benefit--loss games $G_C=(C,A,B,V_C)$ and $G_D=(D,A,B,V_D)$ have a common action structure if they share the same player roles, action sets, and profile set $A\times B$ but may have different valuation maps.
 \end{definition}
 
 \begin{definition}[Stable and recontextualized profile]
-Let $\mathcal C$ be a family of contexts with a common strategic form. A profile $\sigma\in A\times B$ is stable across $\mathcal C$ if
+Let $\mathcal C$ be a family of contexts with a common action structure. A profile $\sigma\in A\times B$ is stable across $\mathcal C$ if
 \[
 Q_C(\sigma)=Q_D(\sigma)
 \]
@@ -359,7 +354,7 @@ Q_C(\sigma)\ne Q_D(\sigma).
 \end{definition}
 
 \begin{definition}[Payoff transition]
-For two contexts $C$ and $D$ with common strategic form, the payoff transition of a profile $\sigma$ is
+For two contexts $C$ and $D$ with a common action structure, the payoff transition of a profile $\sigma$ is
 \[
 \Delta_{C\to D}(\sigma)=V_D(\sigma)-V_C(\sigma).
 \]
@@ -371,9 +366,22 @@ Q_C(\sigma)\longrightarrow Q_D(\sigma).
 
 \input{finite_game_results}
 
-\section{Class-preserving context translations}
+\section{Transporting benefit--loss classes across contexts}
+\label{sec:translations}
 
-We now formalize the idea that one context can be translated into another. A translation may preserve the names of strategies, or it may map strategies in one context to analogous strategies in another context.
+Context-dependent utility is not itself new.  In social context games an
+underlying strategic game is combined with a network and aggregation rule that
+transform players' utilities \cite{AshlagiKrystaTennenholtz2008}; relational
+utility similarly changes canonical games through social norms
+\cite{SuMorsky2024}.  Our comparative problem is different.  We take a family
+of valuations as given and ask what is retained when a profile in one context
+is identified with a profile in another: its benefit--loss meaning, its pure
+incentive order, both, or neither.  Theorem~\ref{thm:joint-preservation} shows
+that these two forms of invariance impose jointly stronger restrictions than
+strategic equivalence alone.
+
+A translation may retain strategy names or map them to context-specific
+analogues.
 
 \begin{definition}[Context translation]
 Let $G_C=(C,A_C,B_C,V_C)$ and $G_D=(D,A_D,B_D,V_D)$ be contextual benefit--loss games. A context translation
@@ -392,17 +400,16 @@ F_*:A_C\times B_C\longrightarrow A_D\times B_D,\qquad F_*(a,b)=(F_A(a),F_B(b)).
 
 A translation is not automatically class-preserving. It simply tells us which strategies are considered analogous across contexts. Preservation depends on the valuations.
 
-\begin{definition}[Strong class-preserving translation]
-A translation $F:G_C\to G_D$ is strong class-preserving if, for every profile $\sigma\in\Prof_C$,
+\begin{definition}[Class-preserving translation]
+A translation $F:G_C\to G_D$ is class-preserving if, for every profile $\sigma\in\Prof_C$,
 \[
 Q_D(F_*\sigma)=Q_C(\sigma).
 \]
 \end{definition}
 
-
-\begin{theorem}[Partition characterization of strong preservation]
+\begin{proposition}[Partition characterization]
 \label{thm:partition-preservation}
-A translation $F:G_C\to G_D$ is strong class-preserving if and only if, for every $c\in\Class$,
+A translation $F:G_C\to G_D$ is class-preserving if and only if, for every $c\in\Class$,
 \[
 \Prof_C^c=F_*^{-1}(\Prof_D^c).
 \]
@@ -410,92 +417,15 @@ Equivalently,
 \[
 Q_D\circ F_*=Q_C.
 \]
-\end{theorem}
-
-\begin{proof}
-We prove both directions.
-
-Assume first that $F$ is strong class-preserving. Fix a class $c\in\Class$. We must show equality of two subsets of $\Prof_C$. Let $\sigma\in\Prof_C$. By the definition of the fiber $\Prof_C^c$,
-\[
-\sigma\in\Prof_C^c \quad\Longleftrightarrow\quad Q_C(\sigma)=c.
-\]
-Because $F$ is strong class-preserving, $Q_C(\sigma)=Q_D(F_*\sigma)$ for every $\sigma$. Hence
-\[
-Q_C(\sigma)=c \quad\Longleftrightarrow\quad Q_D(F_*\sigma)=c.
-\]
-The latter condition is equivalent to $F_*\sigma\in\Prof_D^c$, which by definition of inverse image is equivalent to $\sigma\in F_*^{-1}(\Prof_D^c)$. Thus, for arbitrary $\sigma\in\Prof_C$,
-\[
-\sigma\in\Prof_C^c \quad\Longleftrightarrow\quad \sigma\in F_*^{-1}(\Prof_D^c),
-\]
-so $\Prof_C^c=F_*^{-1}(\Prof_D^c)$.
-
-Conversely, suppose that $\Prof_C^c=F_*^{-1}(\Prof_D^c)$ for every $c\in\Class$. Let $\sigma\in\Prof_C$ be arbitrary and set $c=Q_C(\sigma)$. Then $\sigma\in\Prof_C^c$. By the assumed equality of fibers, $\sigma\in F_*^{-1}(\Prof_D^c)$, hence $F_*\sigma\in\Prof_D^c$. Therefore $Q_D(F_*\sigma)=c$. Since $c=Q_C(\sigma)$, we obtain
-\[
-Q_D(F_*\sigma)=Q_C(\sigma).
-\]
-As $\sigma$ was arbitrary, $F$ is strong class-preserving.
-
-Finally, the identity $Q_D\circ F_*=Q_C$ is exactly the pointwise condition $Q_D(F_*\sigma)=Q_C(\sigma)$ for all $\sigma\in\Prof_C$. Thus it is equivalent to strong class preservation.
-\end{proof}
-
-\begin{definition}[benefit--loss sign]
-For $v=(x,y)\in\R^2$, define
-\[
-\operatorname{csign}(v)=(\sgn x,\sgn y)\in\{-1,0,1\}^2.
-\]
-A translation $F:G_C\to G_D$ is sign-preserving if
-\[
-\operatorname{csign}(V_D(F_*\sigma))=\operatorname{csign}(V_C(\sigma))
-\]
-for every $\sigma\in\Prof_C$.
-\end{definition}
-
-\begin{theorem}[Sign preservation implies class preservation]
-Every sign-preserving translation is strong class-preserving.
-\end{theorem}
-
-\begin{proof}
-The class map $Q$ is constant on the sign cells induced by the benefit--loss partition, with the convention that $(0,-)$ belongs to the destructive class and the remaining zero-coordinate cases belong to the boundary class. If $F$ is sign-preserving, then $V_C(\sigma)$ and $V_D(F_*\sigma)$ have the same benefit--loss sign for every profile $\sigma$. Therefore they lie in the same benefit--loss region and have the same class. Hence $Q_D(F_*\sigma)=Q_C(\sigma)$ for every $\sigma$.
-\end{proof}
-
-\begin{definition}[Positive coordinate rescaling]
-A map $R:\R^2\to\R^2$ is a positive coordinate rescaling if
-\[
-R(x,y)=(\alpha x,\beta y)
-\]
-for some $\alpha,\beta>0$.
-\end{definition}
-
-\begin{corollary}[Invariance under positive rescaling]
-If $V_D(F_*\sigma)=R(V_C(\sigma))$ for all profiles $\sigma$, where $R$ is a positive coordinate rescaling, then $F$ is strong class-preserving.
-\end{corollary}
-
-\begin{proof}
-Positive coordinate rescaling preserves the benefit--loss sign of every payoff vector. The conclusion follows from the previous theorem.
-\end{proof}
-
-\begin{definition}[Weak welfare-preserving translation]
-A translation $F:G_C\to G_D$ is weak welfare-preserving if, for every profile $\sigma\in\Prof_C$,
-\[
-\sgn(W(V_D(F_*\sigma)))=\sgn(W(V_C(\sigma))).
-\]
-\end{definition}
-
-\begin{proposition}[Weak welfare preservation does not imply class preservation]
-There exist contextual games and a translation that preserves the sign of local welfare but does not preserve benefit--loss class.
 \end{proposition}
 
 \begin{proof}
-Consider one-profile games $G_C$ and $G_D$, and let $F$ be the unique translation between them. Suppose
-\[
-V_C(\sigma)=(2,-1),\qquad V_D(F_*\sigma)=(1,1).
-\]
-Then $W(V_C(\sigma))=1$ and $W(V_D(F_*\sigma))=2$, so the sign of local welfare is positive in both games. Hence $F$ is weak welfare-preserving. However, $Q_C(\sigma)=\Mclass$ while $Q_D(F_*\sigma)=\Iclass$. Thus $F$ is not strong class-preserving.
+For any profile $\sigma$ and class $c$,
+$\sigma\in\Prof_C^c$ if and only if $Q_C(\sigma)=c$.  Substituting
+$Q_D(F_*\sigma)$ for $Q_C(\sigma)$ gives the inverse-image identity,
+and the same equivalences read backwards prove the converse.  The commuting
+identity is the pointwise definition of class preservation.
 \end{proof}
-
-The commuting condition is compositional. Identity translations preserve class, and if $Q_D\circ F_*=Q_C$ and $Q_E\circ G_*=Q_D$, then $Q_E\circ(G_*\circ F_*)=Q_C$. No additional categorical machinery is needed for the results below.
-
-\subsection{Equilibrium-preserving translations}
 
 \begin{definition}[Order-preserving context translation]
 A translation $F:G_C\to G_D$ is order-preserving if for every $b\in B_C$ and all $a,a'\in A_C$,
@@ -508,17 +438,35 @@ Y_C(a,b)\ge Y_C(a,b')\Longleftrightarrow Y_D(F_Aa,F_Bb)\ge Y_D(F_Aa,F_Bb').
 \]
 \end{definition}
 
-\begin{proposition}[Order preservation implies equilibrium preservation]
-Let $F:G_C\to G_D$ be a bijective order-preserving translation. If $(a,b)$ is a pure Nash equilibrium of $G_C$, then $F_*(a,b)$ is a pure Nash equilibrium of $G_D$.
+\begin{proposition}[Exact equilibrium transport]
+\label{prop:equilibrium-transport}
+Let $F:G_C\to G_D$ be a bijective order-preserving translation.  Then
+\[
+F_*(\NE(G_C))=\NE(G_D),
+\]
+and the same equality holds for the sets of strict pure equilibria.
 \end{proposition}
 
 \begin{proof}
-Since $(a,b)$ is a Nash equilibrium in $G_C$, $a$ maximizes $X_C(\cdot,b)$ and $b$ maximizes $Y_C(a,\cdot)$. Order preservation implies that $F_Aa$ maximizes $X_D(\cdot,F_Bb)$ among the images of row strategies, and that $F_Bb$ maximizes $Y_D(F_Aa,\cdot)$ among the images of column strategies. Since $F$ is bijective on both strategy sets, these images exhaust the strategy sets of $G_D$. Hence $F_*(a,b)$ is a pure Nash equilibrium of $G_D$.
+Order preservation and bijectivity carry every weak or strict unilateral payoff
+comparison in $G_C$ to the corresponding comparison in $G_D$.  Thus a profile
+is a weak, respectively strict, mutual best response exactly when its image is.
 \end{proof}
 
-\begin{remark}
-Class preservation and equilibrium preservation are logically distinct. Class preservation depends on signs of payoff vectors. Equilibrium preservation depends on ordinal comparisons of payoffs within each player's unilateral deviations. A translation may preserve one structure while failing to preserve the other.
-\end{remark}
+When $F$ is bijective, relabeling the target actions by $F^{-1}$ reduces the
+comparison to a common action structure.  Theorem~\ref{thm:joint-preservation}
+then gives an exact answer for opponent-contingent separable transports:
+strictly increasing zero-fixing maps preserve both the partition and pure
+incentives. In the affine case, any nonzero offset is incompatible with
+universal class preservation. Conversely, adding
+a sufficiently large $c_b$ and $d_a$ to every corresponding payoff leaves all
+pure best responses unchanged but can move every profile into the intelligent
+quadrant.  Strategic equivalence therefore cannot recover social meaning from
+incentives alone.
+
+The commuting condition is compositional. Identity translations preserve
+class, and if $Q_D\circ F_*=Q_C$ and $Q_E\circ G_*=Q_D$, then
+$Q_E\circ(G_*\circ F_*)=Q_C$.
 
 
 \section{Contextual sensitivity as a pseudometric}
@@ -527,7 +475,7 @@ Class preservation and equilibrium preservation are logically distinct. Class pr
 To compare contexts quantitatively, we define an index measuring the fraction of profiles whose class changes.
 
 \begin{definition}[Contextual sensitivity]
-Let $G_C=(C,A,B,V_C)$ and $G_D=(D,A,B,V_D)$ have the same finite strategic form, and let $\Prof=A\times B$. The contextual sensitivity of $C$ relative to $D$ is
+Let $G_C=(C,A,B,V_C)$ and $G_D=(D,A,B,V_D)$ have the same finite action structure, and let $\Prof=A\times B$. The contextual sensitivity of $C$ relative to $D$ is
 \[
 S(C,D)=\frac{1}{|\Prof|}\left|\{\sigma\in\Prof:Q_C(\sigma)\ne Q_D(\sigma)\}\right|.
 \]
@@ -535,13 +483,13 @@ Equivalently, $S(C,D)$ is the normalized Hamming distance between the class maps
 \end{definition}
 
 \begin{definition}[Class-equivalence of contexts]
-Two contexts with the same strategic form are class-equivalent, written $C\sim D$, if $Q_C=Q_D$ as functions $\Prof\to\Class$. Equivalently, $\Pi_C=\Pi_D$.
+Two contexts with the same action structure are class-equivalent, written $C\sim D$, if $Q_C=Q_D$ as functions $\Prof\to\Class$. Equivalently, $\Pi_C=\Pi_D$.
 \end{definition}
 
 
 \begin{theorem}[Pseudometric property]
 \label{thm:pseudometric}
-On any family of contexts with a common finite strategic form, $S$ is a pseudometric. That is, for all contexts $C,D,E$,
+On any family of contexts with a common finite action structure, $S$ is a pseudometric. That is, for all contexts $C,D,E$,
 \begin{enumerate}[label=(\alph*)]
 \item $S(C,D)\ge 0$;
 \item $S(C,D)=S(D,C)$;
@@ -552,20 +500,8 @@ Moreover, $S(C,D)=0$ if and only if $C\sim D$. Thus $S$ descends to a metric on 
 \end{theorem}
 
 \begin{proof}
-Let $\Prof=A\times B$ be the common finite profile set. For two contexts $C$ and $D$, write
-\[
-\Delta(C,D)=\{\sigma\in\Prof:Q_C(\sigma)\ne Q_D(\sigma)\}.
-\]
-Then $S(C,D)=|\Delta(C,D)|/|\Prof|$.
-
-Nonnegativity follows because cardinalities are nonnegative. Also $\Delta(C,C)=\varnothing$, so $S(C,C)=0$.
-Symmetry follows from the logical equivalence
-\[
-Q_C(\sigma)\ne Q_D(\sigma)\;\Leftrightarrow\; Q_D(\sigma)\ne Q_C(\sigma),
-\]
-which gives $\Delta(C,D)=\Delta(D,C)$ and hence $S(C,D)=S(D,C)$.
-
-For the triangle inequality, fix $\sigma\in\Prof$. Suppose $Q_C(\sigma)\ne Q_E(\sigma)$. If both $Q_C(\sigma)=Q_D(\sigma)$ and $Q_D(\sigma)=Q_E(\sigma)$ held, transitivity of equality would imply $Q_C(\sigma)=Q_E(\sigma)$, a contradiction. Hence at least one of the two inequalities $Q_C(\sigma)\ne Q_D(\sigma)$ or $Q_D(\sigma)\ne Q_E(\sigma)$ must hold. In indicator notation,
+Nonnegativity, symmetry, and $S(C,C)=0$ follow pointwise from Hamming
+distance.  For every profile $\sigma$,
 \[
 \mathbf 1_{\{Q_C(\sigma)\ne Q_E(\sigma)\}}
 \le
@@ -573,12 +509,9 @@ For the triangle inequality, fix $\sigma\in\Prof$. Suppose $Q_C(\sigma)\ne Q_E(\
 +
 \mathbf 1_{\{Q_D(\sigma)\ne Q_E(\sigma)\}}.
 \]
-Summing this inequality over all $\sigma\in\Prof$ and dividing by $|\Prof|$ gives
-\[
-S(C,E)\le S(C,D)+S(D,E).
-\]
-
-Finally, $S(C,D)=0$ if and only if $|\Delta(C,D)|=0$, which is equivalent to $\Delta(C,D)=\varnothing$, which is equivalent to $Q_C(\sigma)=Q_D(\sigma)$ for every $\sigma\in\Prof$. This is precisely $Q_C=Q_D$, i.e. $C\sim D$. On the quotient by $\sim$, the only possible failure of identity of indiscernibles is removed, so the induced function is a metric.
+Summing and dividing by $|\Prof|$ proves the triangle inequality.  Finally,
+$S(C,D)=0$ exactly when the two class maps agree profile by profile, i.e.
+$C\sim D$; quotienting by this equivalence gives identity of indiscernibles.
 \end{proof}
 
 \begin{remark}
@@ -607,7 +540,7 @@ Axis-regular profiles do not lie on either coordinate axis. Profiles in $\mathca
 
 \begin{theorem}[Pointwise robustness of class]
 \label{thm:pointwise-robustness}
-Let $G_C$ and $G_D$ have a common strategic form. If $\sigma$ is axis-regular in $C$ and
+Let $G_C$ and $G_D$ have a common action structure. If $\sigma$ is axis-regular in $C$ and
 \[
 \|V_D(\sigma)-V_C(\sigma)\|_\infty<m_C(\sigma),
 \]
@@ -635,7 +568,7 @@ Therefore $V_C(\sigma)$ and $V_D(\sigma)$ remain in the same open sign quadrant.
 
 \begin{corollary}[Uniform robustness]
 \label{cor:uniform-robustness}
-Let $G_C$ and $G_D$ have a common finite strategic form $\Prof$. Suppose every profile is axis-regular in $C$, and set
+Let $G_C$ and $G_D$ have a common finite action structure $\Prof$. Suppose every profile is axis-regular in $C$, and set
 \[
 \delta_C=\min_{\sigma\in\Prof}m_C(\sigma)>0.
 \]
@@ -660,7 +593,7 @@ The axis set of the benefit--loss partition is
 
 \begin{theorem}[Axis-crossing criterion]
 \label{thm:axis-crossing}
-Let $G_C$ and $G_D$ have a common strategic form. If
+Let $G_C$ and $G_D$ have a common action structure. If
 \[
 Q_C(\sigma)\ne Q_D(\sigma),
 \]
@@ -692,7 +625,7 @@ Take $v=(-1,-1)$ and $w=(0,-1)$. The segment joining them lies on the horizontal
 \section{Benchmark contextual games}
 \label{sec:benchmarks}
 
-This section introduces three benchmark examples showing that the same strategic form may induce different benefit--loss classifications when evaluated under different contexts. The examples are normalized payoff models designed to make explicit the role of contextual valuation. Appendix~\ref{sec:features} reports the complete feature vectors, weight matrices, and weight-space conditions that generate them.
+This section introduces three benchmark examples showing that the same action structure may induce different benefit--loss classifications when evaluated under different contexts. The examples are normalized payoff models designed to make explicit the role of contextual valuation. Appendix~\ref{sec:features} reports the complete feature vectors, weight matrices, and weight-space conditions that generate them.
 
 We consider three contexts:
 \[
@@ -1124,11 +1057,20 @@ The zero malicious mass in the classroom and sport rows follows from their class
 
 \subsection{Computational robustness audits}
 
-Two additional audits challenge the claims rather than merely regenerate the chosen example. First, we enumerate all $5^8=390{,}625$ $2\times2$ games whose eight payoff coordinates lie in $\{-2,-1,0,1,2\}$. Including zero admits boundary payoffs and additional weak best-response ties. Among these games there are 14,148 unordered pairs consisting of an intelligent and a malicious pure equilibrium. None shares the actor's action, 5,400 share the affected side's action with zero failures of the dominance conclusion in Theorem~\ref{thm:configuration}(b), and 8,748 share neither action. Of the last group, 1,372 consist of strict equilibria with the intelligent profile welfare-dominating the malicious profile.
+Four audits challenge the claims rather than merely regenerate the chosen
+example.  The first enumerates all $2^8=256$ $2\times2$ sign-grid games with
+payoffs in $\{-1,1\}$. Opponent-contingent strictly increasing zero-fixing
+transformations preserve every
+class map and every pure best-response correspondence.  Adding $2$ to each
+payoff conditional on the opponent's action preserves every pure best response
+but changes 255 of the 256 class maps, directly exercising
+Theorem~\ref{thm:joint-preservation} and Corollary~\ref{cor:offset-separation}.
 
-To test that the finite-game extension is not an artifact of square matrices, we also enumerate every $2\times3$ and $3\times2$ game with payoff coordinates in $\{-2,-1,1\}$, or $2\cdot3^{12}=1{,}062{,}882$ rectangular games. The two negative levels allow a malicious profile to be a strict best response, while the larger $2\times2$ grid separately covers zero-payoff boundaries. The rectangular games contain 223,074 intelligent/malicious equilibrium pairs: zero share the actor's action, 100,602 share the affected side's action with zero dominance failures, and 122,472 share neither action. Among the last group, 5,184 pairs are strict and welfare ordered in the stated direction. These finite audits are not proofs, but they independently exercise rectangular best-response sets, search explicitly for counterexamples, and reproduce the theorem's three relative-position cases.
+Second, we enumerate all $5^8=390{,}625$ $2\times2$ games whose eight payoff coordinates lie in $\{-2,-1,0,1,2\}$. Including zero admits boundary payoffs and additional weak best-response ties. Among these games there are 14,148 unordered pairs consisting of an intelligent and a malicious pure equilibrium. None shares the actor's action, 5,400 share the affected side's action with zero failures of the dominance conclusion in Theorem~\ref{thm:configuration}(b), and 8,748 share neither action. Of the last group, 1,372 consist of strict equilibria with the intelligent profile welfare-dominating the malicious profile.
 
-Second, for each benchmark and each radius $\delta\in\{.25,.50,.75,.99,1.01,1.50\}$, we draw 2,000 independent perturbation vectors uniformly from $[-\delta,\delta]^8$ using the fixed seed 20260622. For every $\delta<1$, all 6,000 perturbed games preserve their benchmark class maps, as predicted by the minimum axis margin. In the business game, however, none preserves the original two-equilibrium set: a continuous perturbation breaks the actor tie with probability one. Approximately half retain a malicious equilibrium alone, depending on the sign of the broken tie. Figure~\ref{fig:payoff-perturbation} contrasts class-map retention with equilibrium-set retention. The rates describe the stated synthetic perturbation distribution; they are not inferential estimates about real contexts.
+Third, to test that the finite-game extension is not an artifact of square matrices, we enumerate every $2\times3$ and $3\times2$ game with payoff coordinates in $\{-2,-1,1\}$, or $2\cdot3^{12}=1{,}062{,}882$ rectangular games. The two negative levels allow a malicious profile to be a strict best response, while the larger $2\times2$ grid separately covers zero-payoff boundaries. The rectangular games contain 223,074 intelligent/malicious equilibrium pairs: zero share the actor's action, 100,602 share the affected side's action with zero dominance failures, and 122,472 share neither action. Among the last group, 5,184 pairs are strict and welfare ordered in the stated direction. These finite audits are not proofs, but they independently exercise rectangular best-response sets, search explicitly for counterexamples, and reproduce the theorem's three relative-position cases.
+
+Finally, for each benchmark and each radius $\delta\in\{.25,.50,.75,.99,1.01,1.50\}$, we draw 2,000 independent perturbation vectors uniformly from $[-\delta,\delta]^8$ using the fixed seed 20260622. For every $\delta<1$, all 6,000 perturbed games preserve their benchmark class maps, as predicted by the minimum axis margin. In the business game, however, none preserves the original two-equilibrium set: a continuous perturbation breaks the actor tie with probability one. Approximately half retain a malicious equilibrium alone, depending on the sign of the broken tie. Figure~\ref{fig:payoff-perturbation} contrasts class-map retention with equilibrium-set retention. The rates describe the stated synthetic perturbation distribution; they are not inferential estimates about real contexts.
 
 \begin{figure}[H]
 \centering
@@ -1148,7 +1090,7 @@ The factor $\tfrac12$ makes each summand the total-variation distance between th
 
 \begin{proposition}[Dynamic distance is process-dependent]
 \label{prop:dtraj}
-For fixed update rule $L$, horizon $T$, learning rate $\eta$, and initial condition $z_0$, $D_{\mathrm{traj}}^{L,T,\eta,z_0}$ is a pseudometric on the set of contexts with a common strategic form. It depends on the induced trajectories and is not determined by the structural class sensitivity $S$ alone.
+For fixed update rule $L$, horizon $T$, learning rate $\eta$, and initial condition $z_0$, $D_{\mathrm{traj}}^{L,T,\eta,z_0}$ is a pseudometric on the set of contexts with a common action structure. It depends on the induced trajectories and is not determined by the structural class sensitivity $S$ alone.
 \end{proposition}
 
 \begin{proof}
@@ -1187,7 +1129,7 @@ The structural and dynamic distances are not the same object. Nevertheless, in t
 
 \subsection{Reproducibility of numerical results}
 
-The repository separates the model (\texttt{src/context\_games}), tests, experiments, notebook, and generated results. The notebook imports the tested package and is not a second implementation. The reproduction command first runs the unit and regression test suite, then regenerates all CSV tables and vector figures, and finally executes the source notebook to a separate artifact without modifying it. Continuous integration repeats the workflow under CPython 3.12 with a fully pinned environment.
+The repository separates the model (\texttt{src/context\_games}), tests, experiments, notebook, and generated results. The notebook imports the tested package and is not a second implementation. The reproduction command first runs the unit and regression test suite, then regenerates all CSV tables and vector figures, and finally executes the source notebook to a separate artifact without modifying it. Continuous integration repeats the workflow under CPython 3.12.13 with a fully pinned environment.
 
 The deterministic trajectories require no seed. Their horizon is checked at $T\in\{25,50,100,200,500\}$ using both the one-step residual and the change from the preceding horizon. At $T=50$ the maximum one-step residual over the three baseline contexts is $6.2\times10^{-11}$, and the largest change from $T=50$ to $T=100$ is $1.7\times10^{-10}$. The payoff-perturbation audit is stochastic only as a numerical integration over an explicitly specified synthetic distribution and uses the fixed seed 20260622. The exhaustive theorem audit is deterministic. All benchmark inputs, code, tests, and generated results are deposited with the article; no external or confidential data are used.
 
@@ -1207,15 +1149,20 @@ Although the benchmark payoffs above are synthetic, the framework suggests a cle
 \item \textbf{Hypotheses.} Preregister tests of context-by-profile contrasts, including whether profiles such as $(P,U)$ cross a specified axis and whether contextual sensitivity differs across domains. Correct for multiplicity or designate a single primary contrast.
 \end{enumerate}
 
-Such a study would test whether the theoretical phenomenon illustrated in Table~\ref{tab:payoff-transitions} appears in human judgments. It would also allow different communities to have different valuation maps without changing the abstract strategic form. In such a study, the relevant empirical question is not whether a person is destructive, but whether a community evaluates a profile as producing non-compensating harm.
+Such a study would test whether the theoretical phenomenon illustrated in Table~\ref{tab:payoff-transitions} appears in human judgments. It would also allow different communities to have different valuation maps without changing the abstract action structure. In such a study, the relevant empirical question is not whether a person is destructive, but whether a community evaluates a profile as producing non-compensating harm.
 
 \FloatBarrier
 \section{Discussion}
 \label{sec:discussion}
 
-The model developed here clarifies a distinction that is easily missed. A strategic form describes who can do what. A contextual valuation describes what those actions mean in a given domain. The benefit--loss class is induced only after valuation. Therefore, class is neither purely strategic nor purely subjective. It is relational: it depends on the interaction between an abstract profile and a context-specific interpretation of gains and losses.
+The model developed here clarifies a distinction that is easily missed. An action structure describes who can do what. A contextual valuation describes what those actions mean in a given domain. The benefit--loss class is induced only after valuation. Therefore, class is neither purely strategic nor purely subjective. It is relational: it depends on the interaction between an abstract profile and a context-specific interpretation of gains and losses.
 
-The partition-based formulation strengthens the original sign-plane intuition. Each context induces a partition of the profile space. Class-preserving translations are exactly those translations whose inverse images preserve the induced partition, making explicit what is retained when a strategic form is transported between contexts.
+The partition-based formulation turns the original sign-plane intuition into a
+comparative object. Each context induces a partition of the profile space, and
+translations specify which profiles are treated as counterparts. More
+importantly, Theorem~\ref{thm:joint-preservation} shows that preserving this
+partition is not redundant with preserving pure incentives: payoff offsets can
+be strategically invisible and semantically decisive.
 
 The pseudometric $S$ provides a quantitative comparison of contexts at the class level. It ignores payoff magnitude and focuses on whether the induced relational class changes. This is appropriate when the question is not how much the payoffs change, but whether the social meaning of the interaction changes. The robustness theorem complements this by showing when class invariance is stable under perturbation: profiles far from the axes cannot be recontextualized by small valuation changes.
 
@@ -1227,18 +1174,33 @@ The population-dynamics illustration adds a third distinction. Static contextual
 \section{Limitations and future work}
 \label{sec:limitations}
 
-The paper has several limitations. First, the numerical payoffs are constructed examples, not measurements of organizations, classrooms, or teams; robustness to perturbation does not confer external validity. Second, seven features encode four profiles, so the weight representation is saturated and non-identified. Third, the exponential-replicator illustration is deterministic, low-dimensional, and conditional on independent random matching. Its invariant faces make every pure vertex a rest point, including non-equilibria, and it contains neither mutation nor estimated behavioral noise. Fourth, the perturbation rates describe a chosen uniform distribution over synthetic payoffs and are computational diagnostics rather than sampling statements. Fifth, boundary cases require domain-specific conventions, especially when one player is neutral. Finally, several partition observations are elementary; the substantive contribution rests on connecting class robustness to equilibrium configuration rather than on those observations in isolation.
+The paper has several limitations. First, the numerical payoffs are constructed examples, not measurements of organizations, classrooms, or teams; robustness to perturbation does not confer external validity. Second, seven features encode four profiles, so the weight representation is saturated and non-identified. Third, the exponential-replicator illustration is deterministic, low-dimensional, and conditional on independent random matching. Its invariant faces make every pure vertex a rest point, including non-equilibria, and it contains neither mutation nor estimated behavioral noise. Fourth, the perturbation rates describe a chosen uniform distribution over synthetic payoffs and are computational diagnostics rather than sampling statements. Fifth, boundary cases require domain-specific conventions, especially when one player is neutral. Finally, the contextual valuation primitive and several partition observations are elementary and are not claimed as novel. The formal contribution is the comparative intersection of class and incentive preservation, together with the exact robustness and equilibrium-configuration results.
 
 These limitations delimit the scope of the framework. Empirical calibration, probabilistic valuation, more parsimonious identified features, networked interaction, and alternative learning rules are natural next steps. Until such evidence exists, the domain labels should be read only as interpretations of synthetic games.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-This paper proposed context-dependent benefit--loss games as a formal framework for studying benefit--loss interactions across domains. The main idea is simple but consequential: the benefit--loss class of a strategic profile is not an intrinsic property of the profile alone. It is induced by a context-dependent valuation map. By distinguishing strategic form from contextual valuation, the framework explains how the same abstract action may remain invariant across contexts or be reclassified when moved from one domain to another.
+This paper developed a comparative framework for transporting Cipolla-style
+benefit--loss classifications across contexts. It did not claim that
+context-dependent utility is new. Its starting point is instead that the class
+of a strategic profile is induced by a context-specific valuation and therefore
+need not travel with the abstract profile.
 
-The formal contributions include induced partitions of profile spaces, a characterization of class-preserving translations, a Hamming pseudometric for contextual sensitivity, and exact robustness radii for class maps and complete pure-equilibrium sets. The finite-game configuration theorem separates an impossible shared-actor-action case, a forced shared-affected-action knife-edge, and a potentially robust no-shared-action regime; in $2\times2$ games the last case is diagonal. Exhaustive square and rectangular enumeration, seeded perturbations, and convergence diagnostics challenge these claims computationally.
+The joint-preservation theorem identifies the exact
+opponent-contingent separable transports that retain both classes and pure best
+responses: strictly increasing transformations that fix zero. Its affine
+corollary permits positive rescaling but excludes offsets. This establishes that social
+classification contains information not recoverable from pure strategic
+equivalence. Exact robustness radii then quantify how class maps and complete
+pure-equilibrium sets can fail at different distances. The finite-game
+configuration theorem separates an impossible shared-actor-action case, a
+forced shared-affected-action knife-edge, and a potentially robust
+no-shared-action regime. Exhaustive square and rectangular enumeration, seeded
+perturbations, and convergence diagnostics challenge these claims
+computationally.
 
-The benchmark examples show how these notions operate in three domains: business organization, classroom, and sport team. The central transition $(P,U):\Mclass\to\Dclass\to\Iclass$ demonstrates that contextual valuation can move a profile from malicious, to destructive, to intelligent while leaving the abstract strategic form unchanged. The second transition $(G,R):\Dclass\to\Hclass\to\Dclass$ shows that recontextualization is not always a movement toward improvement. This paper provides the structural and computational layer of that program: empirical calibration is not required for the validity of the formal results, but is the natural next step for domain-specific applications. Future work should estimate contextual valuations empirically, extend the framework to larger games and networks, and connect class transitions with dynamical models of trust, cohesion, performance, and accumulated harm.
+The benchmark examples show how these notions operate in three domains: business organization, classroom, and sport team. The central transition $(P,U):\Mclass\to\Dclass\to\Iclass$ demonstrates that contextual valuation can move a profile from malicious, to destructive, to intelligent while leaving the abstract action structure unchanged. The second transition $(G,R):\Dclass\to\Hclass\to\Dclass$ shows that recontextualization is not always a movement toward improvement. This paper provides the structural and computational layer of that program: empirical calibration is not required for the validity of the formal results, but is the natural next step for domain-specific applications. Future work should estimate contextual valuations empirically, extend the framework to larger games and networks, and connect class transitions with dynamical models of trust, cohesion, performance, and accumulated harm.
 
 \clearpage
 \appendix
@@ -1256,10 +1218,18 @@ During revision, the author(s) used OpenAI Codex to assist with code refactoring
 K. J. Arrow.
 \emph{Social Choice and Individual Values}.
 Wiley, 1951.
+
+\bibitem{AshlagiKrystaTennenholtz2008}
+I. Ashlagi, P. Krysta, and M. Tennenholtz.
+Social context games.
+In \emph{Internet and Network Economics}, LNCS 5385, pages 675--683, 2008.
+\url{https://doi.org/10.1007/978-3-540-92185-1_73}.
+
 \bibitem{Barcenas2020}
 D. R. B\'{a}rcenas, J. Kuperman, and M. N. Kuperman.
 The destructive effect of human stupidity: a revision of Cipolla's Fundamental Laws.
 \emph{The European Physical Journal B}, 93:211, 2020.
+\url{https://doi.org/10.1140/epjb/e2020-10339-3}.
 
 \bibitem{Cipolla2011}
 C. M. Cipolla.
@@ -1312,6 +1282,7 @@ Prospect theory: an analysis of decision under risk.
 J. Kuperman, D. R. B\'{a}rcenas, and M. N. Kuperman.
 Evolutionary game inspired by Cipolla's basic laws of human stupidity.
 \emph{Physical Review E}, 101:052307, 2020.
+\url{https://doi.org/10.1103/PhysRevE.101.052307}.
 
 \bibitem{KohlbergMertens1986}
 E. Kohlberg and J.-F. Mertens.
@@ -1375,6 +1346,13 @@ R. Su and B. Morsky.
 Relational utility and social norms in games.
 \emph{Mathematical Social Sciences}, 127:54--61, 2024.
 \url{https://doi.org/10.1016/j.mathsocsci.2023.12.001}.
+
+\bibitem{TewoldeConitzer2024}
+E. Tewolde and V. Conitzer.
+Game transformations that preserve Nash equilibria or best-response sets.
+In \emph{Proceedings of the Thirty-Third International Joint Conference on
+Artificial Intelligence}, pages 2984--2993, 2024.
+\url{https://doi.org/10.24963/ijcai.2024/331}.
 
 \bibitem{Tettamanzi2014}
 A. G. B. Tettamanzi and C. C. da Pereira.
