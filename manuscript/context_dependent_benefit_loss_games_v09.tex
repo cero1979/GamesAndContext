@@ -19,8 +19,7 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 
-\title{Context-Dependent Benefit--Loss Games:\
-Class Robustness and Strategic Stability}
+\title{Context-Dependent Benefit--Loss Games: Class Robustness and Equilibrium Persistence}
 \author{Author names omitted for review}
 \date{}
 
@@ -52,7 +51,7 @@ Class Robustness and Strategic Stability}
 \maketitle
 
 \begin{abstract}
-We study finite two-player games in which a common strategic form is evaluated by context-specific actor/affected-side payoff maps. The signs of these payoffs induce four relational classes---intelligent, hapless, malicious, and destructive---that apply to profiles rather than persons. We characterize class-preserving translations, define normalized Hamming sensitivity between contextual class maps, and give payoff- and weight-space robustness criteria. The main strategic result concerns an intelligent and a malicious pure Nash equilibrium in a $2\times2$ game. They cannot share the actor's action. If they share the affected side's action, actor indifference is forced, the intelligent equilibrium Pareto- and welfare-dominates the malicious equilibrium, and coexistence is a knife-edge. Robust coexistence is possible only in the diagonal configuration under strict equilibrium and welfare inequalities; an explicit game has certified open-ball radius $3/4$. Three synthetic benchmarks illustrate how class robustness differs from Nash and dynamic robustness under an exponential-replicator update. Reproducible audits enumerate all $4^8=65{,}536$ games on a four-value payoff grid and apply seeded continuous perturbations. The exhaustive audit finds no counterexample, while the perturbations preserve the business class map locally but destroy its original two-equilibrium set almost surely. The examples are formal benchmarks, not empirical estimates of organizations, classrooms, or sport teams.
+We study finite two-player games in which a common strategic form is evaluated by context-specific actor/affected-side payoff maps. The signs of these payoffs induce four relational classes---intelligent, hapless, malicious, and destructive---that apply to profiles rather than persons. We characterize class-preserving translations, define normalized Hamming sensitivity between contextual class maps, and derive exact robustness radii for class and pure-equilibrium sets. The main strategic result concerns an intelligent and a malicious pure Nash equilibrium in a $2\times2$ game. They cannot share the actor's action. If they share the affected side's action, actor indifference is forced, the intelligent equilibrium Pareto- and welfare-dominates the malicious equilibrium, and coexistence is a knife-edge. Robust coexistence is possible only in the diagonal configuration under strict equilibrium and welfare inequalities; an explicit game has certified open-ball radius $3/4$. Three synthetic benchmarks illustrate how class robustness differs from Nash and dynamic robustness under an exponential-replicator update. Reproducible audits enumerate all $5^8=390{,}625$ games on a five-value payoff grid and apply seeded continuous perturbations. The exhaustive audit finds no counterexample, while the perturbations preserve the business class map locally but destroy its original two-equilibrium set almost surely. The examples are formal benchmarks, not empirical estimates.
 \end{abstract}
 
 \noindent\textbf{Keywords:} contextual valuation; game theory; Nash equilibrium; robustness; welfare; population dynamics; social modeling.
@@ -65,7 +64,7 @@ Cipolla's benefit--loss plane provides a compact representation of this idea \ci
 
 Existing formalizations inspired by Cipolla have explored evolutionary games, imitation dynamics, spatial interaction, agent-based modeling, and biophysical interpretations \cite{Kuperman2020, Barcenas2020, Tettamanzi2014, PerissiBardi2021}. These works show that the benefit--loss plane can generate nontrivial dynamics once embedded into population games. However, a complementary structural question remains underdeveloped:
 \begin{quote}
-What does it mean to transport the same strategic form from one social context to another while preserving, or failing to preserve, the benefit--loss class, strategic stability, and population-level consequences of its interactions?
+What does it mean to transport the same strategic form from one social context to another while preserving, or failing to preserve, the benefit--loss class, pure-equilibrium membership, and population-level consequences of its interactions?
 \end{quote}
 
 This paper addresses that question by introducing \emph{context-dependent benefit--loss games}. A contextual benefit--loss game consists of a finite strategic form, a context, and a valuation map assigning to each strategic profile a point in the benefit--loss plane. Different contexts may share the same strategic form while assigning different payoff vectors to the same profiles. Thus, context is represented not by changing the abstract strategies themselves, but by changing the valuation map that interprets those strategies.
@@ -101,15 +100,19 @@ The present paper is closest in spirit to the mathematical social sciences: it u
 
 \paragraph{Payoff signs and strategic incentives.} The benefit--loss class of a profile depends only on the signs of its two payoff coordinates, whereas pure best responses depend on within-player payoff orderings \cite{vonNeumann1944,OsborneRubinstein1994}. Mixed equilibria and the population update used below also depend on payoff differences, so they are not invariant under arbitrary ordinal transformations. The framework therefore keeps three objects separate: payoff signs for class, unilateral comparisons for pure Nash equilibrium, and cardinal payoff gaps for mixed and dynamic analysis. The benchmarks belong to the long tradition of $2\times2$ interaction games \cite{Rapoport1965}; unlike games with vector payoffs, $(x,y)$ here is the ordinary pair of scalar payoffs to two players, not a multi-criterion payoff for one player.
 
+\paragraph{Equilibrium robustness.} Stability and regularity of equilibrium components under game perturbations have an established technical meaning \cite{Jansen1981,KohlbergMertens1986}. We do not propose an equilibrium refinement or a notion of strategic stability in that sense. Proposition~\ref{prop:ne-radius} instead asks a narrower finite-game question: how large can a coordinate-wise payoff perturbation be while preserving the \emph{complete set of pure Nash profiles exactly}? For $2\times2$ games the answer is an explicit radius in unilateral payoff slacks, which we compare with the independent radius preserving the benefit--loss class map.
+
 \paragraph{Population and learning dynamics.} The dynamic layer places the same valuations inside a discrete exponential-replicator, or multiplicative-weights, process, connecting the framework to evolutionary learning and adaptive game play \cite{Weibull1995,HofbauerSigmund1998,FreundSchapire1999,Sandholm2010}. We use this layer only as a minimal aggregate illustration, not as an evolutionary or behavioral identification result.
 
 \paragraph{Mathematical sociology and formal institutional models.} Finally, treating context as a formal component that fixes how actions are valued is consistent with the tradition of compact formal models in mathematical sociology and institutional analysis \cite{Gintis2009,Coleman1990,North1990,Ostrom2005}, where rules and roles determine the social meaning and consequences of behavior. In our terminology, an institution is encoded by a valuation map.
 
-The local welfare function $W(x,y)=x+y$ used below is deliberately simple, but it allows the paper to separate two questions that are often conflated: whether a profile is strategically stable and whether it is socially desirable once both actor-side and affected-side payoffs are considered. This is important for the benchmark analysis, where one Nash equilibrium is malicious and welfare-dominated by another equilibrium.
+The local welfare function $W(x,y)=x+y$ used below is deliberately simple, but it allows the paper to separate two questions that are often conflated: whether a profile is a Nash equilibrium and whether it is socially desirable once both actor-side and affected-side payoffs are considered. This is important for the benchmark analysis, where one Nash equilibrium is malicious and welfare-dominated by another equilibrium.
 
 \subsection{Behavioral and contextual game theory}
 
 Behavioral game theory and decision theory have long emphasized that payoffs are not merely material outcomes. Framing, reference points, fairness, reciprocity, choice sets, and social preferences can alter evaluation of the same objective situation \cite{KahnemanTversky1979,TverskyKahneman1981,TverskySimonson1993,Rabin1993,FehrSchmidt1999}. The present model is consistent with that view but does not identify preferences from observed choice: the contextual valuation $V_C$ is an explicit model input. The paper provides a structural language for comparing consequences of alternative valuations, not a theory of how those valuations are formed.
+
+Two recent contributions in \emph{Mathematical Social Sciences} sharpen this boundary. Su and Morsky add norm-derived relational utility to canonical games and study resulting changes in cooperation, coordination, and equilibria \cite{SuMorsky2024}. Ryan permits preferences in a stochastic-choice model to depend on the category through which alternatives are considered \cite{Ryan2026}. Our object is different from both: the strategy set and normal form are held fixed, context enters as an exogenously specified valuation map on profiles, and the analysis compares the induced sign partition with the exact pure-equilibrium set under payoff perturbations. We therefore neither derive context from a social-norm utility component nor estimate it from stochastic choice.
 
 \subsection{Institutional analysis and social meaning}
 
@@ -181,7 +184,7 @@ W(v)=x+y.
 \end{definition}
 
 \begin{remark}[Welfare as a minimal diagnostic]
-We use $W=x+y$ only as a minimal diagnostic aggregate, not as a full welfare theory. It assumes interpersonal comparability and linear aggregation of actor-side and affected-side payoffs. We adopt it solely to separate, in the benchmarks, whether a profile is strategically stable from whether it is socially desirable once both sides are counted; richer or non-linear social welfare functionals could replace it without affecting the class-level results.
+We use $W=x+y$ only as a minimal diagnostic aggregate, not as a full welfare theory. It assumes interpersonal comparability and linear aggregation of actor-side and affected-side payoffs. We adopt it solely to separate, in the benchmarks, whether a profile is a Nash equilibrium from whether it is socially desirable once both sides are counted; richer or non-linear social welfare functionals could replace it without affecting the class-level results.
 \end{remark}
 
 \begin{proposition}[Destructive profiles have negative local welfare]
@@ -601,6 +604,7 @@ Therefore $V_C(\sigma)$ and $V_D(\sigma)$ remain in the same open sign quadrant.
 \end{proof}
 
 \begin{corollary}[Uniform robustness]
+\label{cor:uniform-robustness}
 Let $G_C$ and $G_D$ have a common finite strategic form $\Prof$. Suppose every profile is axis-regular in $C$, and set
 \[
 \delta_C=\min_{\sigma\in\Prof}m_C(\sigma)>0.
@@ -1051,11 +1055,11 @@ The axis margins in Table~\ref{tab:margins} show how the robustness theorem appl
 \section{Game-theoretic layer: best responses and equilibria}
 \label{sec:game-theory}
 
-The partition-based layer classifies profiles by the signs of their contextual payoff vectors. Since each valuation also gives a normal-form game, it is useful to separate two notions that are sometimes conflated: \emph{class stability} and \emph{strategic stability}. A profile can be intelligent without being a Nash equilibrium, and a malicious profile can be a Nash equilibrium if no player has a profitable unilateral deviation.
+The partition-based layer classifies profiles by the signs of their contextual payoff vectors. Since each valuation also gives a normal-form game, it is useful to separate two notions that are sometimes conflated: \emph{class invariance} and \emph{Nash equilibrium membership}. A profile can be intelligent without being a Nash equilibrium, and a malicious profile can be a Nash equilibrium if no player has a profitable unilateral deviation.
 
 \begin{definition}[Class desirability]
 \label{def:class-desirability}
-A profile $\sigma$ in a context $C$ is \emph{benefit--loss desirable} (equivalently, \emph{class-desirable}) if $Q_C(\sigma)=\Iclass$, that is, if both the actor side and the affected side gain. Benefit--loss desirability is thus a purely class-based property of a single profile. It is distinct from \emph{welfare dominance}, which compares the aggregate $W=x+y$ of two profiles, and from \emph{Nash stability}, which concerns unilateral deviations. Whenever we contrast desirability with stability below, ``desirable'' means class $\Iclass$.
+A profile $\sigma$ in a context $C$ is \emph{benefit--loss desirable} (equivalently, \emph{class-desirable}) if $Q_C(\sigma)=\Iclass$, that is, if both the actor side and the affected side gain. Benefit--loss desirability is thus a purely class-based property of a single profile. It is distinct from \emph{welfare dominance}, which compares the aggregate $W=x+y$ of two profiles, and from \emph{Nash equilibrium membership}, which concerns unilateral deviations. Whenever we contrast desirability with equilibrium below, ``desirable'' means class $\Iclass$.
 \end{definition}
 
 Let $G_C=(C,A,B,V_C)$ be a contextual benefit--loss game and write
@@ -1123,17 +1127,63 @@ In $C_A$, against $U$ the acting side prefers $G$ because $2>-1$; against $R$ it
 In $C_S$, the acting side always prefers $G$, since $3>2$ against $U$ and $-1>-2$ against $R$. The affected side always prefers $U$, since $3>-1$ against $G$ and $2>-3$ against $P$. Hence the unique pure equilibrium is $(G,U)$, of class $\Iclass$. Although $(P,U)$ is intelligent in $C_S$, the acting side has a profitable unilateral deviation to $G$, so it is not an equilibrium.
 \end{proof}
 
-This result is one of the main conceptual payoffs of the game-theoretic layer. Benefit--loss desirability and strategic stability are different dimensions. The business benchmark contains a malicious equilibrium: the profile is stable under unilateral deviations but relationally harmful to the affected side. Conversely, the sport benchmark contains an intelligent non-equilibrium: the profile benefits both sides but is strategically dominated for the acting side by constructive guidance. The strategic viability of $(P,U)$ in $C_B$ rests on the exact actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)$; Proposition~\ref{prop:knife-edge} shows that this equilibrium is a knife-edge in payoff magnitude, in contrast to the open-region robustness of its malicious \emph{class}.
+This result is one of the main conceptual payoffs of the game-theoretic layer. Benefit--loss desirability and equilibrium membership are different dimensions. The business benchmark contains a malicious equilibrium: the profile admits no profitable unilateral deviation but is relationally harmful to the affected side. Conversely, the sport benchmark contains an intelligent non-equilibrium: the profile benefits both sides but is dominated for the acting side by constructive guidance. The equilibrium membership of $(P,U)$ in $C_B$ rests on the exact actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)$; Proposition~\ref{prop:knife-edge} shows that this equilibrium is a knife-edge in payoff magnitude, in contrast to the open-region robustness of its malicious \emph{class}.
 
-\begin{proposition}[Class desirability and Nash stability are independent]
-\label{prop:class-nash-independent}
-In the benchmark family, benefit--loss desirability does not imply Nash stability, and Nash stability does not imply benefit--loss desirability.
+The distinction can be quantified exactly. For a profile $(i,j)$ in a $2\times2$ game, let $i'$ and $j'$ denote the alternative actions and define the unilateral advantages
+\[
+a_{ij}=X(i,j)-X(i',j),\qquad b_{ij}=Y(i,j)-Y(i,j').
+\]
+Thus $(i,j)$ is a pure Nash equilibrium exactly when $a_{ij},b_{ij}\ge0$.
+
+\begin{proposition}[Exact robustness radius of the pure-equilibrium set]
+\label{prop:ne-radius}
+For each profile $(i,j)$ define
+\[
+r_{ij}=\begin{cases}
+\tfrac12\min\{a_{ij},b_{ij}\}, & (i,j)\in\NE(G),\\[2mm]
+\tfrac12\max\bigl(\{-a_{ij}:a_{ij}<0\}\cup\{-b_{ij}:b_{ij}<0\}\bigr), & (i,j)\notin\NE(G).
+\end{cases}
+\]
+Then
+\[
+\rho_{\NE}(G)=\min_{i,j}r_{ij}
+\]
+is the supremal open sup-norm radius that preserves the complete set of pure Nash equilibria: every payoff perturbation of norm less than $\rho_{\NE}(G)$ leaves $\NE(G)$ unchanged, while for every $\varepsilon>\rho_{\NE}(G)$ some perturbation of norm less than $\varepsilon$ changes it.
 \end{proposition}
 
 \begin{proof}
-First, consider the sport-team context $C_S$. Table~\ref{tab:payoff-transitions} gives $V_{C_S}(P,U)=(2,2)$, so $(P,U)$ is intelligent. However, Table~\ref{tab:br-ne} and Proposition~\ref{prop:benchmark-equilibria} show that the unique pure Nash equilibrium in $C_S$ is $(G,U)$. Equivalently, when the affected side plays $U$, the acting side obtains $3$ from $G$ and $2$ from $P$, so the acting side has a profitable unilateral deviation from $(P,U)$ to $(G,U)$. Thus an intelligent profile need not be Nash stable.
+Each unilateral advantage is a difference of two payoff coordinates, so a sup-norm perturbation of radius $\delta$ changes it by less than $2\delta$. For an equilibrium profile, both advantages therefore remain nonnegative whenever $\delta<\tfrac12\min\{a_{ij},b_{ij}\}$. For a non-equilibrium profile, at least one advantage is negative; it remains non-equilibrium whenever one negative advantage remains negative, which is guaranteed for $\delta$ below half the largest negative slack. Taking the minimum over all four profiles preserves the entire equilibrium set.
 
-Second, consider the business context $C_B$. Table~\ref{tab:payoff-transitions} gives $V_{C_B}(P,U)=(2,-2)$, so $(P,U)$ is malicious. Proposition~\ref{prop:benchmark-equilibria} shows that $(P,U)$ is nevertheless a pure Nash equilibrium in $C_B$: the acting side is indifferent between $G$ and $P$ against $U$, and the affected side strictly prefers $U$ to $R$ against $P$. Thus Nash stability does not imply benefit--loss desirability.
+For sharpness, choose a profile attaining the minimum. If it is an equilibrium, perturb the payoff coordinate associated with a smallest advantage downward and its deviation payoff upward; any radius strictly above $r_{ij}$ makes that advantage negative. If it is not an equilibrium, raise the current payoff and lower the deviation payoff for every negative advantage; because the two players' payoff coordinates are distinct, a perturbation of radius $r_{ij}$ makes all such advantages nonnegative. In either case arbitrarily small enlargement beyond $\rho_{\NE}(G)$ changes equilibrium membership.
+\end{proof}
+
+Let $\rho_Q(G)=\min_{\sigma}m(V(\sigma))$ be the uniform class-map radius from Corollary~\ref{cor:uniform-robustness}. Direct substitution gives Table~\ref{tab:robustness-radii}. The business benchmark has $\rho_Q=1$ but $\rho_{\NE}=0$: its class map is locally constant on a full neighborhood, whereas its equilibrium set is not constant on any neighborhood. The other two benchmarks have positive, but smaller, equilibrium-set radii.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{c|cc}
+\toprule
+Context & Class-map radius $\rho_Q$ & Pure-NE-set radius $\rho_{\NE}$\\
+\midrule
+Business $C_B$ & $1$ & $0$\\
+Classroom $C_A$ & $1$ & $1/2$\\
+Sport team $C_S$ & $1$ & $1/2$\\
+\bottomrule
+\end{tabular}
+\caption{Exact open sup-norm robustness radii for the benchmark class maps and complete pure-equilibrium sets.}
+\label{tab:robustness-radii}
+\end{table}
+
+\begin{proposition}[Class desirability and Nash equilibrium membership are independent]
+\label{prop:class-nash-independent}
+In the benchmark family, benefit--loss desirability does not imply Nash equilibrium membership, and Nash equilibrium membership does not imply benefit--loss desirability.
+\end{proposition}
+
+\begin{proof}
+First, consider the sport-team context $C_S$. Table~\ref{tab:payoff-transitions} gives $V_{C_S}(P,U)=(2,2)$, so $(P,U)$ is intelligent. However, Table~\ref{tab:br-ne} and Proposition~\ref{prop:benchmark-equilibria} show that the unique pure Nash equilibrium in $C_S$ is $(G,U)$. Equivalently, when the affected side plays $U$, the acting side obtains $3$ from $G$ and $2$ from $P$, so the acting side has a profitable unilateral deviation from $(P,U)$ to $(G,U)$. Thus an intelligent profile need not be a Nash equilibrium.
+
+Second, consider the business context $C_B$. Table~\ref{tab:payoff-transitions} gives $V_{C_B}(P,U)=(2,-2)$, so $(P,U)$ is malicious. Proposition~\ref{prop:benchmark-equilibria} shows that $(P,U)$ is nevertheless a pure Nash equilibrium in $C_B$: the acting side is indifferent between $G$ and $P$ against $U$, and the affected side strictly prefers $U$ to $R$ against $P$. Thus Nash equilibrium membership does not imply benefit--loss desirability.
 \end{proof}
 
 
@@ -1175,7 +1225,7 @@ W(V_{C_B}(P,U))=2+(-2)=0.
 Thus $(G,U)$ welfare-dominates $(P,U)$. Proposition~\ref{prop:benchmark-equilibria} shows that both profiles are Nash equilibria in $C_B$, while Table~\ref{tab:payoff-transitions} gives classes $\Iclass$ and $\Mclass$, respectively. Therefore a malicious equilibrium can be both Pareto-dominated and welfare-dominated by another equilibrium.
 \end{proof}
 
-This proposition is the main welfare lesson of the benchmark. Strategic stability alone does not identify the socially preferable stable profile: in $C_B$, both $(G,U)$ and $(P,U)$ are equilibria, but only the former is both intelligent and welfare superior.
+This proposition is the main welfare lesson of the benchmark. Nash equilibrium membership alone does not identify the socially preferable equilibrium: in $C_B$, both $(G,U)$ and $(P,U)$ are equilibria, but only the former is both intelligent and welfare superior.
 
 \subsection{A general characterization of welfare-dominated malicious equilibria}
 \label{sec:general-theorem}
@@ -1330,7 +1380,7 @@ Sport team $C_S$ & 1.000 & 1.000 & 6.000 & 1.000 & 0.000 & 0.000\\
 \label{tab:simulation-final}
 \end{table}
 
-\subsection{Fixed points, stability, and the strategic knife-edge}
+\subsection{Fixed points, local stability, and the equilibrium knife-edge}
 \label{sec:fixed-points}
 
 The exponential-replicator update has enough structure to describe its fixed points and to explain why the business context behaves differently from the classroom and sport contexts. Write $p$ for the probability of $G$ and $q$ for the probability of $U$, and recall the expected actor-side payoffs
@@ -1405,7 +1455,7 @@ The zero malicious mass in the classroom and sport rows follows from their class
 
 \subsection{Computational robustness audits}
 
-Two additional audits challenge the claims rather than merely regenerate the chosen example. First, we enumerate all $4^8=65{,}536$ $2\times2$ games whose eight payoff coordinates lie in $\{-2,-1,1,2\}$. Among these games there are 6,804 unordered pairs consisting of an intelligent and a malicious pure equilibrium. None shares an actor row, 2,688 share a column with zero failures of the dominance conclusion in Theorem~\ref{thm:dichotomy}(b), and 4,116 are diagonal. Of the diagonal pairs, 500 consist of strict equilibria with the intelligent profile welfare-dominating the malicious profile. This finite audit is not a proof, but it checks the implementation against every game in a nontrivial grid and searches explicitly for counterexamples.
+Two additional audits challenge the claims rather than merely regenerate the chosen example. First, we enumerate all $5^8=390{,}625$ $2\times2$ games whose eight payoff coordinates lie in $\{-2,-1,0,1,2\}$. Including zero admits boundary payoffs and additional weak best-response ties. Among these games there are 14,148 unordered pairs consisting of an intelligent and a malicious pure equilibrium. None shares an actor row, 5,400 share a column with zero failures of the dominance conclusion in Theorem~\ref{thm:dichotomy}(b), and 8,748 are diagonal. Of the diagonal pairs, 1,372 consist of strict equilibria with the intelligent profile welfare-dominating the malicious profile. This finite audit is not a proof, but it checks the implementation against every game in a nontrivial grid and searches explicitly for counterexamples.
 
 Second, for each benchmark and each radius $\delta\in\{.25,.50,.75,.99,1.01,1.50\}$, we draw 2,000 independent perturbation vectors uniformly from $[-\delta,\delta]^8$ using the fixed seed 20260622. For every $\delta<1$, all 6,000 perturbed games preserve their benchmark class maps, as predicted by the minimum axis margin. In the business game, however, none preserves the original two-equilibrium set: a continuous perturbation breaks the actor tie with probability one. Approximately half retain a malicious equilibrium alone, depending on the sign of the broken tie. Figure~\ref{fig:payoff-perturbation} contrasts class-map retention with equilibrium-set retention. The rates describe the stated synthetic perturbation distribution; they are not inferential estimates about real contexts.
 
@@ -1466,7 +1516,7 @@ The structural and dynamic distances are not the same object. Nevertheless, in t
 
 \subsection{Reproducibility of numerical results}
 
-The repository separates the model (\texttt{src/context\_games}), tests, experiments, notebook, and generated results. The notebook imports the tested package and is not a second implementation. The reproduction command first runs 11 unit and regression tests, then regenerates all CSV tables and vector figures, and finally executes the source notebook to a separate artifact without modifying it. Continuous integration repeats the workflow under CPython 3.12 with pinned direct dependencies.
+The repository separates the model (\texttt{src/context\_games}), tests, experiments, notebook, and generated results. The notebook imports the tested package and is not a second implementation. The reproduction command first runs the unit and regression test suite, then regenerates all CSV tables and vector figures, and finally executes the source notebook to a separate artifact without modifying it. Continuous integration repeats the workflow under CPython 3.12 with a fully pinned environment.
 
 The deterministic trajectories require no seed. Their horizon is checked at $T\in\{25,50,100,200,500\}$ using both the one-step residual and the change from the preceding horizon. At $T=50$ the maximum one-step residual over the three baseline contexts is $6.2\times10^{-11}$, and the largest change from $T=50$ to $T=100$ is $1.7\times10^{-10}$. The payoff-perturbation audit is stochastic only as a numerical integration over an explicitly specified synthetic distribution and uses the fixed seed 20260622. The exhaustive theorem audit is deterministic. All benchmark inputs, code, tests, and generated results are deposited with the article; no external or confidential data are used.
 
@@ -1498,7 +1548,7 @@ The partition-based formulation strengthens the original sign-plane intuition. E
 
 The pseudometric $S$ provides a quantitative comparison of contexts at the class level. It ignores payoff magnitude and focuses on whether the induced relational class changes. This is appropriate when the question is not how much the payoffs change, but whether the social meaning of the interaction changes. The robustness theorem complements this by showing when class invariance is stable under perturbation: profiles far from the axes cannot be recontextualized by small valuation changes.
 
-The game-theoretic layer adds a second distinction. An intelligent profile need not be strategically stable, and a malicious profile may be a Nash equilibrium. In the benchmark business context, $(P,U)$ is malicious but stable under unilateral deviations. In the sport context, $(P,U)$ is intelligent but not a Nash equilibrium. Thus class desirability and strategic stability should be studied jointly rather than conflated.
+The game-theoretic layer adds a second distinction. An intelligent profile need not be a Nash equilibrium, and a malicious profile may be one. In the business benchmark, $(P,U)$ is malicious but admits no profitable unilateral deviation. In the sport benchmark, $(P,U)$ is intelligent but not an equilibrium. Thus class desirability and equilibrium membership should be studied jointly rather than conflated.
 
 The population-dynamics illustration adds a third distinction. Static contextual sensitivity and dynamic trajectory distance need not agree. Two contexts may classify some profiles differently but converge to similar long-run behavior under a given update rule. Conversely, contexts with similar class maps may behave differently if the payoff magnitudes and ordinal comparisons induce different dynamics. This motivates later work connecting class-level metrics, equilibrium structure, and population dynamics more systematically.
 
@@ -1515,7 +1565,7 @@ These limitations delimit the scope of the framework. Empirical calibration, pro
 
 This paper proposed context-dependent benefit--loss games as a formal framework for studying benefit--loss interactions across domains. The main idea is simple but consequential: the benefit--loss class of a strategic profile is not an intrinsic property of the profile alone. It is induced by a context-dependent valuation map. By distinguishing strategic form from contextual valuation, the framework explains how the same abstract action may remain invariant across contexts or be reclassified when moved from one domain to another.
 
-The formal contributions include induced partitions of profile spaces, a characterization of class-preserving translations, a Hamming pseudometric for contextual sensitivity, and robustness theorems for perturbations and axis crossing. The strategic contribution shows that class stability and Nash stability are distinct, and the $2\times2$ configuration theorem separates a forced knife-edge regime from a possible robust diagonal regime. The computational audits challenge these claims through exhaustive finite enumeration, seeded perturbations, and convergence diagnostics.
+The formal contributions include induced partitions of profile spaces, a characterization of class-preserving translations, a Hamming pseudometric for contextual sensitivity, and exact robustness radii for class and pure-equilibrium sets. The strategic contribution shows that class invariance and Nash equilibrium membership are distinct, and the $2\times2$ configuration theorem separates a forced knife-edge regime from a possible robust diagonal regime. The computational audits challenge these claims through exhaustive finite enumeration, seeded perturbations, and convergence diagnostics.
 
 The benchmark examples show how these notions operate in three domains: business organization, classroom, and sport team. The central transition $(P,U):\Mclass\to\Dclass\to\Iclass$ demonstrates that contextual valuation can move a profile from malicious, to destructive, to intelligent while leaving the abstract strategic form unchanged. The second transition $(G,R):\Dclass\to\Hclass\to\Dclass$ shows that recontextualization is not always a movement toward improvement. This paper provides the structural and computational layer of that program: empirical calibration is not required for the validity of the formal results, but is the natural next step for domain-specific applications. Future work should estimate contextual valuations empirically, extend the framework to larger games and networks, and connect class transitions with dynamical models of trust, cohesion, performance, and accumulated harm.
 
@@ -1572,6 +1622,12 @@ J. Hofbauer and K. Sigmund.
 \emph{Evolutionary Games and Population Dynamics}.
 Cambridge University Press, 1998.
 
+\bibitem{Jansen1981}
+M. J. M. Jansen.
+Regularity and stability of equilibrium points of bimatrix games.
+\emph{Mathematics of Operations Research}, 6(4):530--550, 1981.
+\url{https://doi.org/10.1287/moor.6.4.530}.
+
 \bibitem{KahnemanTversky1979}
 D. Kahneman and A. Tversky.
 Prospect theory: an analysis of decision under risk.
@@ -1581,6 +1637,12 @@ Prospect theory: an analysis of decision under risk.
 J. Kuperman, D. R. B\'{a}rcenas, and M. N. Kuperman.
 Evolutionary game inspired by Cipolla's basic laws of human stupidity.
 \emph{Physical Review E}, 101:052307, 2020.
+
+\bibitem{KohlbergMertens1986}
+E. Kohlberg and J.-F. Mertens.
+On the strategic stability of equilibria.
+\emph{Econometrica}, 54(5):1003--1037, 1986.
+\url{https://doi.org/10.2307/1912320}.
 
 \bibitem{Mella2017}
 P. Mella.
@@ -1617,6 +1679,12 @@ A. Rapoport, A. M. Chammah, and C. J. Orwant.
 \emph{Prisoner's Dilemma: A Study in Conflict and Cooperation}.
 University of Michigan Press, 1965.
 
+\bibitem{Ryan2026}
+M. Ryan.
+Category-dependent preferences and stochastic choice.
+\emph{Mathematical Social Sciences}, 140:102514, 2026.
+\url{https://doi.org/10.1016/j.mathsocsci.2026.102514}.
+
 \bibitem{Sandholm2010}
 W. H. Sandholm.
 \emph{Population Games and Evolutionary Dynamics}.
@@ -1626,6 +1694,12 @@ MIT Press, 2010.
 A. Sen.
 \emph{Collective Choice and Social Welfare}.
 Holden-Day, 1970.
+
+\bibitem{SuMorsky2024}
+R. Su and B. Morsky.
+Relational utility and social norms in games.
+\emph{Mathematical Social Sciences}, 127:54--61, 2024.
+\url{https://doi.org/10.1016/j.mathsocsci.2023.12.001}.
 
 \bibitem{Tettamanzi2014}
 A. G. B. Tettamanzi and C. C. da Pereira.

@@ -30,7 +30,8 @@ def main() -> int:
             "import pandas as pd\n"
             "from context_games.benchmarks import BENCHMARKS\n"
             "from context_games.experiments import (baseline_tables, convergence_diagnostics, "
-            "exhaustive_dichotomy_audit, perturbation_audit, run_all, sensitivity_grid, sensitivity_grid_summary)\n\n"
+            "exhaustive_dichotomy_audit, perturbation_audit, robustness_radii, run_all, "
+            "sensitivity_grid, sensitivity_grid_summary)\n\n"
             "RESULTS = Path('results')\n"
             "print({'python': platform.python_version(), 'numpy': np.__version__, "
             "'pandas': pd.__version__, 'matplotlib': matplotlib.__version__})"
@@ -59,7 +60,11 @@ def main() -> int:
             "standard errors or inferential summaries."
         ),
         nbf.v4.new_markdown_cell("## 4. Payoff-perturbation audit"),
-        nbf.v4.new_code_cell("perturbations = perturbation_audit()\ndisplay(perturbations)"),
+        nbf.v4.new_code_cell(
+            "display(robustness_radii())\n"
+            "perturbations = perturbation_audit()\n"
+            "display(perturbations)"
+        ),
         nbf.v4.new_markdown_cell(
             "For the business benchmark, the class map is locally robust but the original two-equilibrium "
             "set is not: continuous perturbations break the exact actor indifference with probability one."
@@ -67,7 +72,7 @@ def main() -> int:
         nbf.v4.new_markdown_cell("## 5. Exhaustive finite audit of the configuration theorem"),
         nbf.v4.new_code_cell("display(exhaustive_dichotomy_audit())"),
         nbf.v4.new_markdown_cell(
-            "All $4^8=65{,}536$ games with payoff coordinates in $\\{-2,-1,1,2\\}$ are checked. "
+            "All $5^8=390{,}625$ games with payoff coordinates in $\\{-2,-1,0,1,2\\}$ are checked. "
             "This is a finite computational audit, not a replacement for the proof."
         ),
         nbf.v4.new_markdown_cell("## 6. Rebuild archived tables and figures"),

@@ -50,6 +50,7 @@ class DichotomyTests(unittest.TestCase):
 
     def test_exhaustive_grid_has_no_counterexample(self) -> None:
         audit = exhaustive_dichotomy_audit().iloc[0]
+        self.assertEqual(audit.games, 390625)
         self.assertEqual(audit.shared_row_pairs, 0)
         self.assertEqual(audit.shared_column_dominance_failures, 0)
         self.assertGreater(audit.diagonal_pairs, 0)

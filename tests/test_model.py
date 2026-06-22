@@ -1,11 +1,21 @@
 from __future__ import annotations
 
+import itertools
 import unittest
 
 import numpy as np
 
 from context_games.benchmarks import BENCHMARKS, EXPECTED_PAYOFFS
-from context_games.model import classify, simulate, structural_sensitivity, trajectory_distance
+from context_games.model import (
+    ContextGame,
+    class_map_robustness_radius,
+    classify,
+    equilibrium_set_robustness_radius,
+    perturbed_game,
+    simulate,
+    structural_sensitivity,
+    trajectory_distance,
+)
 
 
 class ClassificationTests(unittest.TestCase):
@@ -35,6 +45,76 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(structural_sensitivity(BENCHMARKS["business"], BENCHMARKS["classroom"]), 0.5)
         self.assertEqual(structural_sensitivity(BENCHMARKS["business"], BENCHMARKS["sport"]), 0.25)
         self.assertEqual(structural_sensitivity(BENCHMARKS["classroom"], BENCHMARKS["sport"]), 0.5)
+
+    def test_exact_robustness_radii(self) -> None:
+        for game in BENCHMARKS.values():
+            self.assertEqual(class_map_robustness_radius(game), 1.0)
+        self.assertEqual(equilibrium_set_robustness_radius(BENCHMARKS["business"]), 0.0)
+        self.assertEqual(equilibrium_set_robustness_radius(BENCHMARKS["classroom"]), 0.5)
+        self.assertEqual(equilibrium_set_robustness_radius(BENCHMARKS["sport"]), 0.5)
+
+    def test_robustness_radii_against_all_box_vertices(self) -> None:
+        vertices = tuple(itertools.product((-1.0, 1.0), repeat=8))
+        for game in BENCHMARKS.values():
+            original_classes = game.classes()
+            self.assertTrue(
+                all(perturbed_game(game, 0.99 * np.asarray(v)).classes() == original_classes for v in vertices)
+            )
+            self.assertTrue(
+                any(perturbed_game(game, 1.01 * np.asarray(v)).classes() != original_classes for v in vertices)
+            )
+        for key in ("classroom", "sport"):
+            game = BENCHMARKS[key]
+            original_ne = game.pure_nash()
+            self.assertTrue(
+                all(perturbed_game(game, 0.49 * np.asarray(v)).pure_nash() == original_ne for v in vertices)
+            )
+            self.assertTrue(
+                any(perturbed_game(game, 0.51 * np.asarray(v)).pure_nash() != original_ne for v in vertices)
+            )
+        business = BENCHMARKS["business"]
+        self.assertTrue(
+            any(
+                perturbed_game(business, 1e-6 * np.asarray(v)).pure_nash() != business.pure_nash()
+                for v in vertices
+            )
+        )
+
+    def test_equilibrium_radius_edge_cases(self) -> None:
+        matching_pennies = ContextGame(
+            "matching-pennies",
+            "Matching pennies",
+            ("T", "B"),
+            ("L", "R"),
+            {
+                ("T", "L"): (1.0, -1.0),
+                ("T", "R"): (-1.0, 1.0),
+                ("B", "L"): (-1.0, 1.0),
+                ("B", "R"): (1.0, -1.0),
+            },
+        )
+        flat = ContextGame(
+            "flat",
+            "Flat",
+            ("T", "B"),
+            ("L", "R"),
+            {profile: (0.0, 0.0) for profile in (("T", "L"), ("T", "R"), ("B", "L"), ("B", "R"))},
+        )
+        self.assertEqual(matching_pennies.pure_nash(), ())
+        self.assertEqual(equilibrium_set_robustness_radius(matching_pennies), 1.0)
+        self.assertEqual(len(flat.pure_nash()), 4)
+        self.assertEqual(equilibrium_set_robustness_radius(flat), 0.0)
+
+        vertices = tuple(itertools.product((-1.0, 1.0), repeat=8))
+        self.assertTrue(
+            all(not perturbed_game(matching_pennies, 0.99 * np.asarray(v)).pure_nash() for v in vertices)
+        )
+        self.assertTrue(
+            any(perturbed_game(matching_pennies, 1.01 * np.asarray(v)).pure_nash() for v in vertices)
+        )
+        self.assertTrue(
+            any(perturbed_game(flat, 1e-6 * np.asarray(v)).pure_nash() != flat.pure_nash() for v in vertices)
+        )
 
     def test_baseline_trajectory_regression(self) -> None:
         trajectory = simulate(BENCHMARKS["business"])

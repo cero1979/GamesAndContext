@@ -31,6 +31,8 @@ def main() -> int:
         resources={"metadata": {"path": str(ROOT)}},
     )
     client.execute()
+    for cell in notebook.cells:
+        cell.get("metadata", {}).pop("execution", None)
     EXECUTED_NOTEBOOK.parent.mkdir(parents=True, exist_ok=True)
     nbformat.write(notebook, EXECUTED_NOTEBOOK)
     print(f"All checks passed; executed notebook written to {EXECUTED_NOTEBOOK}")

@@ -45,8 +45,9 @@ For a faster code-only check:
 
 - Feature weights reproduce every benchmark payoff exactly.
 - Class maps, margins, pure equilibria, and trajectory distances are regression-tested.
-- The configuration dichotomy is exhaustively checked on all `4^8 = 65,536`
-  two-player games with coordinates in `{-2, -1, 1, 2}`.
+- The configuration theorem is exhaustively checked on all `5^8 = 390,625`
+  two-player games with coordinates in `{-2, -1, 0, 1, 2}`.
+- Exact open-ball radii distinguish class-map and complete pure-NE-set robustness.
 - The open robustness ball for `Gamma-diamond` is checked at all 256 vertices;
   a separate test confirms that radius `3/4` itself is not included.
 - Seeded payoff perturbations distinguish class robustness from equilibrium robustness.

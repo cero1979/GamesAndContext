@@ -10,7 +10,16 @@ import numpy as np
 import pandas as pd
 
 from .benchmarks import BENCHMARKS, CONTEXTS, PROFILES
-from .model import ContextGame, axis_margin, perturbed_game, simulate, structural_sensitivity, trajectory_distance
+from .model import (
+    ContextGame,
+    axis_margin,
+    class_map_robustness_radius,
+    equilibrium_set_robustness_radius,
+    perturbed_game,
+    simulate,
+    structural_sensitivity,
+    trajectory_distance,
+)
 
 DEFAULT_SEED = 20260622
 PDF_METADATA = {"Creator": "context_games 0.9.0", "CreationDate": None, "ModDate": None}
@@ -158,8 +167,21 @@ def perturbation_audit(draws: int = 2000, seed: int = DEFAULT_SEED) -> pd.DataFr
     return pd.DataFrame(rows)
 
 
-def exhaustive_dichotomy_audit(values: tuple[int, ...] = (-2, -1, 1, 2)) -> pd.DataFrame:
-    """Exhaustively check the 2x2 dichotomy on a 65,536-game integer grid."""
+def robustness_radii() -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {
+                "context": key,
+                "class_map_radius": class_map_robustness_radius(BENCHMARKS[key]),
+                "pure_nash_set_radius": equilibrium_set_robustness_radius(BENCHMARKS[key]),
+            }
+            for key in CONTEXTS
+        ]
+    )
+
+
+def exhaustive_dichotomy_audit(values: tuple[int, ...] = (-2, -1, 0, 1, 2)) -> pd.DataFrame:
+    """Exhaustively check the 2x2 theorem on a 390,625-game integer grid."""
     counts = {
         "games": 0,
         "I_M_equilibrium_pairs": 0,
@@ -201,7 +223,7 @@ def exhaustive_dichotomy_audit(values: tuple[int, ...] = (-2, -1, 1, 2)) -> pd.D
                     and game.welfare(intelligent) > game.welfare(malicious)
                 ):
                     counts["strict_diagonal_welfare_dominated_pairs"] += 1
-    return pd.DataFrame([counts])
+    return pd.DataFrame([{"payoff_values": "[" + ";".join(map(str, values)) + "]", **counts}])
 
 
 def make_figures(output_dir: Path) -> None:
@@ -269,5 +291,6 @@ def run_all(output_dir: Path) -> None:
     sensitivity_grid_summary(detail).to_csv(output_dir / "sensitivity_grid_summary.csv", index=False)
     convergence_diagnostics().to_csv(output_dir / "convergence_diagnostics.csv", index=False)
     perturbation_audit().to_csv(output_dir / "payoff_perturbation_audit.csv", index=False)
+    robustness_radii().to_csv(output_dir / "robustness_radii.csv", index=False)
     exhaustive_dichotomy_audit().to_csv(output_dir / "exhaustive_dichotomy_audit.csv", index=False)
     make_figures(output_dir)

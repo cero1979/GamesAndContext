@@ -181,6 +181,37 @@ def structural_sensitivity(first: ContextGame, second: ContextGame) -> float:
     return changed / len(first.profiles)
 
 
+def class_map_robustness_radius(game: ContextGame) -> float:
+    """Supremal open sup-norm radius certified by distance to the payoff axes."""
+    return min(axis_margin(game.payoffs[profile]) for profile in game.profiles)
+
+
+def equilibrium_set_robustness_radius(game: ContextGame) -> float:
+    """Exact open sup-norm radius preserving the full pure-Nash set in a 2x2 game.
+
+    A unilateral payoff difference changes by at most twice the coordinate-wise
+    perturbation radius.  An equilibrium survives while both of its advantages
+    stay non-negative.  A non-equilibrium stays out while at least one of its
+    negative advantages remains negative.
+    """
+    actor = game.payoff_matrix(0)
+    affected = game.payoff_matrix(1)
+    equilibria = set(game.pure_nash())
+    profile_radii: list[float] = []
+    for i, a in enumerate(game.rows):
+        for j, b in enumerate(game.columns):
+            profile = (a, b)
+            advantages = (actor[i, j] - actor[1 - i, j], affected[i, j] - affected[i, 1 - j])
+            if profile in equilibria:
+                profile_radii.append(min(advantages) / 2.0)
+            else:
+                negative_slacks = [-advantage for advantage in advantages if advantage < 0]
+                if not negative_slacks:
+                    raise AssertionError("non-equilibrium profile has no negative deviation advantage")
+                profile_radii.append(max(negative_slacks) / 2.0)
+    return float(min(profile_radii))
+
+
 def trajectory_distance(
     first: ContextGame,
     second: ContextGame,
