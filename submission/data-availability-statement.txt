@@ -1,0 +1,6 @@
+Data and code availability
+
+All benchmark inputs, source code, tests, and scripts needed to reproduce the
+tables and figures are available at https://github.com/cero1979/GamesAndContext.
+The study uses synthetic benchmark valuations and no confidential or personal
+data. A versioned archival DOI will replace this sentence before submission.

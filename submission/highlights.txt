@@ -1,0 +1,5 @@
+- Contextual valuations separate strategic form from benefit-loss class.
+- A Hamming metric measures class changes across social contexts.
+- Malicious equilibria are fragile when paired profiles share an action.
+- Robust welfare-dominated malicious equilibria require a diagonal regime.
+- Exhaustive and perturbation audits distinguish class and Nash robustness.
