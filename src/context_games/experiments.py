@@ -314,7 +314,6 @@ def make_figures(output_dir: Path) -> None:
     axes[1].legend(loc="lower right", fontsize=8)
     fig.tight_layout()
     fig.savefig(output_dir / "strategy_trajectories.pdf", bbox_inches="tight", metadata=PDF_METADATA)
-    fig.savefig(output_dir / "strategy_trajectories.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
     fig, axes = plt.subplots(1, 3, figsize=(11, 3.6), sharey=True)
@@ -331,7 +330,6 @@ def make_figures(output_dir: Path) -> None:
     axes[-1].legend(loc="center right", fontsize=8)
     fig.tight_layout()
     fig.savefig(output_dir / "class_masses.pdf", bbox_inches="tight", metadata=PDF_METADATA)
-    fig.savefig(output_dir / "class_masses.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
     perturbations = perturbation_audit()
@@ -350,7 +348,6 @@ def make_figures(output_dir: Path) -> None:
     axes[1].legend(fontsize=8)
     fig.tight_layout()
     fig.savefig(output_dir / "payoff_perturbation_robustness.pdf", bbox_inches="tight", metadata=PDF_METADATA)
-    fig.savefig(output_dir / "payoff_perturbation_robustness.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
 

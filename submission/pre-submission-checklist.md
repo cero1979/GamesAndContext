@@ -9,7 +9,7 @@ Verified against the *Mathematical Social Sciences* Guide for Authors on
 - Abstract is 197 words (maximum: 250).
 - Seven English keywords are supplied (allowed: 1-7).
 - Five highlights are supplied; every line is at most 85 characters.
-- Tables are editable and all figures are supplied as PDF and 300-dpi PNG.
+- Tables are editable and all figures are supplied as publication-quality vector PDF.
 - Code, synthetic inputs, tests, notebook, and generated outputs are versioned.
 - A data-and-code statement and an AI-assistance declaration are in the manuscript.
 - The complete Python 3.12 environment is pinned and exercised by CI.

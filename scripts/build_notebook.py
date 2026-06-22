@@ -85,6 +85,8 @@ def main() -> int:
             "sorted(path.name for path in RESULTS.iterdir() if path.is_file())"
         ),
     ]
+    for index, cell in enumerate(notebook.cells):
+        cell["id"] = f"cell-{index:02d}"
     DESTINATION.parent.mkdir(parents=True, exist_ok=True)
     nbf.write(notebook, DESTINATION)
     print(f"Wrote {DESTINATION}")

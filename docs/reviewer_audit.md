@@ -25,7 +25,7 @@ copy edit.
 | The exhaustive grid omitted zero payoffs and weak best-response ties. | Audit avoided class boundaries and an important source of degeneracy. | Addressed: all `5^8 = 390,625` games on `{-2,-1,0,1,2}` are enumerated. |
 | Monte Carlo rates were the main evidence for payoff robustness. | A finite random sample cannot certify a neighborhood. | Addressed: exact class-map and pure-NE-set radii are derived and tested; simulation is retained only as a distribution-specific illustration. |
 | The principal equilibrium results were stated only for `2x2` games. | Apparent dependence on the benchmark dimension weakens novelty and external mathematical scope. | Addressed: the exact pure-NE-set radius and configuration theorem now cover arbitrary finite two-player games; exhaustive `2x3` and `3x2` audits exercise the extension. |
-| The executed notebook regenerated figures under `matplotlib_inline`. | The notebook silently overwrote CLI figures with backend-dependent binaries. | Addressed: figure generation occurs once in the tested CLI with the `Agg` backend; the notebook reads the archived rectangular audit and no longer overwrites artifacts. |
+| The executed notebook regenerated figures under `matplotlib_inline`. | The notebook silently overwrote CLI figures with backend-dependent binaries. | Addressed: figure generation occurs once with `Agg`; publication figures are vector PDF, platform-dependent PNG duplicates were removed, and the notebook no longer overwrites artifacts. |
 
 ## Residual scientific risks
 
