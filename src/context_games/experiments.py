@@ -27,6 +27,17 @@ from .model import (
 
 DEFAULT_SEED = 20260622
 PDF_METADATA = {"Creator": "context_games 0.9.0", "CreationDate": None, "ModDate": None}
+CSV_FLOAT_FORMAT = "%.12g"
+
+
+def _write_result_csv(table: pd.DataFrame, path: Path, *, index: bool = False) -> None:
+    """Serialize reported numbers independently of last-bit libm differences."""
+    table.to_csv(
+        path,
+        index=index,
+        float_format=CSV_FLOAT_FORMAT,
+        lineterminator="\n",
+    )
 
 
 def baseline_tables() -> dict[str, pd.DataFrame]:
@@ -354,17 +365,23 @@ def make_figures(output_dir: Path) -> None:
 def run_all(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     for name, table in baseline_tables().items():
-        table.to_csv(output_dir / f"{name}.csv", index=name not in {"structural_sensitivity", "dynamic_trajectory_distances"})
+        _write_result_csv(
+            table,
+            output_dir / f"{name}.csv",
+            index=name not in {"structural_sensitivity", "dynamic_trajectory_distances"},
+        )
     detail = sensitivity_grid()
-    detail.to_csv(output_dir / "sensitivity_grid_detail.csv", index=False)
-    sensitivity_grid_summary(detail).to_csv(output_dir / "sensitivity_grid_summary.csv", index=False)
-    convergence_diagnostics().to_csv(output_dir / "convergence_diagnostics.csv", index=False)
-    perturbation_audit().to_csv(output_dir / "payoff_perturbation_audit.csv", index=False)
-    robustness_radii().to_csv(output_dir / "robustness_radii.csv", index=False)
-    exhaustive_configuration_audit().to_csv(
-        output_dir / "exhaustive_configuration_audit.csv", index=False
+    _write_result_csv(detail, output_dir / "sensitivity_grid_detail.csv")
+    _write_result_csv(
+        sensitivity_grid_summary(detail), output_dir / "sensitivity_grid_summary.csv"
     )
-    rectangular_configuration_audit().to_csv(
-        output_dir / "rectangular_configuration_audit.csv", index=False
+    _write_result_csv(convergence_diagnostics(), output_dir / "convergence_diagnostics.csv")
+    _write_result_csv(perturbation_audit(), output_dir / "payoff_perturbation_audit.csv")
+    _write_result_csv(robustness_radii(), output_dir / "robustness_radii.csv")
+    _write_result_csv(
+        exhaustive_configuration_audit(), output_dir / "exhaustive_configuration_audit.csv"
+    )
+    _write_result_csv(
+        rectangular_configuration_audit(), output_dir / "rectangular_configuration_audit.csv"
     )
     make_figures(output_dir)

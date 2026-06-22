@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import itertools
+import tempfile
 import unittest
+from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 from context_games.benchmarks import BENCHMARKS, EXPECTED_PAYOFFS
+from context_games.experiments import _write_result_csv
 from context_games.model import (
     ContextGame,
     class_map_robustness_radius,
@@ -46,6 +50,20 @@ class ClassificationTests(unittest.TestCase):
     def test_feature_weights_reproduce_payoffs(self) -> None:
         for key, expected in EXPECTED_PAYOFFS.items():
             self.assertEqual(BENCHMARKS[key].payoffs, expected)
+
+
+class ResultSerializationTests(unittest.TestCase):
+    def test_csv_floats_are_normalized_to_twelve_significant_digits(self) -> None:
+        table = pd.DataFrame(
+            {"value": [0.12345678901234567, 1.473767441417806e-9]}
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "result.csv"
+            _write_result_csv(table, path)
+            self.assertEqual(
+                path.read_text(encoding="utf-8"),
+                "value\n0.123456789012\n1.47376744142e-09\n",
+            )
 
 
 class FiniteGameTests(unittest.TestCase):

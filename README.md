@@ -22,7 +22,11 @@ python3.12 -m venv .venv
 The final command runs the test suite, regenerates all result tables and figures,
 and executes the notebook into `results/executed_notebook.ipynb` without changing
 the source notebook. Figures are rendered once with Matplotlib's non-interactive
-`Agg` backend; notebook execution does not overwrite generated artifacts.
+`Agg` backend; notebook execution does not overwrite generated artifacts. CSV
+floating-point fields are serialized to 12 significant digits so harmless
+last-bit differences in platform math libraries do not alter the archive. All
+calculations still use double precision, and reported results use at most six
+decimal places.
 
 For a faster code-only check:
 
