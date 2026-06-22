@@ -26,12 +26,13 @@ copy edit.
 | Monte Carlo rates were the main evidence for payoff robustness. | A finite random sample cannot certify a neighborhood. | Addressed: exact class-map and pure-NE-set radii are derived and tested; simulation is retained only as a distribution-specific illustration. |
 | The principal equilibrium results were stated only for `2x2` games. | Apparent dependence on the benchmark dimension weakens novelty and external mathematical scope. | Addressed: the exact pure-NE-set radius and configuration theorem now cover arbitrary finite two-player games; exhaustive `2x3` and `3x2` audits exercise the extension. |
 | The executed notebook regenerated figures under `matplotlib_inline`. | The notebook silently overwrote CLI figures with backend-dependent binaries. | Addressed: figure generation occurs once with `Agg`; publication figures are vector PDF, platform-dependent PNG duplicates were removed, and the notebook no longer overwrites artifacts. |
+| The main finite-game theorems appeared only after elementary partition and saturated feature sections. | Editors could miss the contribution or read the paper as an overextended taxonomy. | Addressed: a self-contained main-results section now follows the model immediately; benchmark analysis only applies it, and the non-identified feature layer is an appendix. |
 
 ## Residual scientific risks
 
-1. The formal results are elementary in several sections. The paper should lead
-   with the configuration theorem and robustness distinction, and compress
-   tautological partition/category material.
+1. Several partition observations remain elementary. The paper now foregrounds
+   the finite-game theorems and moves the saturated feature layer to an appendix,
+   but an editor may still request further compression of background definitions.
 2. The benchmarks are constructed examples. Claims about real institutions must
    remain conditional and illustrative until calibrated data exist.
 3. The framework remains adjacent to, rather than a replacement for, models that

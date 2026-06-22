@@ -75,8 +75,10 @@ The paper makes three principal contributions.
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Strategic contribution.} Two finite-game theorems give the exact radius preserving the complete pure-Nash set and characterize coexistence of intelligent and malicious equilibria. Sharing the actor's action is impossible; sharing the affected side's action forces an indifference knife-edge; robust welfare-dominated coexistence requires profiles sharing neither action. A $2\times2$ example realizes the robust case with a certified open-ball radius.
     \item \textbf{Structural contribution.} The benefit--loss plane induces a partition of each finite profile space. We characterize class-preserving translations, define a Hamming pseudometric for contextual sensitivity, and give payoff- and weight-space criteria for robustness and boundary crossing. These results distinguish robustness of a profile's class from robustness of its equilibrium status.
-    \item \textbf{Computational contribution.} We give a reproducible exponential-replicator illustration and two audits: exhaustive enumeration of a finite grid of $2\times2$ games and seeded continuous payoff perturbations. The audits test the theorem implementation, finite-horizon convergence, and the separation between class and equilibrium robustness; they are not empirical validation.
+    \item \textbf{Computational contribution.} We give a reproducible exponential-replicator illustration, exhaustive square and rectangular game enumerations, and seeded continuous payoff perturbations. The audits test the finite-game theorem implementation, finite-horizon convergence, and the separation between class and equilibrium robustness; they are not empirical validation.
 \end{enumerate}
+
+After defining the contextual game, the paper states the two main finite-game theorems before developing translations, class sensitivity, and class robustness. The benchmark and dynamic sections then apply those results. The saturated feature matrices and their weight-space calculations are reported separately in Appendix~\ref{sec:features} so that the main argument does not depend on an unidentified parameterization.
 
 The benchmark examples use three domains: a business organization with boss--employee players, a classroom with teacher--student players, and a sport team with coach--team members. The examples are not empirical measurements. They are normalized benchmark valuations generated from interpretable action features and context-specific weights. They show both stable profiles and context-sensitive profiles. In particular, the same abstract strategic profile---public pressure received with engaged uptake---may be malicious in a business organization, destructive in a classroom, and intelligent in a sport team. A second profile---constructive guidance met with resistance---shows a different transition pattern, from destructive to hapless to destructive.
 
@@ -367,6 +369,8 @@ Q_C(\sigma)\longrightarrow Q_D(\sigma).
 \]
 \end{definition}
 
+\input{finite_game_results}
+
 \section{Class-preserving context translations}
 
 We now formalize the idea that one context can be translated into another. A translation may preserve the names of strategies, or it may map strategies in one context to analogous strategies in another context.
@@ -490,6 +494,32 @@ Then $W(V_C(\sigma))=1$ and $W(V_D(F_*\sigma))=2$, so the sign of local welfare 
 \end{proof}
 
 The commuting condition is compositional. Identity translations preserve class, and if $Q_D\circ F_*=Q_C$ and $Q_E\circ G_*=Q_D$, then $Q_E\circ(G_*\circ F_*)=Q_C$. No additional categorical machinery is needed for the results below.
+
+\subsection{Equilibrium-preserving translations}
+
+\begin{definition}[Order-preserving context translation]
+A translation $F:G_C\to G_D$ is order-preserving if for every $b\in B_C$ and all $a,a'\in A_C$,
+\[
+X_C(a,b)\ge X_C(a',b)\Longleftrightarrow X_D(F_Aa,F_Bb)\ge X_D(F_Aa',F_Bb),
+\]
+and for every $a\in A_C$ and all $b,b'\in B_C$,
+\[
+Y_C(a,b)\ge Y_C(a,b')\Longleftrightarrow Y_D(F_Aa,F_Bb)\ge Y_D(F_Aa,F_Bb').
+\]
+\end{definition}
+
+\begin{proposition}[Order preservation implies equilibrium preservation]
+Let $F:G_C\to G_D$ be a bijective order-preserving translation. If $(a,b)$ is a pure Nash equilibrium of $G_C$, then $F_*(a,b)$ is a pure Nash equilibrium of $G_D$.
+\end{proposition}
+
+\begin{proof}
+Since $(a,b)$ is a Nash equilibrium in $G_C$, $a$ maximizes $X_C(\cdot,b)$ and $b$ maximizes $Y_C(a,\cdot)$. Order preservation implies that $F_Aa$ maximizes $X_D(\cdot,F_Bb)$ among the images of row strategies, and that $F_Bb$ maximizes $Y_D(F_Aa,\cdot)$ among the images of column strategies. Since $F$ is bijective on both strategy sets, these images exhaust the strategy sets of $G_D$. Hence $F_*(a,b)$ is a pure Nash equilibrium of $G_D$.
+\end{proof}
+
+\begin{remark}
+Class preservation and equilibrium preservation are logically distinct. Class preservation depends on signs of payoff vectors. Equilibrium preservation depends on ordinal comparisons of payoffs within each player's unilateral deviations. A translation may preserve one structure while failing to preserve the other.
+\end{remark}
+
 
 \section{Contextual sensitivity as a pseudometric}
 \label{sec:sensitivity}
@@ -659,241 +689,10 @@ There exist payoff vectors $v,w\in\R^2$ such that the segment $[v,w]$ intersects
 Take $v=(-1,-1)$ and $w=(0,-1)$. The segment joining them lies on the horizontal line $y=-1$ and contains $w=(0,-1)$, so it intersects the axis set $\mathcal A$. However, $v\in\mathcal D^-$ and $w\in\mathcal D^0$, and both regions are included in the destructive class $\mathcal D$. Hence $Q(v)=Q(w)=\Dclass$. Thus axis crossing is necessary but not sufficient for class change.
 \end{proof}
 
-\section{Feature-based contextual valuation}
-\label{sec:features}
-
-The benchmark payoffs used below are generated by a transparent feature-based parameterization. This representation makes every numerical input inspectable and provides a template for later calibration, but it does not identify the weights empirically or make the synthetic payoffs non-arbitrary.
-
-\begin{definition}[Feature-based valuation]
-Let $\Prof=A\times B$ be a finite profile set. A feature representation is a map
-\[
-\phi:\Prof\to\R^k.
-\]
-A context-specific weight matrix is a matrix
-\[
-W_C\in\R^{2\times k}.
-\]
-The induced contextual valuation is
-\[
-V_C(\sigma)=W_C\phi(\sigma).
-\]
-The first row of $W_C$ determines the actor-side payoff, and the second row determines the affected-side payoff.
-\end{definition}
-
-The same feature vector may be evaluated differently in different contexts. For example, public pressure may increase short-term compliance in a business organization, damage pedagogical legitimacy in a classroom, and improve focus in a sport team when embedded in a shared competitive culture.
-
-\begin{proposition}[Feature weights induce contextual revaluation]
-Let $\phi:\Prof\to\R^k$ be fixed. If $W_C\ne W_D$, then the same profile $\sigma$ may satisfy
-\[
-Q(W_C\phi(\sigma))\ne Q(W_D\phi(\sigma)).
-\]
-\end{proposition}
-
-\begin{proof}
-It suffices to give an example. Let $k=1$, $\phi(\sigma)=1$, $W_C=(1,-1)^T$ and $W_D=(1,1)^T$. Then $W_C\phi(\sigma)=(1,-1)$ is malicious, while $W_D\phi(\sigma)=(1,1)$ is intelligent. Hence changing the context weights can change the class while the profile feature vector is fixed.
-\end{proof}
-
-For the benchmark examples we use two abstract strategies for the authority-side player:
-\[
-G=\text{constructive guidance},\qquad P=\text{public pressure},
-\]
-and two abstract strategies for the affected-side player:
-\[
-U=\text{engaged uptake},\qquad R=\text{resistance or withdrawal}.
-\]
-The symbol $U$ is used for uptake in order to avoid confusion with the destructive class $\Dclass$.
-
-The feature vector is
-\[
-\phi(\sigma)=(g,p,u,r,pu,gr,pr)^T\in\R^7,
-\]
-where $g,p,u,r$ are indicators for guidance, pressure, uptake, and resistance, while $pu,gr,pr$ are interaction indicators for $(P,U)$, $(G,R)$, and $(P,R)$ respectively. Table~\ref{tab:feature-meaning} explains the features. Table~\ref{tab:features} gives the four feature vectors.
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{c p{0.74\textwidth}}
-\toprule
-Feature & Interpretation\\
-\midrule
-$g$ & Baseline effect of constructive guidance by the authority-side player.\\
-$p$ & Baseline effect of public pressure by the authority-side player.\\
-$u$ & Baseline effect of engaged uptake by the affected-side player.\\
-$r$ & Baseline effect of resistance or withdrawal by the affected-side player.\\
-$pu$ & Contextual interaction effect when public pressure is met with engaged uptake.\\
-$gr$ & Contextual interaction effect when guidance is met with resistance.\\
-$pr$ & Contextual interaction effect when pressure is met with resistance.\\
-\bottomrule
-\end{tabular}
-\caption{Interpretation of the benchmark features. The weights assigned to these features encode context-specific norms, goals, and role expectations.}
-\label{tab:feature-meaning}
-\end{table}
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{c|ccccccc}
-\toprule
-Profile & $g$ & $p$ & $u$ & $r$ & $pu$ & $gr$ & $pr$\\
-\midrule
-$(G,U)$ & 1 & 0 & 1 & 0 & 0 & 0 & 0\\
-$(G,R)$ & 1 & 0 & 0 & 1 & 0 & 1 & 0\\
-$(P,U)$ & 0 & 1 & 1 & 0 & 1 & 0 & 0\\
-$(P,R)$ & 0 & 1 & 0 & 1 & 0 & 0 & 1\\
-\bottomrule
-\end{tabular}
-\caption{Feature representation for the four benchmark profiles.}
-\label{tab:features}
-\end{table}
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{ll|rrrrrrr}
-\toprule
-Context & Payoff row & $g$ & $p$ & $u$ & $r$ & $pu$ & $gr$ & $pr$\\
-\midrule
-$C_B$ business & actor & 1 & 0 & 1 & -2 & 1 & 0 & 0\\
- & affected & 1 & -1 & 2 & -2 & -3 & 0 & 0\\
-\midrule
-$C_A$ classroom & actor & 1 & -2 & 1 & -3 & 0 & 0 & 3\\
- & affected & 1 & -4 & 2 & 0 & 0 & 0 & 1\\
-\midrule
-$C_S$ sport team & actor & 2 & 1 & 1 & -3 & 0 & 0 & 0\\
- & affected & 1 & 0 & 2 & -2 & 0 & 0 & -1\\
-\bottomrule
-\end{tabular}
-\caption{Context-specific weight matrices. Applying $V_C(\sigma)=W_C\phi(\sigma)$ generates the benchmark payoff matrices in Table~\ref{tab:payoff-transitions}.}
-\label{tab:weights}
-\end{table}
-
-The weights in Table~\ref{tab:weights} are illustrative. Their signs encode the intended institutional readings: in the business benchmark, pressure can increase short-term actor-side control but reduce the affected side's autonomy and trust; in the classroom benchmark it is penalized on both sides; and in the sport benchmark it is positive only when combined with uptake. These statements define the examples and are not empirical claims about the three domains.
-
-The representation is deliberately saturated relative to the four observed profiles: seven features generate only four payoff vectors per context, so the weight matrix is not identified from those vectors. Multiple weight matrices produce the same game. Accordingly, the feature layer is an auditable parameterization rather than an explanatory regression model. The formal robustness claims below concern sign-defined sets of payoffs or weights; empirical identification would require additional profiles, restrictions, or external data.
-
-
-\begin{proposition}[Class regions in weight space]
-\label{prop:weight-space-regions}
-Fix a profile $\sigma$ and its feature vector $\phi(\sigma)\in\R^k$. For each open class $c\in\{\Iclass,\Hclass,\Mclass\}$, the set of weights $W\in\R^{2\times k}$ such that $Q(W\phi(\sigma))=c$ is an intersection of two strict linear half-spaces. The strict destructive region $\mathcal D^-$ is also an intersection of two strict linear half-spaces. Thus, away from $\mathcal D^0$ and the boundary, each class condition is stable under sufficiently small perturbations of $W$.
-\end{proposition}
-
-\begin{proof}
-Write the two rows of $W$ as $w_1,w_2\in\R^k$. Then
-\[
-W\phi(\sigma)=\bigl(w_1\cdot\phi(\sigma),\, w_2\cdot\phi(\sigma)\bigr).
-\]
-For fixed $\phi(\sigma)$, the maps $W\mapsto w_1\cdot\phi(\sigma)$ and $W\mapsto w_2\cdot\phi(\sigma)$ are linear functions of the entries of $W$. The class conditions are therefore linear sign conditions on these two functions. Explicitly,
-\[
-Q(W\phi(\sigma))=\Iclass \Longleftrightarrow w_1\cdot\phi(\sigma)>0\text{ and }w_2\cdot\phi(\sigma)>0,
-\]
-\[
-Q(W\phi(\sigma))=\Hclass \Longleftrightarrow w_1\cdot\phi(\sigma)<0\text{ and }w_2\cdot\phi(\sigma)>0,
-\]
-\[
-Q(W\phi(\sigma))=\Mclass \Longleftrightarrow w_1\cdot\phi(\sigma)>0\text{ and }w_2\cdot\phi(\sigma)<0,
-\]
-and
-\[
-W\phi(\sigma)\in\mathcal D^- \Longleftrightarrow w_1\cdot\phi(\sigma)<0\text{ and }w_2\cdot\phi(\sigma)<0.
-\]
-Each condition is the intersection of two strict linear half-spaces in $\R^{2\times k}$. Strict linear half-spaces are open sets, and finite intersections of open sets are open. Hence if a weight matrix $W$ places $W\phi(\sigma)$ in one of these open classes, there exists a radius $\rho>0$ such that every weight matrix $W'$ with $\|W'-W\|<\rho$ induces the same class for $\sigma$. The exceptional cases are precisely those in which one of the two linear forms is zero, corresponding to $\mathcal D^0$ or to the boundary of the benefit--loss partition.
-\end{proof}
-
-This proposition addresses sensitivity, not empirical validity. The benchmark tables are one point in weight space, and nearby weights preserving the induced signs leave the class conclusions unchanged. This does not establish that the selected region describes any real institution.
-
-\subsection{Robustness of benchmark transitions in weight space}
-
-The next result is the main formal response to the concern that the benchmark payoffs are hand-crafted. It shows that the reported class transitions are not isolated numerical coincidences: they persist on open polyhedral regions of the weight space. Thus the exact entries in Table~\ref{tab:weights} are illustrative representatives of broader sign-defined parameter regions.
-
-\begin{proposition}[Open weight conditions for the benchmark transitions]
-\label{prop:benchmark-weight-conditions}
-Let $\phi_{PU}=\phi(P,U)$ and $\phi_{GR}=\phi(G,R)$. Write the rows of the business, classroom, and sport-team weight matrices as
-\[
-W_B=(w_B^A,w_B^B),\qquad W_A=(w_A^A,w_A^B),\qquad W_S=(w_S^A,w_S^B),
-\]
-where the superscripts $A$ and $B$ denote actor-side and affected-side rows. Then the transition
-\[
-(P,U):\Mclass\longrightarrow\Dclass\longrightarrow\Iclass
-\]
-holds, with the classroom point in $\mathcal D^-$, if and only if
-\[
-w_B^A\cdot\phi_{PU}>0,\quad w_B^B\cdot\phi_{PU}<0,
-\]
-\[
-w_A^A\cdot\phi_{PU}<0,\quad w_A^B\cdot\phi_{PU}<0,
-\]
-and
-\[
-w_S^A\cdot\phi_{PU}>0,\quad w_S^B\cdot\phi_{PU}>0.
-\]
-Similarly,
-\[
-(G,R):\Dclass\longrightarrow\Hclass\longrightarrow\Dclass
-\]
-with the destructive points in $\mathcal D^-$ holds if and only if
-\[
-w_B^A\cdot\phi_{GR}<0,\quad w_B^B\cdot\phi_{GR}<0,
-\]
-\[
-w_A^A\cdot\phi_{GR}<0,\quad w_A^B\cdot\phi_{GR}>0,
-\]
-and
-\[
-w_S^A\cdot\phi_{GR}<0,\quad w_S^B\cdot\phi_{GR}<0.
-\]
-Each set of inequalities defines an open polyhedral region in the product of the three weight spaces.
-\end{proposition}
-
-\begin{proof}
-For any context $C$, the class of a profile is determined by the signs of the two coordinates of $W_C\phi(\sigma)$, namely
-\[
-W_C\phi(\sigma)=\bigl(w_C^A\cdot\phi(\sigma),\, w_C^B\cdot\phi(\sigma)\bigr).
-\]
-For $(P,U)$ to be malicious in the business context, these two signs must be $(+,-)$, giving the first pair of inequalities. For $(P,U)$ to be strictly destructive in the classroom context, the signs must be $(-,-)$, giving the second pair. For $(P,U)$ to be intelligent in the sport-team context, the signs must be $(+,+)$, giving the third pair. This proves the first equivalence.
-
-The proof for $(G,R)$ is identical. The transition $\Dclass\to\Hclass\to\Dclass$ with strict destructive endpoints requires signs $(-,-)$ in business, $(-,+)$ in classroom, and $(-,-)$ in sport. Translating these sign requirements into dot-product inequalities gives the displayed conditions.
-
-Finally, each displayed condition is a strict linear inequality in the entries of the corresponding weight row. A finite conjunction of strict linear inequalities is an open polyhedral region. Therefore the benchmark transitions are not isolated numerical coincidences; they persist throughout open regions of the relevant weight spaces.
-\end{proof}
-
-The inequalities also identify which signs are substantively essential. For example, the transition $(P,U):\Mclass\to\Dclass\to\Iclass$ requires public pressure with uptake to be actor-beneficial and affected-side harmful in the business context, harmful to both sides in the classroom context, and beneficial to both sides in the sport-team context. If any of these sign requirements is reversed, the transition changes. The feature weights should therefore be read as a compact representation of institutional norms and role expectations rather than as empirical estimates.
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{c|ccc|c}
-\toprule
-Profile & Business $C_B$ & Classroom $C_A$ & Sport team $C_S$ & Class transition\\
-\midrule
-$(P,U)$ & $(+,-)$ & $(-,-)$ & $(+,+)$ & $\Mclass\to\Dclass\to\Iclass$\\
-$(G,R)$ & $(-,-)$ & $(-,+)$ & $(-,-)$ & $\Dclass\to\Hclass\to\Dclass$\\
-\bottomrule
-\end{tabular}
-\caption{Essential sign patterns behind the two recontextualized benchmark profiles. The exact numerical payoffs in Table~\ref{tab:payoff-transitions} are representatives of these sign-defined regions.}
-\label{tab:essential-signs}
-\end{table}
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{l l p{0.60\textwidth}}
-\toprule
-Context & Sign of $(P,U)$ & Institutional reading of the essential signs\\
-\midrule
-Business $C_B$ & $(+,-)$ & Public pressure met with uptake raises the actor's short-term control but erodes the affected side's autonomy and trust.\\
-Classroom $C_A$ & $(-,-)$ & Public pressure damages pedagogical legitimacy and student confidence, harming both sides.\\
-Sport team $C_S$ & $(+,+)$ & Public pressure accepted as tactical discipline benefits both the actor and the team.\\
-\bottomrule
-\end{tabular}
-\caption{Institutional reading of the essential sign conditions for the recontextualized profile $(P,U)$. It is the signs, not the exact magnitudes, that carry the social interpretation; this is exactly what Proposition~\ref{prop:benchmark-weight-conditions} formalizes.}
-\label{tab:institutional-signs}
-\end{table}
-
-
 \section{Benchmark contextual games}
 \label{sec:benchmarks}
 
-This section introduces three benchmark examples showing that the same strategic form may induce different benefit--loss classifications when evaluated under different contexts. The examples are normalized payoff models designed to make explicit the role of contextual valuation.
+This section introduces three benchmark examples showing that the same strategic form may induce different benefit--loss classifications when evaluated under different contexts. The examples are normalized payoff models designed to make explicit the role of contextual valuation. Appendix~\ref{sec:features} reports the complete feature vectors, weight matrices, and weight-space conditions that generate them.
 
 We consider three contexts:
 \[
@@ -906,7 +705,7 @@ C_B:\text{boss--employee},\qquad C_A:\text{teacher--student},\qquad C_S:\text{co
 
 \subsection{Business organization: boss--employee}
 
-In the business context, the first payoff measures managerial control, efficiency, reputation, or short-term organizational advantage. The second payoff measures the employee's autonomy, motivation, professional growth, and work climate. Applying the business weights $W_{C_B}$ gives
+In the business context, the first payoff measures managerial control, efficiency, reputation, or short-term organizational advantage. The second payoff measures the employee's autonomy, motivation, professional growth, and work climate. Applying the business weights $W_{C_B}$ reported in Appendix~\ref{sec:features} gives
 \[
 \begin{array}{c|cc}
  & U:\text{engaged uptake} & R:\text{resistance/withdrawal}\\
@@ -919,7 +718,7 @@ The profile $(G,U)$ is intelligent: constructive guidance improves the manager's
 
 \subsection{Classroom: teacher--student}
 
-In the classroom context, the first payoff measures the teacher's pedagogical effectiveness, legitimacy, and classroom climate. The second payoff measures the student's learning, confidence, participation, and epistemic autonomy. Applying the classroom weights $W_{C_A}$ gives
+In the classroom context, the first payoff measures the teacher's pedagogical effectiveness, legitimacy, and classroom climate. The second payoff measures the student's learning, confidence, participation, and epistemic autonomy. Applying the classroom weights $W_{C_A}$ reported in Appendix~\ref{sec:features} gives
 \[
 \begin{array}{c|cc}
  & U:\text{engaged uptake} & R:\text{resistance/withdrawal}\\
@@ -932,7 +731,7 @@ The profile $(G,U)$ remains intelligent. However, $(G,R)$ becomes hapless: the t
 
 \subsection{Sport team: coach--team members}
 
-In the sport context, the first payoff measures the coach's tactical effectiveness, authority, and match-oriented performance. The second payoff measures the team's cohesion, discipline, motivation, and competitive performance. Applying the sport-team weights $W_{C_S}$ gives
+In the sport context, the first payoff measures the coach's tactical effectiveness, authority, and match-oriented performance. The second payoff measures the team's cohesion, discipline, motivation, and competitive performance. Applying the sport-team weights $W_{C_S}$ reported in Appendix~\ref{sec:features} gives
 \[
 \begin{array}{c|cc}
  & U:\text{engaged uptake} & R:\text{resistance/withdrawal}\\
@@ -1052,51 +851,15 @@ $(P,R)$ & 2 & 2 & 2\\
 
 The axis margins in Table~\ref{tab:margins} show how the robustness theorem applies. For example, the classroom payoff $V_{C_A}(P,U)=(-1,-2)$ has margin $1$; perturbations of sup-norm smaller than $1$ cannot change its class. Thus the benchmark conclusions are not destroyed by arbitrarily small noise, although profiles with smaller margins are less robust.
 
-\section{Game-theoretic layer: best responses and equilibria}
+\section{Benchmark equilibrium analysis}
 \label{sec:game-theory}
 
-The partition-based layer classifies profiles by the signs of their contextual payoff vectors. Since each valuation also gives a normal-form game, it is useful to separate two notions that are sometimes conflated: \emph{class invariance} and \emph{Nash equilibrium membership}. A profile can be intelligent without being a Nash equilibrium, and a malicious profile can be a Nash equilibrium if no player has a profitable unilateral deviation.
+We now apply the finite-game results of Section~\ref{sec:finite-results} to the three benchmark valuations. The purpose is to distinguish class desirability from equilibrium membership and to quantify the exact robustness gap identified above.
 
 \begin{definition}[Class desirability]
 \label{def:class-desirability}
 A profile $\sigma$ in a context $C$ is \emph{benefit--loss desirable} (equivalently, \emph{class-desirable}) if $Q_C(\sigma)=\Iclass$, that is, if both the actor side and the affected side gain. Benefit--loss desirability is thus a purely class-based property of a single profile. It is distinct from \emph{welfare dominance}, which compares the aggregate $W=x+y$ of two profiles, and from \emph{Nash equilibrium membership}, which concerns unilateral deviations. Whenever we contrast desirability with equilibrium below, ``desirable'' means class $\Iclass$.
 \end{definition}
-
-Let $G_C=(C,A,B,V_C)$ be a contextual benefit--loss game and write
-\[
-V_C(a,b)=(X_C(a,b),Y_C(a,b)),
-\]
-where $X_C$ is the payoff of the acting player and $Y_C$ is the payoff of the affected player. The best-response correspondences are
-\[
-\BR^A_C(b)=\argmax_{a\in A}X_C(a,b),\qquad \BR^B_C(a)=\argmax_{b\in B}Y_C(a,b).
-\]
-A pure Nash equilibrium is a profile $(a,b)$ such that
-\[
-a\in\BR^A_C(b),\qquad b\in\BR^B_C(a).
-\]
-
-\begin{definition}[Order-preserving context translation]
-A translation $F:G_C\to G_D$ is order-preserving if for every $b\in B_C$ and all $a,a'\in A_C$,
-\[
-X_C(a,b)\ge X_C(a',b)\Longleftrightarrow X_D(F_Aa,F_Bb)\ge X_D(F_Aa',F_Bb),
-\]
-and for every $a\in A_C$ and all $b,b'\in B_C$,
-\[
-Y_C(a,b)\ge Y_C(a,b')\Longleftrightarrow Y_D(F_Aa,F_Bb)\ge Y_D(F_Aa,F_Bb').
-\]
-\end{definition}
-
-\begin{proposition}[Order preservation implies equilibrium preservation]
-Let $F:G_C\to G_D$ be a bijective order-preserving translation. If $(a,b)$ is a pure Nash equilibrium of $G_C$, then $F_*(a,b)$ is a pure Nash equilibrium of $G_D$.
-\end{proposition}
-
-\begin{proof}
-Since $(a,b)$ is a Nash equilibrium in $G_C$, $a$ maximizes $X_C(\cdot,b)$ and $b$ maximizes $Y_C(a,\cdot)$. Order preservation implies that $F_Aa$ maximizes $X_D(\cdot,F_Bb)$ among the images of row strategies, and that $F_Bb$ maximizes $Y_D(F_Aa,\cdot)$ among the images of column strategies. Since $F$ is bijective on both strategy sets, these images exhaust the strategy sets of $G_D$. Hence $F_*(a,b)$ is a pure Nash equilibrium of $G_D$.
-\end{proof}
-
-\begin{remark}
-Class preservation and equilibrium preservation are logically distinct. Class preservation depends on signs of payoff vectors. Equilibrium preservation depends on ordinal comparisons of payoffs within each player's unilateral deviations. A translation may preserve one structure while failing to preserve the other.
-\end{remark}
 
 \begin{table}[h]
 \centering
@@ -1129,38 +892,7 @@ In $C_S$, the acting side always prefers $G$, since $3>2$ against $U$ and $-1>-2
 
 This result is one of the main conceptual payoffs of the game-theoretic layer. Benefit--loss desirability and equilibrium membership are different dimensions. The business benchmark contains a malicious equilibrium: the profile admits no profitable unilateral deviation but is relationally harmful to the affected side. Conversely, the sport benchmark contains an intelligent non-equilibrium: the profile benefits both sides but is dominated for the acting side by constructive guidance. The equilibrium membership of $(P,U)$ in $C_B$ rests on the exact actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)$; Proposition~\ref{prop:knife-edge} shows that this equilibrium is a knife-edge in payoff magnitude, in contrast to the open-region robustness of its malicious \emph{class}.
 
-The distinction can be quantified exactly in any finite two-player game. For a profile $(i,j)\in A\times B$, collect all unilateral payoff advantages in
-\[
-\Delta_{ij}=
-\{X(i,j)-X(i',j):i'\in A\setminus\{i\}\}
-\cup
-\{Y(i,j)-Y(i,j'):j'\in B\setminus\{j\}\}.
-\]
-Thus $(i,j)$ is a pure Nash equilibrium exactly when every element of $\Delta_{ij}$ is nonnegative.
-
-\begin{theorem}[Exact pure-equilibrium-set robustness in finite games]
-\label{thm:ne-radius}
-Let $G$ be a finite two-player game in which each player has at least two actions. For each profile $(i,j)$ define
-\[
-r_{ij}=\begin{cases}
-\tfrac12\min\Delta_{ij}, & (i,j)\in\NE(G),\\[2mm]
-\tfrac12\max\{-d:d\in\Delta_{ij},\ d<0\}, & (i,j)\notin\NE(G).
-\end{cases}
-\]
-Then
-\[
-\rho_{\NE}(G)=\min_{i,j}r_{ij}
-\]
-is the supremal open sup-norm radius that preserves the complete set of pure Nash equilibria: every payoff perturbation of norm less than $\rho_{\NE}(G)$ leaves $\NE(G)$ unchanged, while for every $\varepsilon>\rho_{\NE}(G)$ some perturbation of norm less than $\varepsilon$ changes it.
-\end{theorem}
-
-\begin{proof}
-Each unilateral advantage is a difference of two payoff coordinates, so a sup-norm perturbation of radius $\delta$ changes it by less than $2\delta$. For an equilibrium profile, all advantages therefore remain nonnegative whenever $\delta<\tfrac12\min\Delta_{ij}$. For a non-equilibrium profile, at least one advantage is negative. If $d_*$ is a negative advantage with largest absolute value, then $d_*$ remains negative whenever $\delta<-d_*/2$; hence the profile remains outside the equilibrium set below $r_{ij}$. Taking the minimum over the finite profile set preserves the entire pure-equilibrium set.
-
-For sharpness, choose a profile attaining the minimum. If it is an equilibrium, choose an advantage attaining $\min\Delta_{ij}$, lower its current payoff coordinate and raise the corresponding deviation payoff by any common amount strictly between $r_{ij}$ and $\varepsilon$; that advantage becomes negative. If it is not an equilibrium, increase the current payoff of each player by $r_{ij}$ and decrease that player's payoff at every profitable unilateral deviation by $r_{ij}$. These are distinct payoff coordinates across players, and every initially negative advantage $d$ becomes $d+2r_{ij}\ge0$. The profile therefore becomes a Nash equilibrium under a perturbation of norm $r_{ij}<\varepsilon$. In either case every enlargement beyond $\rho_{\NE}(G)$ permits a change in equilibrium membership.
-\end{proof}
-
-Let $\rho_Q(G)=\min_{\sigma}m(V(\sigma))$ be the uniform class-map radius from Corollary~\ref{cor:uniform-robustness}. Direct substitution gives Table~\ref{tab:robustness-radii}. The business benchmark has $\rho_Q=1$ but $\rho_{\NE}=0$: its class map is locally constant on a full neighborhood, whereas its equilibrium set is not constant on any neighborhood. The other two benchmarks have positive, but smaller, equilibrium-set radii.
+Applying Theorem~\ref{thm:ne-radius} and the uniform class-map radius from Corollary~\ref{cor:uniform-robustness} gives Table~\ref{tab:robustness-radii}. The business benchmark has $\rho_Q=1$ but $\rho_{\NE}=0$: its class map is locally constant on a full neighborhood, whereas its equilibrium set is not constant on any neighborhood. The other two benchmarks have positive, but smaller, equilibrium-set radii.
 
 \begin{table}[htbp]
 \centering
@@ -1203,10 +935,6 @@ In the classroom context, the affected-side player strictly prefers $U$ to $R$ a
 In the sport-team context, the affected-side player strictly prefers $U$ to $R$ against both authority-side strategies, since $3>-1$ and $2>-3$. The authority-side player strictly prefers $G$ to $P$ against both affected-side strategies, since $3>2$ and $-1>-2$. Hence the unique equilibrium is again $p=1,q=1$, i.e. $(G,U)$.
 \end{proof}
 
-\begin{definition}[Pareto and welfare dominance]
-For two profiles $\sigma,\tau$ in a fixed context $C$, write $V_C(\sigma)=(x_\sigma,y_\sigma)$ and $V_C(\tau)=(x_\tau,y_\tau)$. We say that $\sigma$ Pareto-dominates $\tau$ if $x_\sigma\ge x_\tau$ and $y_\sigma\ge y_\tau$, with at least one strict inequality. We say that $\sigma$ welfare-dominates $\tau$ if $W(V_C(\sigma))>W(V_C(\tau))$.
-\end{definition}
-
 \begin{proposition}[A malicious equilibrium can be welfare-dominated]
 \label{prop:malicious-welfare-dominated}
 In the business benchmark, $(P,U)$ is a malicious Nash equilibrium, but it is Pareto-dominated and welfare-dominated by the intelligent Nash equilibrium $(G,U)$.
@@ -1230,43 +958,6 @@ Thus $(G,U)$ welfare-dominates $(P,U)$. Proposition~\ref{prop:benchmark-equilibr
 
 This proposition is the main welfare lesson of the benchmark. Nash equilibrium membership alone does not identify the socially preferable equilibrium: in $C_B$, both $(G,U)$ and $(P,U)$ are equilibria, but only the former is both intelligent and welfare superior.
 
-\subsection{A general characterization of welfare-dominated malicious equilibria}
-\label{sec:general-theorem}
-
-Proposition~\ref{prop:malicious-welfare-dominated} is a statement about one benchmark. We now show that it is an instance of a structural trichotomy for every finite two-player contextual benefit--loss game. The result explains why the business malicious equilibrium is fragile and identifies the only possible robust relative position. If $|A|=m$ and $|B|=n$, a game is identified with its payoff vector $v\in\R^{2mn}$, and a property is called \emph{robust} if it holds on an open neighborhood of $v$.
-
-\begin{lemma}[Indifference forced by coexisting equilibria]
-\label{lem:coexist}
-Let a finite two-player contextual benefit--loss game have two distinct pure Nash equilibria. If they share the actor's action, the affected-side player is indifferent between the two affected-side actions at those profiles. If they share the affected side's action, the actor is indifferent between the two actor actions at those profiles.
-\end{lemma}
-
-\begin{proof}
-Suppose $(a,b)$ and $(a,b')$ are equilibria with $b\ne b'$. Affected-side optimality at $(a,b)$ gives $Y_C(a,b)\ge Y_C(a,b')$, and optimality at $(a,b')$ gives the reverse inequality; hence equality holds. The shared-affected-action case is symmetric: actor optimality at $(a,b)$ and $(a',b)$ gives $X_C(a,b)=X_C(a',b)$.
-\end{proof}
-
-\begin{theorem}[Finite-game configuration theorem for intelligent and malicious equilibria]
-\label{thm:configuration}
-Let $G_C$ be a finite two-player contextual benefit--loss game, let $\sigma_I$ be an intelligent pure Nash equilibrium, and let $\sigma_M\ne\sigma_I$ be a malicious pure Nash equilibrium. Then exactly one of the following relative positions occurs.
-\begin{enumerate}[label=(\alph*)]
-\item \textbf{(Shared actor action: impossible.)} $\sigma_I$ and $\sigma_M$ cannot share the actor's action.
-\item \textbf{(Shared affected-side action: forced knife-edge.)} If they share the affected side's action, then the actor is indifferent between the two actor actions, $X_C(\sigma_I)=X_C(\sigma_M)>0$, and $\sigma_I$ both Pareto-dominates and welfare-dominates $\sigma_M$. Every game supporting this fixed pair lies in the hyperplane $\{X_C(\sigma_I)=X_C(\sigma_M)\}\subset\R^{2mn}$. The existence of any such shared-action pair is therefore contained in a finite union of hyperplanes, has empty interior, and is never robust.
-\item \textbf{(No shared action: the only possible robust regime.)} Otherwise the profiles differ in both players' actions. This relative position alone does not imply robustness. If both profiles are strict equilibria and $W(\sigma_I)>W(\sigma_M)$, their class, equilibrium, and welfare-dominance conditions are strict linear inequalities in $v$ and therefore persist on an open neighborhood. Such strict instances exist already in $2\times2$ games.
-\end{enumerate}
-Consequently, sharing no action is necessary but not sufficient for robust coexistence of an intelligent equilibrium and a welfare-dominated malicious equilibrium. In a $2\times2$ game this is exactly the diagonal configuration; sharing the affected-side action is necessarily a knife-edge.
-\end{theorem}
-
-\begin{proof}
-(a) If $\sigma_I$ and $\sigma_M$ shared the actor's action, Lemma~\ref{lem:coexist} would give $Y_C(\sigma_I)=Y_C(\sigma_M)$. But $\sigma_I\in\Iclass$ forces $Y_C(\sigma_I)>0$ and $\sigma_M\in\Mclass$ forces $Y_C(\sigma_M)<0$, a contradiction.
-
-(b) If they share the affected side's action, Lemma~\ref{lem:coexist} gives $X_C(\sigma_I)=X_C(\sigma_M)$. Both classes require a positive actor payoff, so this common value is positive. Since $Y_C(\sigma_I)>0>Y_C(\sigma_M)$ while the actor payoffs are equal, $\sigma_I$ Pareto-dominates $\sigma_M$, and
-\[
-W(\sigma_I)=X_C(\sigma_I)+Y_C(\sigma_I)>X_C(\sigma_M)+Y_C(\sigma_M)=W(\sigma_M).
-\]
-The defining equality confines the fixed pair to a hyperplane of $\R^{2mn}$. There are only finitely many profile pairs, so the set of games admitting any pair of this type is contained in a finite union of proper hyperplanes and has empty interior. Equivalently, arbitrarily small generic perturbations break all of the relevant actor ties. Thus shared-affected-action coexistence is not robust.
-
-(c) By (a) and (b), the remaining relative position shares neither action. Weak equilibria can still rely on payoff ties, so this position alone is not sufficient. When both equilibria are strict, however, their finitely many best-response conditions are strict linear inequalities. The sign conditions defining $\sigma_I\in\Iclass$ and $\sigma_M\in\Mclass$, together with welfare dominance $W(\sigma_I)-W(\sigma_M)>0$, are also strict linear inequalities in $v$. A finite intersection of strict half-spaces is open. Proposition~\ref{prop:diagonal-robust} supplies a nonempty $2\times2$ instance, proving that the robust regime exists.
-\end{proof}
-
 \begin{corollary}[The business benchmark is a knife-edge instance]
 \label{cor:business-knife-edge}
 In the business context, $\sigma_I=(G,U)$ and $\sigma_M=(P,U)$ share the affected-side action $U$, so Theorem~\ref{thm:configuration}(b) applies: the actor indifference $X_{C_B}(G,U)=X_{C_B}(P,U)=2$ is forced, $(G,U)$ Pareto- and welfare-dominates $(P,U)$, and the malicious equilibrium is non-robust. This recovers Propositions~\ref{prop:malicious-welfare-dominated} and~\ref{prop:knife-edge} as the shared-affected-action case of the trichotomy.
@@ -1274,27 +965,6 @@ In the business context, $\sigma_I=(G,U)$ and $\sigma_M=(P,U)$ share the affecte
 
 \begin{proof}
 Both profiles use the affected-side action $U$, so this is case (b) of Theorem~\ref{thm:configuration}. The forced indifference and the dominance are exactly Proposition~\ref{prop:malicious-welfare-dominated}, and the resulting non-robustness is Proposition~\ref{prop:knife-edge}.
-\end{proof}
-
-\begin{proposition}[Robust welfare-dominated malicious equilibria exist]
-\label{prop:diagonal-robust}
-Let $\Gamma^\diamond$ be the $2\times2$ contextual benefit--loss game with payoff vectors
-\[
-V(G,U)=(1,4),\quad V(G,R)=(-2,2),\quad V(P,U)=(-1,-3),\quad V(P,R)=(3,-1).
-\]
-Then $(G,U)$ is an intelligent strict Nash equilibrium and $(P,R)$ is a malicious strict Nash equilibrium; $(G,U)$ welfare-dominates $(P,R)$ but does \emph{not} Pareto-dominate it; and all of these properties hold simultaneously for every payoff matrix at sup-norm distance strictly less than $3/4$ from $\Gamma^\diamond$. The bound is sharp for this certificate: at distance $3/4$ the welfare inequality can become an equality. Hence robust welfare-dominated malicious equilibria exist, realizing case (c) of Theorem~\ref{thm:configuration}.
-\end{proposition}
-
-\begin{proof}
-Direct evaluation gives the strict best-response inequalities
-\[
-X(G,U)-X(P,U)=2>0,\qquad Y(G,U)-Y(G,R)=2>0,
-\]
-so $(G,U)$ is a strict equilibrium, and
-\[
-X(P,R)-X(G,R)=5>0,\qquad Y(P,R)-Y(P,U)=2>0,
-\]
-so $(P,R)$ is a strict equilibrium. The class conditions $X(G,U),Y(G,U)>0$ and $X(P,R)>0>Y(P,R)$ hold, so $(G,U)\in\Iclass$ and $(P,R)\in\Mclass$. Welfare dominance holds because $W(G,U)-W(P,R)=5-2=3>0$, while Pareto dominance fails because $X(P,R)-X(G,U)=2>0$, so the malicious actor strictly out-earns the intelligent one. Each displayed quantity is a strict linear form $\ell(v)$ in the eight payoff coordinates; under a perturbation of sup-norm size $\delta$ it changes by at most $\delta\,\|\ell\|_1$, where $\|\ell\|_1$ is the sum of the absolute coefficients of $\ell$. The smallest ratio $\ell(\Gamma^\diamond)/\|\ell\|_1$ over the list is attained at the welfare form, with slack $3$ and $\|\ell\|_1=4$, giving $3/4$. Hence all inequalities remain valid for every $\delta<3/4$. At $\delta=3/4$, decreasing both coordinates of $V(G,U)$ and increasing both coordinates of $V(P,R)$ by $3/4$ makes the two welfare values equal, so the open-ball qualification is necessary.
 \end{proof}
 
 \begin{remark}[Robust dynamic survival of malicious behavior]
@@ -1569,6 +1239,10 @@ This paper proposed context-dependent benefit--loss games as a formal framework 
 The formal contributions include induced partitions of profile spaces, a characterization of class-preserving translations, a Hamming pseudometric for contextual sensitivity, and exact robustness radii for class maps and complete pure-equilibrium sets. The finite-game configuration theorem separates an impossible shared-actor-action case, a forced shared-affected-action knife-edge, and a potentially robust no-shared-action regime; in $2\times2$ games the last case is diagonal. Exhaustive square and rectangular enumeration, seeded perturbations, and convergence diagnostics challenge these claims computationally.
 
 The benchmark examples show how these notions operate in three domains: business organization, classroom, and sport team. The central transition $(P,U):\Mclass\to\Dclass\to\Iclass$ demonstrates that contextual valuation can move a profile from malicious, to destructive, to intelligent while leaving the abstract strategic form unchanged. The second transition $(G,R):\Dclass\to\Hclass\to\Dclass$ shows that recontextualization is not always a movement toward improvement. This paper provides the structural and computational layer of that program: empirical calibration is not required for the validity of the formal results, but is the natural next step for domain-specific applications. Future work should estimate contextual valuations empirically, extend the framework to larger games and networks, and connect class transitions with dynamical models of trust, cohesion, performance, and accumulated harm.
+
+\clearpage
+\appendix
+\input{feature_appendix}
 
 \section*{Data and code availability}
 All synthetic benchmark inputs, source code, tests, and scripts needed to reproduce the tables and figures are available at \url{https://github.com/cero1979/GamesAndContext}. The study uses no confidential or personal data. A versioned archival DOI will be added before submission.
