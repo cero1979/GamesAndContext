@@ -1,0 +1,30 @@
+MATHEMATICAL SOCIAL SCIENCES - TITLE PAGE INFORMATION
+
+Complete every bracketed field before submission. The journal uses
+single-anonymized review, so author identities remain in the manuscript.
+
+Article title
+Transporting Benefit--Loss Classes Across Contexts: Invariance and Equilibrium
+in Finite Games
+
+For each author
+- Given name(s): [required]
+- Family name(s): [required]
+- ORCID: [recommended]
+- Affiliation marker: [lower-case letter]
+- Present/permanent address footnote, if applicable: [optional]
+
+For each affiliation
+- Department or unit: [required if applicable]
+- Institution: [required]
+- Street and postal code: [required]
+- City: [required]
+- Country: [required]
+
+Corresponding author
+- Full name: [required]
+- Email: [required]
+- Full postal address: [required]
+- Telephone number: [required by the submission checklist]
+
+The author order and spelling must match Editorial Manager exactly.

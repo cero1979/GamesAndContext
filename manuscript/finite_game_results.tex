@@ -3,7 +3,11 @@
 
 The class partition and the equilibrium correspondence read different information from the same valuation map. Classes depend on payoff signs at a profile; pure best responses depend on unilateral payoff comparisons. This section states the joint-preservation, exact-radius, and equilibrium-configuration results before introducing the benchmark parameterization.
 
-For a contextual game $G_C=(C,A,B,V_C)$, write $V_C(a,b)=(X_C(a,b),Y_C(a,b))$. The best-response correspondences are
+For a contextual game $G_C=(C,A,B,V_C)$, write
+\[
+V_C(a,b)=\bigl(X_C(a,b),Y_C(a,b)\bigr).
+\]
+The best-response correspondences are
 \[
 \BR^A_C(b)=\argmax_{a\in A}X_C(a,b),
 \qquad
@@ -103,7 +107,7 @@ maps or scales can alter expected-payoff order under a mixed opponent strategy,
 so mixed best responses need not be preserved without stronger restrictions. The broader
 literature on strategically equivalent transformations characterizes
 universal preservation of Nash and best-response sets without imposing the
-benefit--loss sign semantics \cite{TewoldeConitzer2024}.  Theorem
+benefit--loss sign semantics \citep{TewoldeConitzer2024}.  Theorem
 \ref{thm:joint-preservation} instead characterizes the intersection relevant
 here: transformations that retain both pure incentives and Cipolla's profile
 classification.
@@ -179,10 +183,10 @@ In the remaining case the profiles share neither action. Strict best-response, s
 \begin{proposition}[Robust welfare-dominated malicious equilibria exist]
 \label{prop:diagonal-robust}
 Let $\Gamma^\diamond$ be the $2\times2$ contextual game
-\[
-V(G,U)=(1,4),\quad V(G,R)=(-2,2),\quad
-V(P,U)=(-1,-3),\quad V(P,R)=(3,-1).
-\]
+\begin{align*}
+V(G,U)&=(1,4), & V(G,R)&=(-2,2),\\
+V(P,U)&=(-1,-3), & V(P,R)&=(3,-1).
+\end{align*}
 Then $(G,U)$ is an intelligent strict Nash equilibrium, $(P,R)$ is a malicious strict Nash equilibrium, and $(G,U)$ welfare-dominates but does not Pareto-dominate $(P,R)$. All these properties hold for every payoff matrix at sup-norm distance strictly less than $3/4$ from $\Gamma^\diamond$. The bound is sharp for this certificate.
 \end{proposition}
 

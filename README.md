@@ -37,8 +37,9 @@ For a faster code-only check:
 
 ## Compile the manuscript
 
-The main source imports `finite_game_results.tex` and `feature_appendix.tex` from
-the same directory. With a standard TeX Live installation:
+The main source uses Elsevier's `elsarticle` class in preprint, author-year mode
+and imports `finite_game_results.tex` and `feature_appendix.tex` from the same
+directory. With a TeX Live installation that includes `elsarticle`:
 
 ```bash
 cd manuscript
@@ -55,7 +56,8 @@ figures in `results/`.
 - `notebooks/`: thin presentation notebook; it imports the tested package.
 - `results/`: generated CSV tables and publication-quality figures.
 - `manuscript/`: modular LaTeX source, technical appendix, and compiled manuscript.
-- `submission/`: journal-specific highlights and disclosure statements.
+- `submission/`: MSS highlights, title-page/declaration templates, submission
+  manifest, data statement, and compliance checklist.
 - `docs/reviewer_audit.md`: hostile-review checklist and current disposition.
 - `.github/workflows/reproduce.yml`: clean-environment reproduction check.
 

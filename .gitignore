@@ -11,5 +11,6 @@ manuscript/*.fdb_latexmk
 manuscript/*.fls
 manuscript/*.log
 manuscript/*.out
+manuscript/*.spl
 results/executed_notebook.ipynb
 tmp/
