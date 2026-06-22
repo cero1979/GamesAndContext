@@ -29,17 +29,23 @@ copy edit.
 | Raw double-precision CSV output differed across platforms in the 16th decimal place. | Exact artifact verification failed despite numerically equivalent calculations. | Addressed: all CSV floats use a tested 12-significant-digit serialization while calculations remain double precision. |
 | Package metadata claimed untested Python 3.11 compatibility while the archive used Python 3.12. | Users could expect support outside the validated environment. | Addressed: package metadata, `.python-version`, README, and SHA-pinned CI all specify CPython 3.12.13. |
 | The main finite-game theorems appeared only after elementary partition and saturated feature sections. | Editors could miss the contribution or read the paper as an overextended taxonomy. | Addressed: a self-contained main-results section now follows the model immediately; benchmark analysis only applies it, and the non-identified feature layer is an appendix. |
+| The manuscript could be read as claiming that context-dependent utility in games was new. | Direct conflict with social context games, relational utility, and category-dependent preference. | Addressed: the abstract, introduction, literature review, and conclusion expressly disclaim that priority claim and distinguish the Cipolla-specific comparative object. |
+| Social context games and payoff-transformation characterizations were omitted. | A hostile referee could allege unacknowledged prior art. | Addressed: Ashlagi--Krysta--Tennenholtz and Tewolde--Conitzer are cited and compared at the level of primitives and preservation questions. |
+| Class preservation and strategic preservation were juxtaposed but not jointly characterized. | The framework could look like renamed standard game theory. | Addressed: a new theorem proves that, within the opponent-contingent separable family, universal preservation of both structures is equivalent to strictly increasing transformations that fix zero; the affine corollary excludes offsets, and code tests both sides. |
+| Immediate consequences of definitions were presented as lengthy propositions. | Poor contribution-to-length ratio amplified the triviality objection. | Addressed: partition, welfare, and boundary observations are compressed; theorem status is reserved for substantive preservation, radius, and configuration results. |
 
 ## Residual scientific risks
 
-1. Several partition observations remain elementary. The paper now foregrounds
-   the finite-game theorems and moves the saturated feature layer to an appendix,
-   but an editor may still request further compression of background definitions.
+1. The contextual valuation primitive remains deliberately elementary. The paper
+   now disclaims novelty for that primitive and locates its contribution in the
+   joint class/incentive characterization, exact radii, and configuration theorem.
+   An editor may still judge those results insufficiently deep.
 2. The benchmarks are constructed examples. Claims about real institutions must
    remain conditional and illustrative until calibrated data exist.
-3. The framework remains adjacent to, rather than a replacement for, models that
-   derive relational utility from norms or identify category-dependent preferences
-   from stochastic choice; this boundary is now explicit and cites recent MSS work.
+3. The framework remains adjacent to social context games, norm-derived utility,
+   strategic-equivalence transformations, and category-dependent preferences.
+   The revised priority claim is narrower and explicit, but a systematic review
+   cannot prove that no uncited paper studies the same Cipolla-specific combination.
 4. An anonymous repository or archival release is still needed for review, with
    a persistent identifier added to the data-availability statement.
 5. Author identities, affiliations, funding, CRediT roles, conflicts, and final AI

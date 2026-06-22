@@ -63,6 +63,8 @@ figures in `results/`.
 
 - Feature weights reproduce every benchmark payoff exactly.
 - Class maps, margins, pure equilibria, and trajectory distances are regression-tested.
+- Increasing opponent-contingent payoff maps that fix zero preserve both class
+  maps and pure incentives; harmless offsets are tested to change class meaning.
 - The configuration theorem is exhaustively checked on all `5^8 = 390,625`
   `2x2` games with coordinates in `{-2, -1, 0, 1, 2}`.
 - Its finite-game extension is checked on all `2 * 3^12 = 1,062,882`

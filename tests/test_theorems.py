@@ -9,7 +9,13 @@ from context_games.experiments import (
     exhaustive_configuration_audit,
     rectangular_configuration_audit,
 )
-from context_games.model import ContextGame, perturbed_game, simulate
+from context_games.model import (
+    ContextGame,
+    opponent_contingent_affine_game,
+    opponent_contingent_payoff_transform,
+    perturbed_game,
+    simulate,
+)
 
 
 GAMMA_DIAMOND = ContextGame(
@@ -22,6 +28,42 @@ GAMMA_DIAMOND = ContextGame(
 
 
 class ConfigurationTests(unittest.TestCase):
+    def test_exhaustive_joint_preservation_sign_grid(self) -> None:
+        profiles = (("G", "U"), ("G", "R"), ("P", "U"), ("P", "R"))
+        changed_by_offsets = 0
+
+        def best_response_signature(game: ContextGame) -> tuple[tuple[str, ...], ...]:
+            return tuple(
+                [game.pure_best_responses(0, column) for column in game.columns]
+                + [game.pure_best_responses(1, row) for row in game.rows]
+            )
+
+        for index, coordinates in enumerate(itertools.product((-1.0, 1.0), repeat=8)):
+            payoffs = {
+                profile: (coordinates[2 * k], coordinates[2 * k + 1])
+                for k, profile in enumerate(profiles)
+            }
+            game = ContextGame(f"sign-grid-{index}", "Sign-grid game", ("G", "P"), ("U", "R"), payoffs)
+            transformed = opponent_contingent_payoff_transform(
+                game,
+                actor_transforms={"U": lambda x: x**3, "R": lambda x: 3.0 * x**3},
+                affected_transforms={"G": lambda y: 2.0 * y**3, "P": lambda y: y**3},
+            )
+            shifted = opponent_contingent_affine_game(
+                game,
+                actor_scales={"U": 1.0, "R": 1.0},
+                affected_scales={"G": 1.0, "P": 1.0},
+                actor_offsets={"U": 2.0, "R": 2.0},
+                affected_offsets={"G": 2.0, "P": 2.0},
+            )
+
+            self.assertEqual(transformed.classes(), game.classes())
+            self.assertEqual(best_response_signature(transformed), best_response_signature(game))
+            self.assertEqual(best_response_signature(shifted), best_response_signature(game))
+            changed_by_offsets += shifted.classes() != game.classes()
+
+        self.assertEqual(changed_by_offsets, 255)
+
     def test_gamma_diamond(self) -> None:
         self.assertEqual(set(GAMMA_DIAMOND.pure_nash(strict=True)), {("G", "U"), ("P", "R")})
         self.assertEqual(GAMMA_DIAMOND.classes()[("G", "U")], "I")
