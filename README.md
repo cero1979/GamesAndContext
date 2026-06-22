@@ -10,7 +10,7 @@ evidence about actual firms, classrooms, or sport teams.
 
 ## Reproduce
 
-Validated with CPython 3.12.13 on macOS and CPython 3.12 in GitHub Actions.
+Validated with CPython 3.12.13 on macOS and in GitHub Actions.
 
 ```bash
 python3.12 -m venv .venv
