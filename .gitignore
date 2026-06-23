@@ -7,6 +7,7 @@ __pycache__/
 build/
 dist/
 manuscript/*.aux
+manuscript/*.abs
 manuscript/*.fdb_latexmk
 manuscript/*.fls
 manuscript/*.log

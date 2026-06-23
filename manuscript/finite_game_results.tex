@@ -8,11 +8,10 @@ For a contextual game $G_C=(C,A,B,V_C)$, write
 V_C(a,b)=\bigl(X_C(a,b),Y_C(a,b)\bigr).
 \]
 The best-response correspondences are
-\[
-\BR^A_C(b)=\argmax_{a\in A}X_C(a,b),
-\qquad
-\BR^B_C(a)=\argmax_{b\in B}Y_C(a,b).
-\]
+\begin{align*}
+\BR^A_C(b)&=\argmax_{a\in A}X_C(a,b),\\
+\BR^B_C(a)&=\argmax_{b\in B}Y_C(a,b).
+\end{align*}
 A profile $(a,b)$ is a pure Nash equilibrium if $a\in\BR^A_C(b)$ and $b\in\BR^B_C(a)$. It is strict if each action is the unique best response to the other player's action. We write $\NE(G_C)$ for the pure-equilibrium set.
 
 \begin{definition}[Pareto and welfare dominance]
@@ -76,8 +75,10 @@ g_a(y)=\beta_ay+d_a,
 \]
 joint universal preservation holds if and only if
 \[
-\alpha_b>0,\quad \beta_a>0,\quad c_b=0,\quad d_a=0
-\qquad\text{for every }a\in A,\ b\in B.
+\begin{aligned}
+\alpha_b&>0,\quad c_b=0 &&(b\in B),\\
+\beta_a&>0,\quad d_a=0 &&(a\in A).
+\end{aligned}
 \]
 \end{corollary}
 
@@ -116,10 +117,12 @@ classification.
 
 For a profile $(i,j)\in A\times B$, collect all unilateral payoff advantages in
 \[
-\Delta_{ij}=
-\{X(i,j)-X(i',j):i'\in A\setminus\{i\}\}
-\cup
+\begin{aligned}
+\Delta_{ij}={}&
+\{X(i,j)-X(i',j):i'\in A\setminus\{i\}\}\\
+&\cup
 \{Y(i,j)-Y(i,j'):j'\in B\setminus\{j\}\}.
+\end{aligned}
 \]
 Thus $(i,j)$ is a pure Nash equilibrium exactly when every element of $\Delta_{ij}$ is nonnegative.
 

@@ -1,9 +1,9 @@
 
-\documentclass[preprint,12pt,authoryear]{elsarticle}
+\documentclass[a4paper,fleqn]{cas-dc}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\emergencystretch=2em
+\usepackage[authoryear,longnamesfirst]{natbib}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{booktabs,array,multirow}
 \usepackage{enumitem}
@@ -14,11 +14,8 @@
 \usepackage{xcolor}
 \usepackage{placeins}
 \usepackage{float}
-\usepackage{hyperref}
-\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
-
-\journal{Mathematical Social Sciences}
-\biboptions{round,authoryear}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,hypertexnames=false}
+\emergencystretch=2em
 
 \newtheorem{definition}{Definition}[section]
 \newtheorem{theorem}[definition]{Theorem}
@@ -45,24 +42,35 @@
 \newcommand{\traj}{\operatorname{Traj}}
 
 \begin{document}
-\begin{frontmatter}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
 
-\title{Transporting Benefit--Loss Classes Across Contexts: Invariance and Equilibrium in Finite Games}
+\shorttitle{Transporting Benefit--Loss Classes Across Contexts}
+\shortauthors{C. Ramirez Ovalle}
 
-\author[aff1]{Author name(s) required before submission\corref{cor1}}
-\cortext[cor1]{Corresponding author}
-\address[aff1]{Affiliation and full postal address required before submission}
+\title[mode=title]{Transporting Benefit--Loss Classes Across Contexts:
+Invariance and Equilibrium in Finite Games}
+
+\author[1]{Carlos Ramirez Ovalle}[orcid=0000-0002-4254-5610]
+\cormark[1]
+\ead{carlosovalle@javerianacali.edu.co}
+\affiliation[1]{organization={Pontificia Universidad Javeriana Cali},
+                 addressline={Calle 18 No. 118-250},
+                 city={Cali},
+                 country={Colombia}}
+\cortext[1]{Corresponding author}
 
 \begin{abstract}
 Existing game-theoretic formalizations of Cipolla's benefit--loss plane mainly encode its four classes as population strategies, while social-context models allow context to transform utilities. We ask a different comparative question: when a common finite action structure is transported between contexts, which profile classifications and pure incentives survive? Context-specific actor/affected-side payoff maps label profiles as intelligent, hapless, malicious, or destructive. Within the opponent-contingent separable family, we prove that preserving both the complete class map and all pure best responses for every valuation is equivalent to applying strictly increasing transformations that fix zero. Thus affine payoff offsets that are harmless to pure incentives can change social classification. We also derive exact open-ball radii for class maps and complete pure-equilibrium sets. A finite-game configuration theorem shows that intelligent and malicious equilibria cannot share the actor's action; sharing the affected-side action forces indifference and a knife-edge, whereas robust coexistence requires profiles sharing neither action. Three synthetic benchmarks separate class, equilibrium, and dynamic robustness. Reproducible audits enumerate 390,625 square and 1,062,882 rectangular payoff-grid games and apply seeded continuous perturbations. The contribution is a comparative theory of Cipolla-style profile classification, not a claim that context-dependent utility is new or that the benchmarks are empirical estimates.
 \end{abstract}
 
-\begin{keyword}
+\begin{keywords}
 benefit--loss classification \sep contextual games \sep strategic equivalence
 \sep Nash equilibrium \sep robustness \sep welfare \sep social modeling
-\end{keyword}
+\end{keywords}
 
-\end{frontmatter}
+\maketitle
 
 \section{Introduction}
 
@@ -242,7 +250,7 @@ hide relational harm.  Points $(0,y)\in\mathcal D^0$ are classifiable but not
 locally class-robust, since $(\delta,y)$ is malicious and $(-\delta,y)$ is
 strictly destructive for every sufficiently small $\delta>0$.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \begin{center}
 \begin{tikzpicture}[scale=0.82,>=Latex]
 \fill[green!8] (0,0) rectangle (4.0,4.0);
@@ -263,9 +271,9 @@ strictly destructive for every sufficiently small $\delta>0$.
 \end{center}
 \caption{\textbf{Benefit--loss partition.} Payoff space is divided into the intelligent region $\mathcal I$, the hapless region $\mathcal H$, the malicious region $\mathcal M$, and the destructive region $\mathcal D=\mathcal D^-\cup\mathcal D^0$. The thin vertical strip is the actor-neutral harmful set $\mathcal D^0$, included in $\mathcal D$ by modeling convention.}
 \label{fig:plane-partition}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \begin{center}
 \begin{tikzpicture}[scale=0.82,>=Latex]
 \fill[green!8] (0,0) rectangle (4.0,4.0);
@@ -291,7 +299,7 @@ strictly destructive for every sufficiently small $\delta>0$.
 \end{center}
 \caption{\textbf{Recontextualization of one profile.} The abstract profile $(P,U)$ is malicious in business $C_B$, destructive in classroom $C_A$, and intelligent in sport team $C_S$. The arrows represent contextual revaluation of the same strategic profile, not temporal motion.}
 \label{fig:plane-recontext}
-\end{figure}
+\end{figure*}
 
 \section{Contextual benefit--loss games and induced partitions}
 \label{sec:contextual-games}
@@ -438,11 +446,17 @@ identity is the pointwise definition of class preservation.
 \begin{definition}[Order-preserving context translation]
 A translation $F:G_C\to G_D$ is order-preserving if for every $b\in B_C$ and all $a,a'\in A_C$,
 \[
-X_C(a,b)\ge X_C(a',b)\Longleftrightarrow X_D(F_Aa,F_Bb)\ge X_D(F_Aa',F_Bb),
+\begin{aligned}
+X_C(a,b)&\ge X_C(a',b)\\
+&\Longleftrightarrow X_D(F_Aa,F_Bb)\ge X_D(F_Aa',F_Bb),
+\end{aligned}
 \]
 and for every $a\in A_C$ and all $b,b'\in B_C$,
 \[
-Y_C(a,b)\ge Y_C(a,b')\Longleftrightarrow Y_D(F_Aa,F_Bb)\ge Y_D(F_Aa,F_Bb').
+\begin{aligned}
+Y_C(a,b)&\ge Y_C(a,b')\\
+&\Longleftrightarrow Y_D(F_Aa,F_Bb)\ge Y_D(F_Aa,F_Bb').
+\end{aligned}
 \]
 \end{definition}
 
@@ -637,23 +651,31 @@ This section introduces three benchmark examples showing that the same action st
 
 We consider three contexts:
 \[
-C_B=\text{business organization},\qquad C_A=\text{classroom},\qquad C_S=\text{sport team}.
+\begin{aligned}
+C_B&=\text{business organization},\\
+C_A&=\text{classroom},\\
+C_S&=\text{sport team}.
+\end{aligned}
 \]
 In each context there is an authority-side player and an affected-side player:
-\begin{align*}
-C_B&:\text{boss--employee}, & C_A&:\text{teacher--student},\\
-C_S&:\text{coach--team members}. &&
-\end{align*}
+\[
+\begin{aligned}
+C_B&:\text{boss--employee},\\
+C_A&:\text{teacher--student},\\
+C_S&:\text{coach--team members}.
+\end{aligned}
+\]
 
 \subsection{Business organization: boss--employee}
 
 In the business context, the first payoff measures managerial control, efficiency, reputation, or short-term organizational advantage. The second payoff measures the employee's autonomy, motivation, professional growth, and work climate. Applying the business weights $W_{C_B}$ reported in Appendix~\ref{sec:features} gives
 \[
-\begin{array}{ccc}
- & U:\text{engaged uptake} & R:\text{resistance/withdrawal}\\
-G:\text{constructive guidance} & (2,3)\ [\Iclass] & (-1,-1)\ [\Dclass]\\
-P:\text{public pressure} & (2,-2)\ [\Mclass] & (-2,-3)\ [\Dclass]
-\end{array}
+\begin{aligned}
+V_{C_B}(G,U)&=(2,3)\ [\Iclass],\\
+V_{C_B}(G,R)&=(-1,-1)\ [\Dclass],\\
+V_{C_B}(P,U)&=(2,-2)\ [\Mclass],\\
+V_{C_B}(P,R)&=(-2,-3)\ [\Dclass].
+\end{aligned}
 \]
 The profile $(G,U)$ is intelligent: constructive guidance improves the manager's objective and benefits the employee. The profile $(P,U)$ is classified as malicious: the boss obtains compliance, control, or short-term efficiency, while the employee loses autonomy, confidence, or trust. The profile $(P,R)$ is destructive for both sides.
 
@@ -661,11 +683,12 @@ The profile $(G,U)$ is intelligent: constructive guidance improves the manager's
 
 In the classroom context, the first payoff measures the teacher's pedagogical effectiveness, legitimacy, and classroom climate. The second payoff measures the student's learning, confidence, participation, and epistemic autonomy. Applying the classroom weights $W_{C_A}$ reported in Appendix~\ref{sec:features} gives
 \[
-\begin{array}{ccc}
- & U:\text{engaged uptake} & R:\text{resistance/withdrawal}\\
-G:\text{constructive guidance} & (2,3)\ [\Iclass] & (-2,1)\ [\Hclass]\\
-P:\text{public pressure} & (-1,-2)\ [\Dclass] & (-2,-3)\ [\Dclass]
-\end{array}
+\begin{aligned}
+V_{C_A}(G,U)&=(2,3)\ [\Iclass],\\
+V_{C_A}(G,R)&=(-2,1)\ [\Hclass],\\
+V_{C_A}(P,U)&=(-1,-2)\ [\Dclass],\\
+V_{C_A}(P,R)&=(-2,-3)\ [\Dclass].
+\end{aligned}
 \]
 The profile $(G,U)$ remains intelligent. However, $(G,R)$ becomes hapless: the teacher invests time, patience, and emotional effort, while the student still obtains some benefit from the pedagogical support. In contrast, public pressure is unstable in the classroom. Even when the student apparently complies, the interaction may damage confidence, participation, and classroom climate. Thus $(P,U)$ is classified as destructive, not malicious, because the teacher also loses pedagogical legitimacy.
 
@@ -673,18 +696,19 @@ The profile $(G,U)$ remains intelligent. However, $(G,R)$ becomes hapless: the t
 
 In the sport context, the first payoff measures the coach's tactical effectiveness, authority, and match-oriented performance. The second payoff measures the team's cohesion, discipline, motivation, and competitive performance. Applying the sport-team weights $W_{C_S}$ reported in Appendix~\ref{sec:features} gives
 \[
-\begin{array}{ccc}
- & U:\text{engaged uptake} & R:\text{resistance/withdrawal}\\
-G:\text{constructive guidance} & (3,3)\ [\Iclass] & (-1,-1)\ [\Dclass]\\
-P:\text{public pressure} & (2,2)\ [\Iclass] & (-2,-3)\ [\Dclass]
-\end{array}
+\begin{aligned}
+V_{C_S}(G,U)&=(3,3)\ [\Iclass],\\
+V_{C_S}(G,R)&=(-1,-1)\ [\Dclass],\\
+V_{C_S}(P,U)&=(2,2)\ [\Iclass],\\
+V_{C_S}(P,R)&=(-2,-3)\ [\Dclass].
+\end{aligned}
 \]
 In this context, $(P,U)$ may become intelligent. Public tactical pressure, when embedded in a shared competitive culture and received with disciplined uptake, can increase focus, cohesion, and collective performance. This is not a claim that public pressure is always beneficial in sport settings; it depends on timing, trust, norms, and the distinction between tactical urgency and humiliation. The same strategy remains destructive when it is received as humiliation, unfair blame, or excessive pressure. Hence $(P,R)$ remains destructive.
 
-\begin{table}[h]
+\begin{table*}[t]
 \centering
 \small
-\begin{tabular}{cccc}
+\begin{tabular}{lccc}
 \toprule
 Strategic profile & Business $C_B$ & Classroom $C_A$ & Sport team $C_S$\\
 \midrule
@@ -696,13 +720,17 @@ $(P,R)$ & $(-2,-3)$ [$\Dclass$] & $(-2,-3)$ [$\Dclass$] & $(-2,-3)$ [$\Dclass$]\
 \end{tabular}
 \caption{Contextual payoff transitions for the same abstract strategic profiles.}
 \label{tab:payoff-transitions}
-\end{table}
+\end{table*}
 
 \subsection{Payoff and class transitions}
 
 Table~\ref{tab:payoff-transitions} summarizes the three contextual valuations. For the profile $(P,U)$,
 \[
-V_{C_B}(P,U)=(2,-2),\quad V_{C_A}(P,U)=(-1,-2),\quad V_{C_S}(P,U)=(2,2).
+\begin{aligned}
+V_{C_B}(P,U)&=(2,-2),\\
+V_{C_A}(P,U)&=(-1,-2),\\
+V_{C_S}(P,U)&=(2,2).
+\end{aligned}
 \]
 Therefore,
 \[
@@ -755,7 +783,11 @@ For $(G,R)$, the business payoff $(-1,-1)$ is destructive, the classroom payoff 
 \label{prop:benchmark-sensitivity}
 For the three benchmark contexts,
 \[
-S(C_B,C_A)=\frac{2}{4},\qquad S(C_B,C_S)=\frac{1}{4},\qquad S(C_A,C_S)=\frac{2}{4}.
+\begin{aligned}
+S(C_B,C_A)&=\frac{2}{4},\\
+S(C_B,C_S)&=\frac{1}{4},\\
+S(C_A,C_S)&=\frac{2}{4}.
+\end{aligned}
 \]
 \end{proposition}
 
@@ -771,7 +803,7 @@ S(C_B,C_A)=\frac{2}{|\Prof|}=\frac{2}{4}.
 Between $C_B$ and $C_S$, only $(P,U)$ changes class: $(G,U)$ remains intelligent, $(G,R)$ remains destructive, and $(P,R)$ remains destructive. Thus $S(C_B,C_S)=1/4$. Between $C_A$ and $C_S$, the profiles $(G,R)$ and $(P,U)$ change class, while $(G,U)$ and $(P,R)$ do not. Hence $S(C_A,C_S)=2/4$.
 \end{proof}
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
 \small
 \begin{tabular}{cccc}
@@ -800,10 +832,10 @@ We now apply the finite-game results of Section~\ref{sec:finite-results} to the 
 A profile $\sigma$ in a context $C$ is \emph{benefit--loss desirable} (equivalently, \emph{class-desirable}) if $Q_C(\sigma)=\Iclass$, that is, if both the actor side and the affected side gain. Benefit--loss desirability is thus a purely class-based property of a single profile. It is distinct from \emph{welfare dominance}, which compares the aggregate $W=x+y$ of two profiles, and from \emph{Nash equilibrium membership}, which concerns unilateral deviations. Whenever we contrast desirability with equilibrium below, ``desirable'' means class $\Iclass$.
 \end{definition}
 
-\begin{table}[h]
+\begin{table*}[t]
 \centering
 \small
-\begin{tabular}{ccccccc}
+\begin{tabular}{lcccccc}
 \toprule
 Context & $\BR^A(U)$ & $\BR^A(R)$ & $\BR^B(G)$ & $\BR^B(P)$ & Pure NE & Classes\\
 \midrule
@@ -814,7 +846,7 @@ $C_S$ & $\{G\}$ & $\{G\}$ & $\{U\}$ & $\{U\}$ & $(G,U)$ & $\Iclass$\\
 \end{tabular}
 \caption{Best-response correspondences and pure Nash equilibria in the benchmark contexts.}
 \label{tab:br-ne}
-\end{table}
+\end{table*}
 
 \begin{proposition}[Benchmark equilibria]
 \label{prop:benchmark-equilibria}
@@ -833,10 +865,10 @@ This result is one of the main conceptual payoffs of the game-theoretic layer. B
 
 Applying Theorem~\ref{thm:ne-radius} and the uniform class-map radius from Corollary~\ref{cor:uniform-robustness} gives Table~\ref{tab:robustness-radii}. The business benchmark has $\rho_Q=1$ but $\rho_{\NE}=0$: its class map is locally constant on a full neighborhood, whereas its equilibrium set is not constant on any neighborhood. The other two benchmarks have positive, but smaller, equilibrium-set radii.
 
-\begin{table}[htbp]
+\begin{table*}[t]
 \centering
 \small
-\begin{tabular}{ccc}
+\begin{tabular}{lcc}
 \toprule
 Context & Class-map radius $\rho_Q$ & Pure-NE-set radius $\rho_{\NE}$\\
 \midrule
@@ -847,7 +879,7 @@ Sport team $C_S$ & $1$ & $1/2$\\
 \end{tabular}
 \caption{Exact open sup-norm robustness radii for the benchmark class maps and complete pure-equilibrium sets.}
 \label{tab:robustness-radii}
-\end{table}
+\end{table*}
 
 \begin{proposition}[Class desirability and Nash equilibrium membership are independent]
 \label{prop:class-nash-independent}
@@ -956,26 +988,26 @@ E_t[W]=\sum_{\sigma\in\Prof}\pi_t(\sigma)W(V_C(\sigma)),
 
 For an illustrative run we use $p_0=q_0=0.5$, $\eta=0.45$, and 50 iterations. The code uses exactly the payoff matrices in Table~\ref{tab:payoff-transitions}. Figure~\ref{fig:strategy-trajectories} separates the probability of constructive guidance from the probability of engaged uptake, improving readability relative to a single overlaid plot.
 
-\begin{figure}[H]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.96\textwidth]{strategy_trajectories.pdf}
 \caption{\textbf{Benchmark strategy trajectories.} Discrete exponential-replicator trajectories for the benchmark contexts. Left: probability of constructive guidance $G$. Right: probability of engaged uptake $U$.}
 \label{fig:strategy-trajectories}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[H]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.98\textwidth]{class_masses.pdf}
 \caption{\textbf{Induced class masses.} Class masses generated by the same exponential-replicator trajectories. The business context retains a positive malicious mass because $(P,U)$ remains strategically viable under engaged uptake.}
 \label{fig:class-masses}
-\end{figure}
+\end{figure*}
 
 The simulation illustrates a point that is invisible in the static class table alone. The business context may converge to engaged uptake while retaining a positive mass on public pressure because public pressure and constructive guidance tie in the actor payoff against uptake. Hence some malicious class mass remains. In the classroom and sport contexts, the dynamics concentrate on constructive guidance and engaged uptake. This does not prove that real classrooms or sport teams behave this way; rather, it shows how contextual valuations can be used to generate testable population-level predictions once empirical calibration is available.
 
-\begin{table}[h]
+\begin{table*}[t]
 \centering
 \small
-\begin{tabular}{crrrrrr}
+\begin{tabular}{lrrrrrr}
 \toprule
 Context & $p_{50}$ & $q_{50}$ & $E_{50}[W]$ & $\Pr_{50}(\Iclass)$ & $\Pr_{50}(\Mclass)$ & $\Pr_{50}(\Dclass)$\\
 \midrule
@@ -986,7 +1018,7 @@ Sport team $C_S$ & 1.000 & 1.000 & 6.000 & 1.000 & 0.000 & 0.000\\
 \end{tabular}
 \caption{Final values for the illustrative run with $p_0=q_0=0.5$, $\eta=0.45$, and 50 iterations.}
 \label{tab:simulation-final}
-\end{table}
+\end{table*}
 
 \subsection{Fixed points, local stability, and the equilibrium knife-edge}
 \label{sec:fixed-points}
@@ -1038,11 +1070,14 @@ A single run is not sufficient to support even a minimal population-dynamics cla
 \]
 and the five initial conditions
 \[
-(p_0,q_0)\in\{(0.2,0.2),(0.2,0.8),(0.5,0.5),(0.8,0.2),(0.8,0.8)\}.
+\begin{gathered}
+(p_0,q_0)\in\{(0.2,0.2),(0.2,0.8),(0.5,0.5),\\
+(0.8,0.2),(0.8,0.8)\}.
+\end{gathered}
 \]
 The resulting summary over 25 deterministic runs per context is shown in Table~\ref{tab:sweep}. The full grid is exported by the reproducibility notebook.
 
-\begin{table}[h]
+\begin{table*}[t]
 \centering
 \scriptsize
 \resizebox{\textwidth}{!}{%
@@ -1058,7 +1093,7 @@ Sport team $C_S$ & $[.753,1]$ & $[.9999,1]$ & $[5.505,6]$ & $[.9999,1]$ & $[0,0]
 }
 \caption{Ranges over the 25 deterministic design points formed by five learning rates and five initial conditions. These are design extrema, not sampling estimates or confidence intervals.}
 \label{tab:sweep}
-\end{table}
+\end{table*}
 
 The zero malicious mass in the classroom and sport rows follows from their class maps: neither game has a malicious profile. In the business game, public pressure remains payoff-equivalent to constructive guidance against uptake, so positive malicious mass persists at every design point. Its magnitude depends on the initial state and learning rate; the claim is viability under this constructed game, not a unique or empirically estimated mass.
 
@@ -1092,12 +1127,12 @@ contrasts class-map retention with equilibrium-set retention. The rates describe
 the stated synthetic perturbation distribution; they are not inferential
 estimates about real contexts.
 
-\begin{figure}[H]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.90\textwidth]{payoff_perturbation_robustness.pdf}
 \caption{\textbf{Payoff-perturbation robustness.} Retention rates under 2,000 seeded uniform payoff perturbations per context and radius. Class maps are locally robust, while the business benchmark's original equilibrium set is destroyed by every nonzero continuous perturbation because it requires an exact tie.}
 \label{fig:payoff-perturbation}
-\end{figure}
+\end{figure*}
 
 \subsection{Connecting class sensitivity with dynamic distance}
 
@@ -1129,10 +1164,10 @@ The value of $D_{\mathrm{traj}}^{L,T,\eta,z_0}$ depends on the update rule, hori
 
 For the benchmark run with $L$ equal to the exponential-replicator update, $\eta=0.45$, $p_0=q_0=0.5$, and $T=50$, we obtain Table~\ref{tab:traj-distance}.
 
-\begin{table}[h]
+\begin{table*}[t]
 \centering
 \small
-\begin{tabular}{cccc}
+\begin{tabular}{lccc}
 \toprule
  & Business $C_B$ & Classroom $C_A$ & Sport team $C_S$\\
 \midrule
@@ -1143,7 +1178,7 @@ Sport team $C_S$ & 0.373 & 0.018 & 0.000 \\
 \end{tabular}
 \caption{Dynamic trajectory distance $D_{\mathrm{traj}}$ between contexts for the benchmark run, normalized as an averaged total-variation distance in $[0,1]$.}
 \label{tab:traj-distance}
-\end{table}
+\end{table*}
 
 The structural and dynamic distances are not the same object. Nevertheless, in this benchmark the classroom and sport contexts are dynamically close, even though their structural sensitivity is $S(C_A,C_S)=2/4$. The reason is that both dynamics concentrate rapidly on $(G,U)$. This illustrates why the paper distinguishes class structure from strategic and population behavior: contexts may differ in static classification but generate similar long-run behavior under a given learning rule.
 

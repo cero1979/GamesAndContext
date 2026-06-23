@@ -3,8 +3,7 @@ MATHEMATICAL SOCIAL SCIENCES - AUTHOR DECLARATIONS TEMPLATE
 Complete these fields only after all authors agree on the wording.
 
 CRediT authorship contribution statement
-[Author name]: [applicable CRediT roles].
-[Author name]: [applicable CRediT roles].
+Carlos Ramirez Ovalle: [confirm applicable CRediT roles before submission].
 
 Funding
 Use one of the following forms and delete the other:

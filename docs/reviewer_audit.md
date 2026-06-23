@@ -8,7 +8,7 @@ copy edit.
 
 | Finding | Risk | Disposition |
 |---|---|---|
-| The original repository contained only a 17-byte README. | No public reproducibility package. | Addressed on the revision branch with package, tests, CI, notebook, and results. |
+| The original repository contained only a 17-byte README. | No public reproducibility package. | Addressed on `main` with package, tests, CI, notebook, and results. |
 | The notebook duplicated the model and was the only source of truth. | Hidden state and untestable theorem checks. | Addressed: logic moved to `src/context_games`; notebook imports it. |
 | `run_all.py` rewrote the source notebook in place. | Reproduction creates unexplained diffs. | Addressed: executed notebook is written to an ignored result artifact. |
 | The business malicious equilibrium depends on an exact payoff tie. | Central dynamic result can be mistaken for robust. | Addressed: exact pure-NE radius is zero, the perturbation audit reports failure almost surely, and the dynamic claim is explicitly non-robust. |
@@ -33,6 +33,7 @@ copy edit.
 | Social context games and payoff-transformation characterizations were omitted. | A hostile referee could allege unacknowledged prior art. | Addressed: Ashlagi--Krysta--Tennenholtz and Tewolde--Conitzer are cited and compared at the level of primitives and preservation questions. |
 | Class preservation and strategic preservation were juxtaposed but not jointly characterized. | The framework could look like renamed standard game theory. | Addressed: a new theorem proves that, within the opponent-contingent separable family, universal preservation of both structures is equivalent to strictly increasing transformations that fix zero; the affine corollary excludes offsets, and code tests both sides. |
 | Immediate consequences of definitions were presented as lengthy propositions. | Poor contribution-to-length ratio amplified the triviality objection. | Addressed: partition, welfare, and boundary observations are compressed; theorem status is reserved for substantive preservation, radius, and configuration results. |
+| The manuscript used a generic article class and numerical citations. | Avoidable mismatch with the target journal could trigger technical return. | Addressed: the manuscript now uses the official Elsevier CAS 2.4 `cas-dc` double-column class, with author-year citations, author ORCID metadata, alphabetized references, editable tables without vertical rules, and a submission manifest. |
 
 ## Residual scientific risks
 
@@ -46,7 +47,9 @@ copy edit.
    strategic-equivalence transformations, and category-dependent preferences.
    The revised priority claim is narrower and explicit, but a systematic review
    cannot prove that no uncited paper studies the same Cipolla-specific combination.
-4. An anonymous repository or archival release is still needed for review, with
-   a persistent identifier added to the data-availability statement.
-5. Author identities, affiliations, funding, CRediT roles, conflicts, and final AI
-   disclosure require author input before submission.
+4. A versioned archival release is still needed, with a persistent identifier
+   added to the data-availability statement. MSS uses single-anonymized review,
+   so the public repository does not need to conceal the author.
+5. The author's name, ORCID, affiliation, postal address, and email are now
+   supplied. Preferred name spelling, telephone, funding, CRediT roles,
+   conflicts, repository license, and final AI disclosure still require confirmation.

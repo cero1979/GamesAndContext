@@ -8,7 +8,7 @@ on 2026-06-22.
 
 | Upload item | Repository file(s) | Status |
 |---|---|---|
-| Manuscript source | `manuscript/context_dependent_benefit_loss_games_v09.tex`, `manuscript/finite_game_results.tex`, `manuscript/feature_appendix.tex` | Ready except author metadata and declarations |
+| Manuscript source | `manuscript/context_dependent_benefit_loss_games_v09.tex`, `manuscript/finite_game_results.tex`, `manuscript/feature_appendix.tex` | CAS double-column source with author, ORCID, affiliation, address, and email; telephone and declarations remain |
 | Review PDF | `manuscript/context_dependent_benefit_loss_games_v09.pdf` | Generated from the sources |
 | Highlights | `submission/highlights.txt` | Ready; five bullets, each at most 85 characters |
 | Figure: strategy trajectories | `results/strategy_trajectories.pdf` | Ready; vector PDF |
@@ -21,9 +21,13 @@ on 2026-06-22.
 
 ## Source dependencies
 
-The manuscript also requires the vector PDFs in `results/`. Tables are editable
-LaTeX and should not be uploaded as images. The repository contains no third-party
-artwork requiring permission.
+The manuscript also requires `manuscript/cas-dc.cls`,
+`manuscript/cas-common.sty`, and the CAS `manuscript/thumbnails/` assets, copied
+without modification from the author-supplied Elsevier CAS 2.4 bundle, plus the
+vector PDFs in `results/`. Tables are editable LaTeX and should not be uploaded
+as images. The repository contains no third-party artwork requiring permission.
+`CITATION.cff` supplies machine-readable author, ORCID, and repository metadata;
+add the archival DOI when minted.
 
 ## Final human gate
 

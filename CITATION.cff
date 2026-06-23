@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software or its reproducibility artifacts, please cite this
+  repository. Add the archival DOI when it becomes available.
+title: >-
+  GamesAndContext: Reproducibility package for context-dependent benefit-loss
+  games
+type: software
+version: 0.9.0
+date-released: 2026-06-22
+authors:
+  - family-names: Ramirez Ovalle
+    given-names: Carlos
+    email: carlosovalle@javerianacali.edu.co
+    affiliation: Pontificia Universidad Javeriana Cali
+    orcid: https://orcid.org/0000-0002-4254-5610
+repository-code: https://github.com/cero1979/GamesAndContext
+url: https://github.com/cero1979/GamesAndContext

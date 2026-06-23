@@ -37,9 +37,11 @@ For a faster code-only check:
 
 ## Compile the manuscript
 
-The main source uses Elsevier's `elsarticle` class in preprint, author-year mode
-and imports `finite_game_results.tex` and `feature_appendix.tex` from the same
-directory. With a TeX Live installation that includes `elsarticle`:
+The main source uses the official Elsevier CAS 2.4 `cas-dc` class in
+double-column, author-year mode and imports `finite_game_results.tex` and
+`feature_appendix.tex` from the same directory. The required CAS class and
+support files, including the CAS thumbnail assets used by the title page, are
+versioned in `manuscript/`, so a standard TeX Live installation is sufficient:
 
 ```bash
 cd manuscript
@@ -58,6 +60,7 @@ figures in `results/`.
 - `manuscript/`: modular LaTeX source, technical appendix, and compiled manuscript.
 - `submission/`: MSS highlights, title-page/declaration templates, submission
   manifest, data statement, and compliance checklist.
+- `CITATION.cff`: machine-readable repository citation metadata.
 - `docs/reviewer_audit.md`: hostile-review checklist and current disposition.
 - `.github/workflows/reproduce.yml`: clean-environment reproduction check.
 
