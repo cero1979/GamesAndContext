@@ -1,6 +1,6 @@
 """Core definitions for finite two-player benefit-loss games.
 
-The core module is deliberately independent of the manuscript benchmarks.  This
+The core module is deliberately independent of the benchmark examples.  This
 keeps theorem checks and alternative calibrations from depending on notebook
 state or plotting code.
 """
@@ -18,7 +18,7 @@ Payoff: TypeAlias = tuple[float, float]
 
 
 def classify(x: float, y: float) -> str:
-    """Return the manuscript's benefit-loss class, including its D0 convention."""
+    """Return the benefit-loss class, including the D0 convention."""
     if x > 0 and y > 0:
         return "I"
     if x < 0 and y > 0:

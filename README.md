@@ -1,8 +1,11 @@
 # Context-Dependent Benefit-Loss Games
 
-Reproducibility package for the manuscript targeting *Mathematical Social
-Sciences*. The repository separates the mathematical model, deterministic
-experiments, tests, notebook, generated results, and submission files.
+Reproducibility package for the context-dependent benefit-loss games study. The
+repository contains the mathematical model, deterministic experiments, tests,
+notebook, generated result tables, and publication-quality result figures.
+
+The article source, compiled manuscript, and journal submission files are kept as
+local working files only and are intentionally ignored by Git.
 
 The three social-domain payoff tables are **synthetic benchmarks**, not empirical
 estimates. They illustrate formal possibilities and must not be interpreted as
@@ -35,33 +38,13 @@ For a faster code-only check:
 .venv/bin/python -m context_games.reproduce --output-dir results
 ```
 
-## Compile the manuscript
-
-The main source uses the official Elsevier CAS 2.4 `cas-dc` class in
-double-column, author-year mode and imports `finite_game_results.tex` and
-`feature_appendix.tex` from the same directory. The required CAS class and
-support files, including the CAS thumbnail assets used by the title page, are
-versioned in `manuscript/`, so a standard TeX Live installation is sufficient:
-
-```bash
-cd manuscript
-latexmk -pdf -interaction=nonstopmode -halt-on-error context_dependent_benefit_loss_games_v09.tex
-```
-
-The committed PDF is built from those three versioned sources and the vector
-figures in `results/`.
-
 ## Repository map
 
 - `src/context_games/`: model, benchmark specification, experiments, and CLI.
 - `tests/`: regression tests and computational theorem audits.
 - `notebooks/`: thin presentation notebook; it imports the tested package.
 - `results/`: generated CSV tables and publication-quality figures.
-- `manuscript/`: modular LaTeX source, technical appendix, and compiled manuscript.
-- `submission/`: MSS highlights, title-page/declaration templates, submission
-  manifest, data statement, and compliance checklist.
 - `CITATION.cff`: machine-readable repository citation metadata.
-- `docs/reviewer_audit.md`: hostile-review checklist and current disposition.
 - `.github/workflows/reproduce.yml`: clean-environment reproduction check.
 
 ## Main audits
