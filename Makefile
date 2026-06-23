@@ -1,4 +1,4 @@
-.PHONY: test results notebook reproduce paper
+.PHONY: test results notebook reproduce
 
 test:
 	python -m unittest discover -s tests -v
@@ -11,6 +11,3 @@ notebook:
 
 reproduce:
 	python scripts/run_all.py
-
-paper:
-	cd manuscript && latexmk -pdf -interaction=nonstopmode -halt-on-error context_dependent_benefit_loss_games_v09.tex

@@ -1,4 +1,4 @@
-"""Auditable benchmark specification used by the manuscript."""
+"""Auditable benchmark specification for the reproducibility package."""
 
 from __future__ import annotations
 

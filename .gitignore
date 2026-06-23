@@ -6,6 +6,9 @@ __pycache__/
 .ipynb_checkpoints/
 build/
 dist/
+manuscript/
+submission/
+docs/reviewer_audit.md
 manuscript/*.aux
 manuscript/*.abs
 manuscript/*.fdb_latexmk
