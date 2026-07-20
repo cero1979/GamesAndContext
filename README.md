@@ -1,8 +1,11 @@
-# Context-Dependent Benefit-Loss Games
+# Contextual Benefit-Loss Classifiers and Games
 
-Reproducibility package for the context-dependent benefit-loss games study. The
-repository contains the mathematical model, deterministic experiments, tests,
-notebook, generated result tables, and publication-quality result figures.
+[![Reproduce results](https://github.com/cero1979/GamesAndContext/actions/workflows/reproduce.yml/badge.svg)](https://github.com/cero1979/GamesAndContext/actions/workflows/reproduce.yml)
+
+Reproducibility package for the contextual benefit-loss classification research
+program. The repository contains the affine contextual model, finite-game
+benchmarks, deterministic experiments, tests, notebook, generated result tables,
+and publication-quality result figures.
 
 The article source, compiled manuscript, and journal submission files are kept as
 local working files only and are intentionally ignored by Git.
@@ -10,6 +13,16 @@ local working files only and are intentionally ignored by Git.
 The three social-domain payoff tables are **synthetic benchmarks**, not empirical
 estimates. They illustrate formal possibilities and must not be interpreted as
 evidence about actual firms, classrooms, or sport teams.
+
+## Current scope
+
+The package has two complementary layers. The current mathematical layer studies
+contextual classifiers induced by invertible affine maps: transport identities,
+composition, holonomy compatibility, finite-label feasibility, and robustness to
+perturbations. The retained finite-game layer reproduces the earlier benchmark
+enumerations, equilibrium audits, and trajectory diagnostics. Those enumerations
+are computational checks and examples; they are not presented as substitutes for
+the analytical results.
 
 ## Reproduce
 
@@ -40,15 +53,34 @@ For a faster code-only check:
 
 ## Repository map
 
-- `src/context_games/`: model, benchmark specification, experiments, and CLI.
+- `src/context_games/contextual_classifier.py`: affine contexts, transports,
+  holonomy checks, finite labels, and contextual robustness radii.
+- `src/context_games/`: benchmark game model, experiments, and reproduction CLI.
 - `tests/`: regression tests and computational theorem audits.
 - `notebooks/`: thin presentation notebook; it imports the tested package.
 - `results/`: generated CSV tables and publication-quality figures.
 - `CITATION.cff`: machine-readable repository citation metadata.
 - `.github/workflows/reproduce.yml`: clean-environment reproduction check.
 
+## Claim-to-artifact map
+
+| Mathematical or computational claim | Tested implementation | Generated artifact |
+| --- | --- | --- |
+| Affine evaluation and transport composition identities | `tests/test_contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
+| Positive-diagonal cycle compatibility and holonomy recovery | `tests/test_contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
+| Finite strict labels as linear inequalities | `src/context_games/contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
+| Exact contextual robustness radii under three norms | `tests/test_contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
+| Label changes along continuous context paths | `src/context_games/experiments.py` | `results/context_path_events.csv` |
+| Finite-game configurations, equilibria, and perturbations | `tests/test_theorems.py` | Remaining CSV and PDF files in `results/` |
+
 ## Main audits
 
+- Affine transports satisfy the exact evaluation identity and the groupoid
+  composition law.
+- A quarter-turn cycle is rejected by the positive-diagonal holonomy criterion;
+  a nondegenerate positive cycle recovers its reference and boundary directions.
+- Finite strict labels are represented as an open system of linear inequalities.
+- Contextual robustness radii are checked under the one, Euclidean, and sup norms.
 - Feature weights reproduce every benchmark payoff exactly.
 - Class maps, margins, pure equilibria, and trajectory distances are regression-tested.
 - Increasing opponent-contingent payoff maps that fix zero preserve both class

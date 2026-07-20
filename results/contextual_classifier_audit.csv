@@ -1,0 +1,7 @@
+audit,theorem,value,relation,threshold,passed
+exact_transport_identity,transport,1.11022302463e-16,<=,1e-12,True
+transport_composition,groupoid,8.881784197e-16,<=,1e-12,True
+rotation_cycle_obstruction,holonomy,0,==,0,True
+cycle_reference_recovery,cycle_identification,0,<=,1e-12,True
+euclidean_margin_sharp_value,robustness,2.22044604925e-16,<=,1e-12,True
+finite_label_open_slack,set_identification,1.009,>,0,True

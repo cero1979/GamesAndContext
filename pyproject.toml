@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "context-dependent-benefit-loss-games"
-version = "0.9.0"
-description = "Reproducible models and experiments for context-dependent benefit-loss games"
+version = "0.10.0"
+description = "Reproducible models for contextual benefit-loss classifiers and games"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [

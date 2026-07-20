@@ -14,6 +14,15 @@ import numpy as np
 import pandas as pd
 
 from .benchmarks import BENCHMARKS, CONTEXTS, PROFILES
+from .contextual_classifier import (
+    AffineContext,
+    AffineMap,
+    analyze_cycle,
+    contextual_radius,
+    finite_label_inequalities,
+    finite_label_slacks,
+    transport_identity_error,
+)
 from .model import (
     ContextGame,
     axis_margin,
@@ -26,7 +35,7 @@ from .model import (
 )
 
 DEFAULT_SEED = 20260622
-PDF_METADATA = {"Creator": "context_games 0.9.0", "CreationDate": None, "ModDate": None}
+PDF_METADATA = {"Creator": "context_games 0.10.0", "CreationDate": None, "ModDate": None}
 CSV_FLOAT_FORMAT = "%.12g"
 
 
@@ -191,6 +200,153 @@ def robustness_radii() -> pd.DataFrame:
                 "pure_nash_set_radius": equilibrium_set_robustness_radius(BENCHMARKS[key]),
             }
             for key in CONTEXTS
+        ]
+    )
+
+
+def contextual_classifier_audit() -> pd.DataFrame:
+    """Closed-form checks for the contextual representation theorems."""
+    first = AffineContext(
+        np.asarray([[1.0, 0.25], [-0.2, 1.0]]),
+        np.asarray([0.5, -1.0]),
+    )
+    second = AffineContext(
+        np.asarray([[0.8, -0.1], [0.3, 1.2]]),
+        np.asarray([-0.25, 0.75]),
+    )
+    third = AffineContext(
+        np.asarray([[1.1, 0.4], [-0.3, 0.9]]),
+        np.asarray([1.25, 0.2]),
+    )
+    first_scale = np.diag([2.0, 3.0])
+    second_scale = np.diag([0.5, 4.0])
+    first_transport = first.transport_to(second, first_scale)
+    second_transport = second.transport_to(third, second_scale)
+    composite = second_transport.compose(first_transport)
+    direct = first.transport_to(third, second_scale @ first_scale)
+
+    identifying_context = AffineContext(
+        np.asarray([[1.0, 1.0], [1.0, -1.0]]),
+        np.asarray([0.5, -0.25]),
+    )
+    identifying_cycle = identifying_context.transport_to(
+        identifying_context, np.diag([2.0, 3.0])
+    )
+    identifying_analysis = analyze_cycle(identifying_cycle)
+    rotation_analysis = analyze_cycle(
+        AffineMap(np.asarray([[0.0, -1.0], [1.0, 0.0]]), np.zeros(2))
+    )
+
+    radius_context = AffineContext(
+        np.asarray([[1.0, -1.0], [1.0, 1.0]]),
+        np.zeros(2),
+    )
+    radius_error = abs(
+        contextual_radius(radius_context, np.asarray([3.0, 1.0]), norm=2)
+        - np.sqrt(2.0)
+    )
+
+    outcomes = np.asarray(
+        [[2.0, 1.0], [-1.0, 2.0], [2.0, -3.0], [-2.0, -2.0]]
+    )
+    labels = np.sign(outcomes[:, 0]).astype(int)
+    constraints = finite_label_inequalities(outcomes, labels)
+    minimum_slack = float(
+        np.min(finite_label_slacks(constraints, np.asarray([1.01, 0.001, 0.001])))
+    )
+    reference_error = (
+        np.inf
+        if identifying_analysis.reference is None
+        else float(
+            np.max(
+                np.abs(
+                    identifying_analysis.reference
+                    - identifying_context.reference
+                )
+            )
+        )
+    )
+
+    rows = [
+        {
+            "audit": "exact_transport_identity",
+            "theorem": "transport",
+            "value": transport_identity_error(
+                first, second, first_transport, first_scale
+            ),
+            "relation": "<=",
+            "threshold": 1e-12,
+        },
+        {
+            "audit": "transport_composition",
+            "theorem": "groupoid",
+            "value": float(
+                max(
+                    np.max(np.abs(composite.linear - direct.linear)),
+                    np.max(np.abs(composite.offset - direct.offset)),
+                )
+            ),
+            "relation": "<=",
+            "threshold": 1e-12,
+        },
+        {
+            "audit": "rotation_cycle_obstruction",
+            "theorem": "holonomy",
+            "value": float(rotation_analysis.admissible),
+            "relation": "==",
+            "threshold": 0.0,
+        },
+        {
+            "audit": "cycle_reference_recovery",
+            "theorem": "cycle_identification",
+            "value": reference_error,
+            "relation": "<=",
+            "threshold": 1e-12,
+        },
+        {
+            "audit": "euclidean_margin_sharp_value",
+            "theorem": "robustness",
+            "value": radius_error,
+            "relation": "<=",
+            "threshold": 1e-12,
+        },
+        {
+            "audit": "finite_label_open_slack",
+            "theorem": "set_identification",
+            "value": minimum_slack,
+            "relation": ">",
+            "threshold": 0.0,
+        },
+    ]
+    result = pd.DataFrame(rows)
+    result["passed"] = [
+        row.value <= row.threshold
+        if row.relation == "<="
+        else row.value > row.threshold
+        if row.relation == ">"
+        else row.value == row.threshold
+        for row in result.itertuples()
+    ]
+    return result
+
+
+def context_path_events() -> pd.DataFrame:
+    """Exact transversal events for a moving-reference benchmark."""
+    outcomes = {
+        "left": np.asarray([-1.0, 1.0]),
+        "middle": np.asarray([0.5, -1.0]),
+        "right": np.asarray([2.0, 1.0]),
+    }
+    return pd.DataFrame(
+        [
+            {
+                "outcome": label,
+                "appraisal": 1,
+                "crossing_t": float(outcome[0]),
+                "score_derivative": -1.0,
+                "transversal": True,
+            }
+            for label, outcome in outcomes.items()
         ]
     )
 
@@ -378,6 +534,10 @@ def run_all(output_dir: Path) -> None:
     _write_result_csv(convergence_diagnostics(), output_dir / "convergence_diagnostics.csv")
     _write_result_csv(perturbation_audit(), output_dir / "payoff_perturbation_audit.csv")
     _write_result_csv(robustness_radii(), output_dir / "robustness_radii.csv")
+    _write_result_csv(
+        contextual_classifier_audit(), output_dir / "contextual_classifier_audit.csv"
+    )
+    _write_result_csv(context_path_events(), output_dir / "context_path_events.csv")
     _write_result_csv(
         exhaustive_configuration_audit(), output_dir / "exhaustive_configuration_audit.csv"
     )

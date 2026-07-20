@@ -3,11 +3,11 @@ message: >-
   If you use this software or its reproducibility artifacts, please cite this
   repository. Add the archival DOI when it becomes available.
 title: >-
-  GamesAndContext: Reproducibility package for context-dependent benefit-loss
-  games
+  GamesAndContext: Reproducibility package for contextual benefit-loss
+  classifiers and games
 type: software
-version: 0.9.0
-date-released: 2026-06-22
+version: 0.10.0
+date-released: 2026-07-20
 authors:
   - family-names: Ramirez Ovalle
     given-names: Carlos
