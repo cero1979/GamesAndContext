@@ -136,6 +136,7 @@ class ContextualClassifierTests(unittest.TestCase):
         audit = contextual_classifier_audit()
         events = context_path_events()
         self.assertTrue(audit.passed.all())
+        self.assertTrue((audit.loc[audit.relation == "<=", "value"] == 0.0).all())
         self.assertEqual(
             set(audit.audit),
             {

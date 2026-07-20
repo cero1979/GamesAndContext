@@ -37,6 +37,12 @@ from .model import (
 DEFAULT_SEED = 20260622
 PDF_METADATA = {"Creator": "context_games 0.10.0", "CreationDate": None, "ModDate": None}
 CSV_FLOAT_FORMAT = "%.12g"
+AUDIT_ZERO_TOLERANCE = 1e-12
+
+
+def _certified_zero(value: float, *, tolerance: float = AUDIT_ZERO_TOLERANCE) -> float:
+    """Normalize platform-level residuals after an explicit tolerance check."""
+    return 0.0 if abs(value) <= tolerance else value
 
 
 def _write_result_csv(table: pd.DataFrame, path: Path, *, index: bool = False) -> None:
@@ -271,23 +277,27 @@ def contextual_classifier_audit() -> pd.DataFrame:
         {
             "audit": "exact_transport_identity",
             "theorem": "transport",
-            "value": transport_identity_error(
-                first, second, first_transport, first_scale
+            "value": _certified_zero(
+                transport_identity_error(
+                    first, second, first_transport, first_scale
+                )
             ),
             "relation": "<=",
-            "threshold": 1e-12,
+            "threshold": AUDIT_ZERO_TOLERANCE,
         },
         {
             "audit": "transport_composition",
             "theorem": "groupoid",
-            "value": float(
-                max(
-                    np.max(np.abs(composite.linear - direct.linear)),
-                    np.max(np.abs(composite.offset - direct.offset)),
+            "value": _certified_zero(
+                float(
+                    max(
+                        np.max(np.abs(composite.linear - direct.linear)),
+                        np.max(np.abs(composite.offset - direct.offset)),
+                    )
                 )
             ),
             "relation": "<=",
-            "threshold": 1e-12,
+            "threshold": AUDIT_ZERO_TOLERANCE,
         },
         {
             "audit": "rotation_cycle_obstruction",
@@ -299,16 +309,16 @@ def contextual_classifier_audit() -> pd.DataFrame:
         {
             "audit": "cycle_reference_recovery",
             "theorem": "cycle_identification",
-            "value": reference_error,
+            "value": _certified_zero(reference_error),
             "relation": "<=",
-            "threshold": 1e-12,
+            "threshold": AUDIT_ZERO_TOLERANCE,
         },
         {
             "audit": "euclidean_margin_sharp_value",
             "theorem": "robustness",
-            "value": radius_error,
+            "value": _certified_zero(radius_error),
             "relation": "<=",
-            "threshold": 1e-12,
+            "threshold": AUDIT_ZERO_TOLERANCE,
         },
         {
             "audit": "finite_label_open_slack",
