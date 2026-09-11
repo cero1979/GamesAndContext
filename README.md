@@ -1,4 +1,4 @@
-# Contextual Benefit-Loss Classifiers and Games
+# Contextual Comparability, Benefit-Loss Classifiers and Games
 
 [![Reproduce results](https://github.com/cero1979/GamesAndContext/actions/workflows/reproduce.yml/badge.svg)](https://github.com/cero1979/GamesAndContext/actions/workflows/reproduce.yml)
 
@@ -24,7 +24,39 @@ enumerations, equilibrium audits, and trajectory diagnostics. Those enumerations
 are computational checks and examples; they are not presented as substitutes for
 the analytical results.
 
-## Reproduce
+The latest methodological revision adds reference-recovery conditioning,
+reference-centred parameter bounds, finite strict-label identified sets, and
+independently specified synthetic institutional transports. Its failure cases
+distinguish rejection of a declared classifier from incompatibility of every
+full-rank classifier. These are deterministic stress tests, not empirical
+validation. See the [revision reproduction guide](docs/qq_reproducibility.md).
+
+## Reproduce the latest comparability diagnostics
+
+Use a separate environment for the new snapshot, audited with CPython 3.12.14:
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements-qq-lock.txt
+.venv/bin/python scripts/run_qq_audit.py --output-dir results/qq
+PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+```
+
+The suite has **43 tests**, including 14 new diagnostic tests and 29 retained
+regressions. The generator writes 15 files to `results/qq`: six CSV datasets,
+an institutional-case JSON file, five TeX tables, two vector figures and a
+provenance manifest. The manifest records dependency versions and source/output
+hashes. Reproduction from the anonymous snapshot was byte-identical in the
+audited environment; identical bytes are not promised across all platforms.
+
+Useful entry points are [conditioning](results/qq/conditioning.csv),
+[finite-label identification](results/qq/strict_label_identification.csv),
+[institutional transport](results/qq/institutional_transport.csv), and
+[centred robustness](results/qq/centred_robustness.csv). A single surviving grid
+candidate is not point identification: the analysis includes a distinct
+feasible off-grid witness. Residual tolerances are numerical, not statistical.
+
+## Reproduce the retained game and notebook results
 
 Validated with CPython 3.12.13 on macOS and in GitHub Actions.
 
@@ -35,8 +67,9 @@ python3.12 -m venv .venv
 .venv/bin/python scripts/run_all.py
 ```
 
-The final command runs the test suite, regenerates all result tables and figures,
-and executes the notebook into `results/executed_notebook.ipynb` without changing
+The final command runs the test suite, regenerates the retained result tables
+and figures outside `results/qq`, and executes the notebook into
+`results/executed_notebook.ipynb` without changing
 the source notebook. Figures are rendered once with Matplotlib's non-interactive
 `Agg` backend; notebook execution does not overwrite generated artifacts. CSV
 floating-point fields are serialized to 12 significant digits so harmless
@@ -56,6 +89,9 @@ For a faster code-only check:
 
 - `src/context_games/contextual_classifier.py`: affine contexts, transports,
   holonomy checks, finite labels, and contextual robustness radii.
+- `src/context_games/qq_audit.py`: latest methodological stress tests and artifact generation.
+- `scripts/run_qq_audit.py`: single-command generation of `results/qq`.
+- `docs/qq_reproducibility.md`: assumptions, interpretation and pinned reproduction instructions.
 - `src/context_games/`: benchmark game model, experiments, and reproduction CLI.
 - `tests/`: regression tests and computational theorem audits.
 - `notebooks/`: thin presentation notebook; it imports the tested package.
@@ -72,6 +108,10 @@ For a faster code-only check:
 | Finite strict labels as linear inequalities | `src/context_games/contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
 | Exact contextual robustness radii under three norms | `tests/test_contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
 | Label changes along continuous context paths | `src/context_games/experiments.py` | `results/context_path_events.csv` |
+| Reference conditioning and small-intercept recovery error | `tests/test_qq_audit.py` | `results/qq/conditioning.csv` |
+| Finite candidate grids versus continuous identified sets | `tests/test_qq_audit.py` | `results/qq/strict_label_identification.csv` |
+| Exogenous transport failure, noncommuting routes and a defective cycle | `tests/test_qq_audit.py` | `results/qq/institutional_case.json`, `results/qq/institutional_transport.csv` |
+| Reference-centred finite perturbation bounds | `tests/test_qq_audit.py` | `results/qq/centred_robustness.csv` |
 | Finite-game configurations, equilibria, and perturbations | `tests/test_theorems.py` | Remaining CSV and PDF files in `results/` |
 
 ## Main audits
@@ -98,8 +138,14 @@ For a faster code-only check:
 
 ## Reproducibility status
 
-`requirements-lock.txt` pins the complete numerical and notebook environment used
-for the archived results. CI installs that lock, regenerates the package under Linux,
-and fails if any committed result differs. The computations are deterministic except
-for the explicitly seeded payoff audit (`20260622`); no external or confidential data
-are used.
+`requirements-lock.txt` pins the retained numerical and notebook environment.
+The original CI job regenerates those artifacts under Linux and fails if they
+differ from the committed versions. A separate CI job installs
+`requirements-qq-lock.txt`, runs the test suite and regenerates the latest
+diagnostics in a temporary directory. That job checks successful generation;
+it does not assert cross-platform byte identity for the new snapshot.
+
+The new published designs are deterministic without random draws; randomised
+inequality tests use seed `20260911`. The retained payoff audit uses seed
+`20260622`. No external or confidential data are used. Manuscripts, cover
+letters and editorial audits remain outside the tracked repository.
