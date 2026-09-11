@@ -1,0 +1,51 @@
+{
+  "description": "Deterministic synthetic theorem-directed stress tests, not empirical data",
+  "seed": 20260911,
+  "random_generation_used": false,
+  "seed_note": "Reserved fixed seed; current published designs are deterministic and use no random draws.",
+  "python": "3.12.14",
+  "packages": {
+    "numpy": "2.4.6",
+    "matplotlib": "3.10.9",
+    "pandas": "2.3.3"
+  },
+  "tolerance": 1e-12,
+  "exact_certificate": "The reporting-cycle Jordan obstruction uses fractions.Fraction, not floating eigenvalue multiplicity.",
+  "source_sha256": {
+    "src/context_games/__init__.py": "558828a6b65b4b1c432b484346e3cf54440cf5c595dea83db9349ba969dd87fa",
+    "src/context_games/benchmarks.py": "33469390f3392b1ab01f8058540c8b9ee6f077d1e97c36621b6b76617795a2a7",
+    "src/context_games/contextual_classifier.py": "637a73f7892fde14c8926ed00e93e745ccbecb1e91a404eeffde55217fefd7fc",
+    "src/context_games/experiments.py": "004a6933e5f7a6b1924ea50defded7baaeba6abc1322a3a86d6be2c93920ce0f",
+    "src/context_games/model.py": "91ee373427bc2f57792c29a73702d609ae6330a1a1caec37237f8413a531dc72",
+    "src/context_games/qq_audit.py": "e836cb273fda05c15675ff3f972c452a90cb5544c047472fae6409d9377498a9",
+    "src/context_games/reproduce.py": "841de900f860e16ded579e5f55a953342d0cea73b7a4f5c08ac5ecf9b759a18f",
+    "tests/test_contextual_classifier.py": "2a13220afe6e9aeda648a7808be89c9afcb6cde6de97148eaddb29730d130146",
+    "tests/test_model.py": "799c99d2b4955d5ef0edec106320a3652e0d0091fb2eb3867594214f776e6e0e",
+    "tests/test_qq_audit.py": "97ce107198ba91bd423b125b27112562f4621d52702ba834267fa1437790140a",
+    "tests/test_theorems.py": "15c6b5887aed854928be6add1d6780ad293b32e1eb0b09b667bee095f28fd92f",
+    "scripts/run_qq_audit.py": "a617d446e5f09c51c83670523f943594a3b5a6b2d3f0bbb0485115b48e392071",
+    "requirements-qq-lock.txt": "80b5d9edbcc03602cdb8da39935dabec5d8117dbe2a4e65ac30b9fb3d31100c7"
+  },
+  "outputs_sha256": {
+    "centred_robustness.csv": "d5bae9a1f743fcda30ea2d8d1912bd6687e18252c607d06ffe23b3ec63eda95a",
+    "conditioning.csv": "be6d240197a5037ae1c27035b0f37e7bd10ffa9530fda281f19ed154d0fb529d",
+    "figure_qq_conditioning.pdf": "91b21d972d6941e9c581f2abb5953f264ad90d2dc7ab43c7b64139cb2af7cae3",
+    "figure_qq_identified_sets.pdf": "cd445b7b89c0ea81824addc40ca18c785d0a3d8a89c408930de78f7c5a4dbf65",
+    "institutional_case.json": "2aff6643324787156e507de0d1d26098581577d3d0c19e03702facc1651ce512",
+    "institutional_transport.csv": "fde8541dd9879e1ebdd922286b4749c8dabe5b6c103e953a9feb4892f06cc88e",
+    "running_labels.csv": "bdaaef44b0090b7e19ecd5a8f7714f95ee25704fe27c1430eac751ebd637f264",
+    "strict_label_grid_candidates.csv": "6820684fcd7b4badd7af7f0cfc4fdcd0b4366ed471eca879fb5b6b2b799af7ee",
+    "strict_label_identification.csv": "09890779c9c244437121bbc8bfde6fcdcd63ea27f9da6a5b1fc605caf01fad65",
+    "table_centred_robustness.tex": "c97b75263e5b739ba150d1a19e8af574805626ee153791796ad09e434df0794e",
+    "table_conditioning.tex": "c44416f64f3f05d56034de15250fd1a28510e0ad23927d2bdecc89a490f53b9b",
+    "table_institutional_transport.tex": "9c1753dfd5bb2da658e3c95b3c4c5fa84023285c4fcefbd119df8bb8f1a88330",
+    "table_running_labels.tex": "aca4dca2c11ae9acfa74fc0967bacd8434c67a74cc6e1877c24686d30f2096d5",
+    "table_strict_identification.tex": "52e039a9fd8efa368b5b8e899f6632f893c094afa4df09711f37fabc8c6c6f3c"
+  },
+  "reproduction_command": "python scripts/run_qq_audit.py --output-dir results/qq",
+  "warnings": [
+    "Finite candidate grids do not exhaust continuous identified sets.",
+    "Intervention cycles can be nonidentity while preserving signs; pure coordinate recoding must be path independent.",
+    "A residual is not a statistical significance test or an empirical estimate."
+  ]
+}

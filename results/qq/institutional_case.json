@@ -1,0 +1,117 @@
+{
+  "synthetic": true,
+  "epsilon": 0.05,
+  "coordinate_units": "fixed calibrated thousands of common monetised net-resource units",
+  "coordinate_meanings": [
+    "implementing institution",
+    "affected population"
+  ],
+  "appraisal_meanings": [
+    "aggregate surplus",
+    "population-minus-institution surplus"
+  ],
+  "appraisal_matrix": [
+    [
+      1.0,
+      1.0
+    ],
+    [
+      -1.0,
+      1.0
+    ]
+  ],
+  "references": [
+    [
+      1.0,
+      1.0
+    ],
+    [
+      2.0,
+      1.0
+    ],
+    [
+      2.0,
+      2.0
+    ]
+  ],
+  "funding_matrix": [
+    [
+      1.5,
+      0.5
+    ],
+    [
+      0.5,
+      1.5
+    ]
+  ],
+  "redistribution_matrix": [
+    [
+      0.75,
+      0.25
+    ],
+    [
+      0.25,
+      0.75
+    ]
+  ],
+  "altered_redistribution_matrix": [
+    [
+      0.8,
+      0.3
+    ],
+    [
+      0.2,
+      0.7
+    ]
+  ],
+  "witness_at_B": [
+    2.475,
+    1.525
+  ],
+  "witness_at_A": [
+    1.225,
+    1.275
+  ],
+  "coherent_cycle_linear": [
+    [
+      1.25,
+      0.75
+    ],
+    [
+      0.75,
+      1.25
+    ]
+  ],
+  "coherent_cycle_offset": [
+    -1.0,
+    -1.0
+  ],
+  "altered_cycle_linear": [
+    [
+      1.35,
+      0.85
+    ],
+    [
+      0.65,
+      1.15
+    ]
+  ],
+  "altered_cycle_offset": [
+    -1.2000000000000002,
+    -0.8
+  ],
+  "coherent_cycle_any_classifier_admissible": true,
+  "altered_cycle_any_classifier_admissible": true,
+  "coherent_reference": [
+    0.9999999999999998,
+    0.9999999999999998
+  ],
+  "warning": "Altered intervention rejects declared appraisals, not every possible appraisal frame.",
+  "separate_reporting_cycle": {
+    "epsilon": "1/20",
+    "nilpotent_nonzero": true,
+    "nilpotent_square_zero": true,
+    "minimal_polynomial": "(z-1)^2",
+    "any_full_rank_classifier_possible": false
+  }
+}
