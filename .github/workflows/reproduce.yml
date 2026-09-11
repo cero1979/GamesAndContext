@@ -25,7 +25,7 @@ jobs:
 
   contextual-diagnostics:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
@@ -38,3 +38,9 @@ jobs:
         run: PYTHONPATH=src python -m unittest discover -s tests -v
       - name: Regenerate synthetic diagnostics
         run: python scripts/run_qq_audit.py --output-dir "$RUNNER_TEMP/qq-results"
+      - name: Install geometric figure dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y texlive-latex-extra texlive-pictures texlive-fonts-recommended
+      - name: Regenerate final diagnostics and geometric figure
+        run: python scripts/run_qq_final_audit.py --output-dir "$RUNNER_TEMP/qq-final-results"

@@ -1,8 +1,10 @@
 # Online Resource 1: contextual-comparability diagnostics
 
-This anonymous snapshot contains synthetic mathematical diagnostics, not
-empirical observations. The complete proofs remain in the main manuscript.
-No author metadata, public repository links or Git history is included.
+This guide also serves as the README of the separately packaged anonymous
+Online Resource 1. That archive contains no author metadata, public repository
+links or Git history; the public repository itself is not anonymous.
+The diagnostics are synthetic, not empirical observations. The complete proofs
+remain in the main manuscript.
 
 ## Reproduce
 

@@ -29,7 +29,10 @@ reference-centred parameter bounds, finite strict-label identified sets, and
 independently specified synthetic institutional transports. Its failure cases
 distinguish rejection of a declared classifier from incompatibility of every
 full-rank classifier. These are deterministic stress tests, not empirical
-validation. See the [revision reproduction guide](docs/qq_reproducibility.md).
+validation. The final snapshot retains these calculations and adds
+signature-first presentation, an editable geometric figure, and five additional
+regression tests. See the [final reproduction guide](docs/qq_final_reproducibility.md).
+The [previous snapshot](docs/qq_reproducibility.md) remains available unchanged.
 
 ## Reproduce the latest comparability diagnostics
 
@@ -38,21 +41,30 @@ Use a separate environment for the new snapshot, audited with CPython 3.12.14:
 ```bash
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements-qq-lock.txt
-.venv/bin/python scripts/run_qq_audit.py --output-dir results/qq
+.venv/bin/python scripts/run_qq_final_audit.py --output-dir results/reproduced
 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The suite has **43 tests**, including 14 new diagnostic tests and 29 retained
-regressions. The generator writes 15 files to `results/qq`: six CSV datasets,
-an institutional-case JSON file, five TeX tables, two vector figures and a
-provenance manifest. The manifest records dependency versions and source/output
-hashes. Reproduction from the anonymous snapshot was byte-identical in the
-audited environment; identical bytes are not promised across all platforms.
+Full figure generation also requires `pdflatex`, `standalone` and TikZ (audited
+with TeX Live 2020). Add `--skip-figure` when LaTeX is unavailable; the Python
+diagnostics, five tables and two diagnostic figures are still regenerated.
+Use a fresh output directory to avoid mixing generations.
 
-Useful entry points are [conditioning](results/qq/conditioning.csv),
-[finite-label identification](results/qq/strict_label_identification.csv),
-[institutional transport](results/qq/institutional_transport.csv), and
-[centred robustness](results/qq/centred_robustness.csv). A single surviving grid
+The suite has **48 tests**: 29 retained regressions, 14 methodological diagnostic
+tests and five final-presentation checks. The complete generator writes 16
+files: six CSV datasets, an institutional-case JSON file, five TeX tables,
+three vector figures and a provenance manifest. The committed final snapshot is
+in `results/qq_final`; the manifest records dependency versions and source/output
+hashes. All 16 files reproduced byte-identically from the separately packaged
+anonymous snapshot in the audited environment; identical bytes are not promised
+across all platforms or TeX versions.
+
+Useful entry points are [conditioning](results/qq_final/conditioning.csv),
+[finite-label identification](results/qq_final/strict_label_identification.csv),
+[institutional transport](results/qq_final/institutional_transport.csv),
+[centred robustness](results/qq_final/centred_robustness.csv), and the
+[contextual fan figure](results/qq_final/figure_contextual_fans_final.pdf).
+A single surviving grid
 candidate is not point identification: the analysis includes a distinct
 feasible off-grid witness. Residual tolerances are numerical, not statistical.
 
@@ -89,9 +101,13 @@ For a faster code-only check:
 
 - `src/context_games/contextual_classifier.py`: affine contexts, transports,
   holonomy checks, finite labels, and contextual robustness radii.
-- `src/context_games/qq_audit.py`: latest methodological stress tests and artifact generation.
-- `scripts/run_qq_audit.py`: single-command generation of `results/qq`.
-- `docs/qq_reproducibility.md`: assumptions, interpretation and pinned reproduction instructions.
+- `src/context_games/qq_audit.py`: methodological stress tests and numerical artifact generation.
+- `scripts/run_qq_final_audit.py`: final presentation and full figure generation.
+- `figures/contextual_fans_final.tex`: editable geometric figure, with tested signature coordinates.
+- `results/qq_final/`: current 16-file result snapshot, including provenance.
+- `docs/qq_final_reproducibility.md`: final reproduction guide, also used in the separate anonymous archive.
+- `scripts/run_qq_audit.py`, `results/qq/`: preserved previous diagnostic snapshot.
+- `docs/qq_reproducibility.md`: detailed assumptions and interpretation of the numerical diagnostics.
 - `src/context_games/`: benchmark game model, experiments, and reproduction CLI.
 - `tests/`: regression tests and computational theorem audits.
 - `notebooks/`: thin presentation notebook; it imports the tested package.
@@ -108,10 +124,11 @@ For a faster code-only check:
 | Finite strict labels as linear inequalities | `src/context_games/contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
 | Exact contextual robustness radii under three norms | `tests/test_contextual_classifier.py` | `results/contextual_classifier_audit.csv` |
 | Label changes along continuous context paths | `src/context_games/experiments.py` | `results/context_path_events.csv` |
-| Reference conditioning and small-intercept recovery error | `tests/test_qq_audit.py` | `results/qq/conditioning.csv` |
-| Finite candidate grids versus continuous identified sets | `tests/test_qq_audit.py` | `results/qq/strict_label_identification.csv` |
-| Exogenous transport failure, noncommuting routes and a defective cycle | `tests/test_qq_audit.py` | `results/qq/institutional_case.json`, `results/qq/institutional_transport.csv` |
-| Reference-centred finite perturbation bounds | `tests/test_qq_audit.py` | `results/qq/centred_robustness.csv` |
+| Reference conditioning and small-intercept recovery error | `tests/test_qq_audit.py` | `results/qq_final/conditioning.csv` |
+| Finite candidate grids versus continuous identified sets | `tests/test_qq_audit.py` | `results/qq_final/strict_label_identification.csv` |
+| Exogenous transport failure, noncommuting routes and a defective cycle | `tests/test_qq_audit.py` | `results/qq_final/institutional_case.json`, `results/qq_final/institutional_transport.csv` |
+| Reference-centred finite perturbation bounds | `tests/test_qq_audit.py` | `results/qq_final/centred_robustness.csv` |
+| Running evaluations, signature coordinates and strategic/evaluative separation | `tests/test_qq_final_presentation.py` | `results/qq_final/table_running_labels.tex`, `figures/contextual_fans_final.tex` |
 | Finite-game configurations, equilibria, and perturbations | `tests/test_theorems.py` | Remaining CSV and PDF files in `results/` |
 
 ## Main audits
@@ -141,11 +158,16 @@ For a faster code-only check:
 `requirements-lock.txt` pins the retained numerical and notebook environment.
 The original CI job regenerates those artifacts under Linux and fails if they
 differ from the committed versions. A separate CI job installs
-`requirements-qq-lock.txt`, runs the test suite and regenerates the latest
-diagnostics in a temporary directory. That job checks successful generation;
-it does not assert cross-platform byte identity for the new snapshot.
+`requirements-qq-lock.txt`, runs all 48 tests, and regenerates both methodological
+snapshots in separate temporary directories, including LaTeX compilation of the
+final geometric figure. That job checks successful generation; it does not assert
+cross-platform byte identity for these snapshots.
 
 The new published designs are deterministic without random draws; randomised
 inequality tests use seed `20260911`. The retained payoff audit uses seed
 `20260622`. No external or confidential data are used. Manuscripts, cover
 letters and editorial audits remain outside the tracked repository.
+
+This public repository is attributed and is **not anonymous**. For double-anonymous
+review, use the separately prepared Online Resource 1 archive, not this repository
+or an automatic mirror that retains citation metadata or Git history.
