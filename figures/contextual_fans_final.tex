@@ -1,0 +1,41 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usetikzlibrary{arrows.meta}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+
+\begin{document}
+\begin{tikzpicture}[>=Latex,scale=0.88,
+  signature/.style={fill=white,inner sep=2pt}]
+  \begin{scope}
+    \draw[->] (-3.2,0)--(3.2,0) node[right] {\(x_1\)};
+    \draw[->] (0,-2.7)--(0,2.7) node[above] {\(x_2\)};
+    \node[signature] at (1.5,1.45) {\((+,+)\)};
+    \node[signature] at (-1.5,1.45) {\((-,+)\)};
+    \node[signature] at (1.5,-1.45) {\((+,-)\)};
+    \node[signature] at (-1.5,-1.45) {\((-,-)\)};
+    \node[font=\small] at (0,-3.15)
+      {(a) Structure-free plane \(A=I,r=0\)};
+  \end{scope}
+  \begin{scope}[xshift=8.2cm]
+    \draw[->] (-3.2,0)--(3.2,0) node[right] {\(x_1\)};
+    \draw[->] (0,-2.7)--(0,2.7) node[above] {\(x_2\)};
+    \draw[thick,blue] (-1.6,-2.6)--(3.6,2.6)
+      node[pos=.90,above,sloped,font=\scriptsize]
+      {\(a_1^\mathsf T(x-r)=0\)};
+    \draw[thick,red] (-1.6,2.6)--(3.6,-2.6)
+      node[pos=.90,below,sloped,font=\scriptsize]
+      {\(a_2^\mathsf T(x-r)=0\)};
+    \fill (1,0) circle (2pt) node[below right] {\(r\)};
+    \node[signature] at (2.45,0) {\((+,+)\)};
+    \node[signature] at (0.4,1.55) {\((-,+)\)};
+    \node[signature] at (0.4,-1.55) {\((+,-)\)};
+    \node[signature] at (-1.65,0) {\((-,-)\)};
+    \node[font=\small] at (0,-3.15)
+      {(b) Contextual fan
+      \(A=\left(\begin{smallmatrix}1&-1\\1&1\end{smallmatrix}\right),r=(1,0)\)};
+  \end{scope}
+\end{tikzpicture}
+\end{document}
